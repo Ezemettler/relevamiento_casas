@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(uv run *)",
+      "Bash(uv add *)",
+      "Bash(uv sync*)",
+      "Bash(uv init*)",
+      "Bash(pytest*)",
+      "Bash(ruff*)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git add *)",
+      "Bash(curl * carlosfernandezprop.com.ar*)",
+      "Bash(curl * marcelomilano.com.ar*)",
+      "Bash(curl * sarropucheta.com*)",
+      "Bash(curl * argenprop.com*)",
+      "Bash(curl * mashogaresconbna.com.ar*)",
+      "Bash(curl * supabase.com*)",
+      "Bash(curl * astral.sh*)",
+      "Read",
+      "Edit",
+      "Write"
+    ],
+    "ask": [
+      "Bash(git commit*)",
+      "Bash(git push*)",
+      "Bash(git reset --hard*)",
+      "Bash(git checkout --*)",
+      "Bash(rm *)"
+    ]
+  }
+}

@@ -1,0 +1,73 @@
+# Carlos Fernández Propiedades — inmobiliaria de Castelar/Morón.
+#
+# Corre sobre Tokkobroker, un CMS muy usado por inmobiliarias argentinas.
+# Confirmado por reconocimiento manual del 2026-07-28 (ver PLAN.md sección 2.b):
+# HTML servido por el servidor (sin JavaScript de por medio) y paginación por
+# scroll infinito vía un parámetro `p` en la misma URL.
+#
+# Si este archivo deja de funcionar (la corrida marca esta fuente en error),
+# el motivo casi seguro es que el sitio cambió de plantilla. Solución: abrir
+# la web en el navegador, inspeccionar el HTML nuevo, y actualizar los
+# selectores de acá. No hace falta tocar código Python.
+
+nombre: Carlos Fernández Propiedades
+tipo: inmobiliaria_local
+url_base: https://www.carlosfernandezprop.com.ar
+
+listado:
+  # Se arma reemplazando {pagina}. p=1 ya trae la página completa; p=2 en
+  # adelante trae solo el fragmento nuevo de <li> (así carga el scroll
+  # infinito del sitio). En ambos casos el selector de "item" funciona igual.
+  url: /Venta?q=&currency=ANY&o=2,2&p={pagina}
+  primera_pagina: 1
+  # Si la respuesta de una página contiene este texto, no hay más resultados.
+  marcador_fin: "--NoMoreProperties--"
+  # Freno de seguridad: a ~20 propiedades por página, cubre bastante más
+  # que el inventario actual (196). Si algún día no se llega a este límite
+  # antes de terminar, revisar el marcador de fin: probablemente cambió.
+  max_paginas: 40
+
+  item: "li[prop-id]"
+  campos:
+    id_en_fuente:
+      atributo: prop-id
+    url:
+      selector: a
+      atributo: href
+    # Ej: "Casa en Venta   en Castelar Norte, Castelar"
+    # Se parsea en código porque mezcla tres datos en un solo texto;
+    # ninguna combinación de selectores CSS lo separaría por sí sola.
+    tipo_ubicacion_texto:
+      selector: .prop-desc-tipo-ub
+    direccion_texto:
+      selector: .prop-desc-dir
+    # Trae basura pegada (código de referencia, "+/- Favorito"): se filtra
+    # con la normalización de precio, que busca el patrón moneda + monto.
+    precio_texto:
+      selector: .prop-valor-nro
+
+detalle:
+  # Las características vienen como pares "Etiqueta : Valor" en dos
+  # secciones. Se listan ambas y se combinan en un solo diccionario.
+  listas_caracteristicas:
+    - "#lista_informacion_basica li"
+    - "#lista_superficies li"
+  descripcion:
+    selector: "#prop-desc"
+
+  # Traduce las etiquetas del sitio (texto exacto, en minúsculas y sin
+  # acentos) a los campos de nuestro modelo de datos.
+  mapeo_caracteristicas:
+    ambientes: ambientes
+    dormitorios: dormitorios
+    banos: banos
+    antiguedad: antiguedad_anios
+    terreno: m2_terreno
+    "total construido": m2_cubiertos
+
+# Tipologías del sitio -> las nuestras (config/filtros.yaml). Lo que no
+# está listado acá se descarta en la recolección (ver Tipologia.OTRO).
+mapeo_tipologia:
+  casa: casa
+  ph: ph
+  departamento: departamento

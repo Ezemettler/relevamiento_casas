@@ -1,0 +1,3686 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es-ar">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/> <!--320-->
+<meta content="all" name="robots" />
+<meta content="global" name="distribution" />
+<meta content="7 days" name="Revisit" />
+<meta name="AUTHOR" content="Tokko Broker">
+<script type="text/javascript" src="https://static.tokkobroker.com/tfw/js/utils.eb8929bff3ac.js"></script>
+<script>
+
+var is_home = false
+var is_listado = false
+
+</script>
+
+
+
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-17PZHDHJZ9"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  
+</script>
+
+
+
+
+
+<meta property="og:locale" content="es_ar" />
+
+
+  <meta property="og:title" content="carlosfernandezprop.com.ar – Venta y Alquiler de Propiedades - Inmobiliaria"/>
+  <meta property="og:image" content="https://static.tokkobroker.com/tfw_images/6898_Carlos%20F.%20Fernandez/perfil%20(2).jpg">
+  
+    <meta property="og:description" content="carlosfernandezprop.com.ar – Venta y Alquiler de Propiedades - Inmobiliaria"/>
+  
+
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="carlosfernandezprop.com.ar – Venta y Alquiler de Propiedades - Inmobiliaria"/>
+  
+    <meta name="twitter:description" content="carlosfernandezprop.com.ar – Venta y Alquiler de Propiedades - Inmobiliaria"/>
+  
+
+  <meta name="twitter:image" content="https://static.tokkobroker.com/tfw_images/6898_Carlos%20F.%20Fernandez/perfil%20(2).jpg"/>
+
+
+
+  <meta name="title" content="Propiedades en venta en carlosfernandezprop.com.ar" />
+  <meta name="description" content="En carlosfernandezprop.com.ar podemos ofrecerte Propiedades en venta. Encuentre la propiedad más adecuada para usted y consúltenos." />
+
+
+<meta name="keywords" content="inmobiliaria venta, casas, terreno, emprendimientos, agencias inmobiliarias, venta, alquiler" />
+
+
+
+<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|PT+Sans" rel="stylesheet">
+
+<title>carlosfernandezprop.com.ar - propiedades en venta</title>
+<link href="https://static.tokkobroker.com/tfw/css/normalize.7caceed67722.css" rel="stylesheet" />
+
+<link href="https://static.tokkobroker.com/tfw/css/estilo.f0dbf223be20.css" rel="stylesheet" />
+<link href="https://static.tokkobroker.com/tfw/css/animate.404020c62cd1.css" rel="stylesheet" />
+<link href="https://static.tokkobroker.com/tfw/css/print.1a52917c062b.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link rel="icon" type="image/png" href="/favicon.ico"/>
+<link rel="stylesheet" href="https://static.tokkobroker.com/tfw/css/font-awesome.min.bf0c425cdb73.css">
+<link rel="stylesheet" href="https://static.tokkobroker.com/tfw/css/tokko-icons.982773fa9f2d.css">
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<link href='https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:400,300' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
+<link href="https://static.tokkobroker.com/tfw/css/jquery.bxslider.dd2e67415640.css" rel="stylesheet" />
+<link href="https://static.tokkobroker.com/tfw/css/jquery-ui-1.11.14.201a8b5fc41b.css" />
+<script src="https://static.tokkobroker.com/tfw/js/jquery-1.10.1.min.4b5f62f5d972.js"></script>
+<script src="https://static.tokkobroker.com/tfw/js/jquery-ui-1.11.14.42fbc7043183.js"></script>
+<script type="text/javascript" src="https://static.tokkobroker.com/tfw/js/jquery.sticky.112dbba9abde.js"></script>
+<script type="text/javascript">var switchTo5x=true;</script>
+
+
+<script type="text/javascript" src="https://static.tokkobroker.com/tfw/js/jquery.youtubebackground.80e8f9c0ae6c.js"></script>
+
+<script type="text/javascript" src="https://ss.sharethis.com/loader.js"></script>
+<script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script>
+
+<script>
+  function fh_star_unstar_prop(evt, prop_id ){
+    evt.preventDefault();
+    star_unstar_prop(prop_id);
+  }
+
+  function star_unstar_prop(id){
+    if ($('.star-'+id).is(":visible")){
+        star_remove_prop(id)
+    }else{
+        star_prop(id)
+    }
+  }
+
+  function star_prop(id){
+    /**
+     * Marca una propiedad como Favorita.
+     * Agrega 1 al contador de Propiedades Favoritas de la página.
+     * En los templates viejos, muestra el contador, si no era visible.
+     * En los templates nuevos, cambia el valor también para el contador del menu mobile.
+    */
+    $('.star-'+id).show();
+    var jqxhr = $.ajax('/add_star/'+id)
+    .done(function(result){
+        let old_value = parseInt($('#favcounter').html())
+        let new_value = old_value + 1
+        $('#favcounter').html(new_value)
+
+        //si hay menu mobile (nuevos templates)
+        if($('#m-favcounter').length > 0){
+            $('#m-favcounter').html(`(${new_value})`)
+        }else{
+            $('#fav-btn').show();
+        }
+    })
+}
+
+function star_remove_prop(id){
+    /**
+     * Desmarca una propiedad como Favorita.
+     * Resta 1 al contador de Propiedades Favoritas de la página.
+     * En los templates viejos, oculta el contador, si se llegó a 0 favoritas.
+     * En los templates nuevos, cambia el valor también para el contador del menu mobile.
+    */
+    $('.star-'+id).hide();
+    var jqxhr = $.ajax('/remove_star/'+id)
+    .done(function(result){
+        let old_value = parseInt($('#favcounter').html())
+        let new_value = old_value - 1
+        $('#favcounter').html(new_value)
+        if($('#m-favcounter').length > 0){
+            if(new_value == 0){
+                $('#m-favcounter').html('')
+            }else{
+                $('#m-favcounter').html(`(${new_value})`)
+            }
+        }else{
+            if (new_value < 1){ $('#fav-btn').hide();}
+        }
+        if($('#favprop_'+id).length > 0)
+          $('#favprop_'+id).remove()
+        if(new_value == 0){
+          $('#no-favourites-message').show();
+        }
+    })
+}
+
+</script>
+
+</head>
+
+<style>
+  :root {
+  --color-background-b: #161e5d;
+  --color-opposite-b: #FFFFFF;
+}
+.bgcolorB {background-color: var(--color-background-b) !important; }
+.colorOppositeB{color: var(--color-opposite-b) !important;}
+.bgcolorA {background-color: #fff0f0 !important; }
+.bgcolorC {background-color: #161e5d !important; border-color: #ffffff !important; }
+.bgcolorCwithText {background-color: #161e5d !important; color: #FFFFFF!important;}
+.textColorC{color: #161e5d!important;}
+.textColorCopositte{color: #FFFFFF!important;}
+.detalleColor { background-color: #ffffff !important ; color: #000000 !important ;}
+.colorDetalleAfter::after { color: #ffffff !important ; }
+.detalleColorText { color: #ffffff !important ; }
+#buscador02 .selectbox .selected {
+  background-color: #ffffff !important ;
+  color: #000000 !important ;
+}
+.detallefocus option:selected,
+.detallefocus option:active,
+.detallefocus option:focus,
+.detallefocus option:checked  {
+  background-color: #ffffff !important ;
+  color: #000000 !important ;
+}
+
+.multiple_selected {
+   background-color: #ffffff !important ;
+   color: #000000 !important ;
+}
+.btn.stroke-btn{
+  color:  #161e5d !important;
+  border: 2px solid #161e5d !important;
+}
+
+.btn.stroke-opposite-btn{
+  color:  #FFFFFF !important;
+  border: 2px solid #FFFFFF !important;
+}
+
+.detalleColor a { color: #000000 !important; }
+.detalleColorC { color: #ffffff !important; }
+
+
+button, input[type="button"] {
+  background-color: #ffffff !important;
+  color: #000000 !important ;
+}
+
+#map-canvas button, #map-canvas input[type="button"] { background-color: inherit !important ; color: inherit !important; }
+.home_adv_srch_opt .nav-pills li.nav-item a.nav-link.active:before{
+  background-color: #161e5d;
+}
+</style>
+<body class="
+  
+    bgcolorA
+    
+      
+     
+    
+      header-whatsapp
+    
+  
+  show-wa-widget
+  ">
+  
+
+
+
+
+  
+      
+
+
+
+<header id="headerfull_box" class="bgcolorB borderColorC">
+	<div id="header" class="invert-white">
+        <div id="logo"><a href="/"><img src="https://static.tokkobroker.com/tfw_images/6898_Carlos%20F.%20Fernandez/perfil%20(2).jpg" /></a></div>
+        <div id="mobile_menu">
+	        
+        		<a href="tel:(011) 4628-5652 ">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-phone fa-stack-1x fa-inverse"></i>
+              </span>
+        		</a>
+			    
+          <span id="openmenu" class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-bars fa-stack-1x fa-inverse"></i>
+          </span>
+        </div>
+
+        <div id="data_contacto" style="color: #FFFFFF">
+            
+            <div id="tel"><a href="tel:(011) 4628-5652 " style="color: #FFFFFF"><i class="fa fa-phone" style="font-size:16px;"></i> <div>(011) 4628-5652 </div></a></div>
+            
+            
+              <div id="tel2">
+                <a href="https://api.whatsapp.com/send?phone=541158867855&text=Me%20gustar%C3%ADa%20contactar" target="_blank" style="color: #FFFFFF">
+                  <div id="whatsapp"></div> <div>+541158867855</div>
+                </a>
+              </div>
+            
+             <span class="pipe">|</span> 
+            
+            <div id="email"><a style="color: #FFFFFF" href="mailto:carlosffernandezprop@gmail.com">carlosffernandezprop@gmail.com</a></div>
+            
+
+            
+            <a href="https://m.facebook.com/CarlosF.FernandezPropiedades/?locale2=es_LA" target="_blank" class="redes" rel="nofollow"><div id="fb"></div></a>
+            
+            
+                        
+            
+            <a href="https://www.instagram.com/carlosfernandezprop/?hl=es" target="_blank" class="redes" rel="nofollow"><div id="ig"></div></a>
+            
+            
+        </div>
+
+    </div>
+    <div id="mobile-menu-mini" style="color: #FFFFFF">MENÚ</div>
+    <nav id="menu_barra">
+        <ul id="menu">
+		      
+            <li class="mobile-mini-item">
+              <a href="tel:(011) 4628-5652 " style="color: #FFFFFF">
+                LLAMAR
+              </a>
+            </li> 
+          
+          
+            <li>
+              <a href="/Propiedades" style="color: #FFFFFF">
+                Propiedades
+              </a>
+            </li>
+          
+            <li>
+              <a href="/Venta" style="color: #FFFFFF">
+                Venta
+              </a>
+            </li>
+          
+            <li>
+              <a href="/Alquiler" style="color: #FFFFFF">
+                Alquiler
+              </a>
+            </li>
+          
+            <li>
+              <a href="/Emprendimientos" style="color: #FFFFFF">
+                Emprendimientos
+              </a>
+            </li>
+          
+            <li>
+              <a href="/s/La-Empresa" style="color: #FFFFFF">
+                La Empresa
+              </a>
+            </li>
+          
+            <li>
+              <a href="/Contacto" style="color: #FFFFFF">
+                Contacto
+              </a>
+            </li>
+          
+
+        </ul>
+        <div id="buscador_rapido"><input type="text" id="fastsearch" placeholder="Buscar por calle o código" style="width:84%;"/><i class="fa fa-search" style="font-size:13px;cursor:pointer" onclick="fastsearch()"></i></div>
+    </nav>
+
+<script>
+function fastsearch(){
+  if($('#fastsearch').val().trim() != ""){
+    window.location = '/Full_search?q='+$('#fastsearch').val()
+  }
+}
+
+$('#fastsearch').keypress(function (e) {
+ var key = e.which;
+ if(key == 13){
+    window.location = '/Full_search?q='+$('#fastsearch').val()
+  }
+});
+</script>
+</header>
+
+  
+  
+
+
+
+
+
+
+<div id="propertylist_wrapper" class="content_wrapper">
+
+    <div id="propertylist_content">
+    
+        
+            
+
+<section id="resultados_wrapper" class="listado content_wrapper">
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key="></script>
+<script>
+var markers = {};
+var open_window = null;
+var current_id = null;
+var map = null;
+var bounds = new google.maps.LatLngBounds();
+is_home = false
+is_listado = true
+
+var pinShadow = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
+        new google.maps.Size(40, 37),
+        new google.maps.Point(0, 0),
+        new google.maps.Point(12, 35));
+
+var pinImage_red = new google.maps.MarkerImage("https://static.tokkobroker.com/tfw/img/marker.3f8a5ce13ebb.png",
+        new google.maps.Size(34, 34),
+        new google.maps.Point(0,0),
+        new google.maps.Point(10, 34));
+
+
+function vermapa() {
+        is_map = true;
+	$(".resultados-vista-box div").removeClass("selected");
+	$("#resultados-vista-mapa").addClass("selected");
+        $('#resultados-vista-grilla').removeClass("selected");
+	$('#map-canvas-sticky-wrapper').css('display', 'inline-block');
+  $("#map-canvas").show()
+        $(".resultados-list").hide();
+        if (map == null){
+            var mapOptions = {
+              center: new google.maps.LatLng(-34.59, -58.44),
+              zoom: 12,
+	    	  scrollwheel: false,
+	    	  styles: [{"stylers":[{"saturation":-100},{"gamma":1}]},{"elementType":"labels.text.stroke","stylers":[{"visibility":"off"}]},{"featureType":"poi.business","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"poi.business","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"poi.place_of_worship","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"poi.place_of_worship","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"geometry","stylers":[{"visibility":"simplified"}]},{"featureType":"water","stylers":[{"visibility":"on"},{"saturation":50},{"gamma":0},{"hue":"#50a5d1"}]},{"featureType":"administrative.neighborhood","elementType":"labels.text.fill","stylers":[{"color":"#333333"}]},{"featureType":"road.local","elementType":"labels.text","stylers":[{"weight":0.5},{"color":"#333333"}]},{"featureType":"transit.station","elementType":"labels.icon","stylers":[{"gamma":1},{"saturation":50}]}]
+            };
+            map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+            load_markers();
+            map.fitBounds(bounds);
+        }
+}
+
+function add_new_marker(id, lat,lng){
+    var latLng = new google.maps.LatLng(lat, lng);
+    marker = new google.maps.Marker({
+                position: latLng,
+                animation: google.maps.Animation.DROP,
+                shadow: pinShadow,
+                icon: pinImage_red,
+                map: map,
+                draggable: false,
+                visible: true
+            })
+     bounds.extend(marker.position);
+
+     markers[id] = {'marker': marker, 'info': null};
+
+     google.maps.event.addListener(markers[id].marker, 'click', function() {
+
+        if (open_window) { open_window.close();}
+        if (!markers[id].info) {
+                    infoWindow = new google.maps.InfoWindow({
+                        content:"<div id='prop_tooltip_"+id+"' ><span>Cargando...</span></div>",
+                        maxWidth:400
+                    });
+
+            var jqxhr = $.ajax('/infowindow_full/'+id)
+                .done(function(result) {
+                    $("#prop_tooltip_"+id).html(result);
+                    markers[id]['info'] = new google.maps.InfoWindow({
+                            content:"<div id='prop_tooltip_"+id+"'>"+result+"</div>"
+                            });
+                    });
+            markers[id]['info'] = infoWindow;
+        }
+        markers[id].info.open(map,markers[id].marker);
+        open_window = markers[id].info;
+     });
+}
+
+function call_infoclick(id){
+   	google.maps.event.trigger( markers[id].marker, 'click' );
+}
+
+
+
+function load_markers(){
+
+  
+add_new_marker('3144143', -34.6409954, -58.6272697);
+  
+
+  
+add_new_marker('3144304', -34.6401685, -58.6220998);
+  
+
+  
+add_new_marker('3144349', -34.6340963, -58.633769700000016);
+  
+
+  
+add_new_marker('3144368', -34.6558611, -58.61672120000003);
+  
+
+  
+add_new_marker('3144592', -34.6627399, -58.6330413);
+  
+
+  
+add_new_marker('3144613', -34.6489212, -58.56254379999996);
+  
+
+  
+add_new_marker('3144686', -34.6562292, -58.572036000000025);
+  
+
+  
+add_new_marker('3144771', -34.6558611, -58.61672120000003);
+  
+
+  
+add_new_marker('3144879', -34.645784, -58.61972020000002);
+  
+
+  
+add_new_marker('3144902', -34.6558611, -58.61672120000003);
+  
+
+  
+add_new_marker('3145047', -34.6643554, -58.65240829999999);
+  
+
+  
+add_new_marker('3145070', -34.6373606, -58.625202);
+  
+
+  
+add_new_marker('3145079', -34.6444956, -58.62319819999999);
+  
+
+  
+add_new_marker('3145085', -34.6458512, -58.622601599999996);
+  
+
+  
+add_new_marker('3145093', -34.6490736, -58.62341670000001);
+  
+
+  
+add_new_marker('3145096', -34.6551505, -58.767950600000006);
+  
+
+  
+add_new_marker('3145126', -37.2598939, -56.9714194);
+  
+
+  
+add_new_marker('3145139', -34.6412778, -58.62621519999999);
+  
+
+  
+add_new_marker('3145189', -34.6305429, -58.634426700000006);
+  
+
+  
+add_new_marker('3145201', -34.6314994, -58.63960700000001);
+  
+
+  
+add_new_marker('3145219', -34.6533445, -58.58835069999998);
+  
+
+  
+add_new_marker('3145229', -34.6076974, -58.6443802);
+  
+
+  
+add_new_marker('3145302', -34.6381006, -58.61958240000001);
+  
+
+  
+add_new_marker('3145307', -34.6558611, -58.6167212);
+  
+
+  
+add_new_marker('3145311', -34.6526309, -58.617320199999995);
+  
+
+  
+add_new_marker('3145319', -34.6364382, -58.619459800000016);
+  
+
+  
+add_new_marker('3145359', -34.644276, -58.61819969999999);
+  
+
+  
+add_new_marker('3145390', -34.6558611, -58.61672120000003);
+  
+
+  
+add_new_marker('3145395', -34.668265, -58.61734030000002);
+  
+
+  
+add_new_marker('3145423', -34.6423231, -58.6205693);
+  
+
+  
+add_new_marker('3145447', -34.64680510000001, -58.62422449999997);
+  
+
+  
+add_new_marker('3145459', -34.6360459, -58.5542309);
+  
+
+  
+add_new_marker('3145474', -34.6497322, -58.61859870000001);
+  
+
+  
+add_new_marker('3145492', -34.6429357, -58.61526079999999);
+  
+
+  
+add_new_marker('3145543', -34.6558611, -58.61672120000003);
+  
+
+  
+add_new_marker('3145628', -34.6376306, -58.56140060000001);
+  
+
+  
+add_new_marker('3145675', -34.6374827, -58.625809900000036);
+  
+
+  
+add_new_marker('3145702', -34.6558611, -58.61672120000003);
+  
+
+  
+add_new_marker('3145709', -34.659014, -58.616657499999974);
+  
+
+  
+add_new_marker('3145795', -34.6558611, -58.61672120000003);
+  
+
+  
+add_new_marker('3145870', -34.6401102, -58.61719919999996);
+  
+
+  
+add_new_marker('3145908', -34.6439429, -58.61800390000002);
+  
+
+  
+add_new_marker('3146028', -34.6421327, -58.6186328);
+  
+
+  
+add_new_marker('3146065', -34.667545, -58.66281090000001);
+  
+
+  
+add_new_marker('3146193', -34.6370894, -58.657249399999955);
+  
+
+  
+add_new_marker('3146210', -34.63940901292561, -58.64633278752444);
+  
+
+  
+add_new_marker('3146252', -34.6337719, -58.63868689999998);
+  
+
+  
+add_new_marker('3146261', -34.78640620585181, -58.62294494232788);
+  
+
+  
+add_new_marker('3146293', -34.6558611, -58.61672120000003);
+  
+
+  
+add_new_marker('3146363', -34.6440676, -58.59564280000001);
+  
+
+  
+add_new_marker('3146505', -34.6411348, -58.61387180000003);
+  
+
+  
+add_new_marker('3146536', -34.642994, -58.613887999999974);
+  
+
+  
+add_new_marker('3146555', -34.6414168, -58.62011640000003);
+  
+
+  
+add_new_marker('3146646', -34.6453892, -58.623452999999984);
+  
+
+  
+add_new_marker('3146657', -34.634430377590334, -58.631054924975615);
+  
+
+  
+add_new_marker('3146768', -34.6443672, -58.61703990000001);
+  
+
+  
+add_new_marker('3146780', -34.6449125, -58.61755700000003);
+  
+
+  
+add_new_marker('3146802', -34.6482618, -58.61514469999997);
+  
+
+  
+add_new_marker('3147007', -34.6412682, -58.626141700000005);
+  
+
+  
+add_new_marker('3147031', -34.6354737, -58.42926990000001);
+  
+
+  
+add_new_marker('3147111', -34.6469252, -58.61866500000002);
+  
+
+  
+add_new_marker('3147135', -34.6450325, -58.62086199999999);
+  
+
+  
+add_new_marker('3147153', -34.6407269, -58.62592369999999);
+  
+
+  
+add_new_marker('3147183', -34.616817978, -58.6332033762);
+  
+
+  
+add_new_marker('3147192', -34.63998300000001, -58.66872799999999);
+  
+
+  
+add_new_marker('3147267', -34.647738, -58.62275599999998);
+  
+
+  
+add_new_marker('3147280', -34.6462737, -58.62459469999999);
+  
+
+  
+add_new_marker('3147300', -34.638494257, -58.6441064434);
+  
+
+  
+add_new_marker('3147351', -34.6460139, -58.61855750000001);
+  
+
+  
+add_new_marker('3147374', -34.6570243, -58.675397799999985);
+  
+
+  
+add_new_marker('3147412', -34.6463996, -58.615707799999996);
+  
+
+  
+add_new_marker('3147472', -34.6129615, -58.638347599999975);
+  
+
+  
+add_new_marker('3147574', -34.6430934, -58.6194433);
+  
+
+  
+add_new_marker('3147611', -34.6441599, -58.61450960000002);
+  
+
+  
+add_new_marker('3147765', -34.6558611, -58.61672120000003);
+  
+
+  
+add_new_marker('3147806', -34.6381298, -58.6998906);
+  
+
+  
+add_new_marker('3147843', -34.6441312, -58.6172374);
+  
+
+  
+add_new_marker('3147851', -34.6748157, -58.61150190000001);
+  
+
+  
+add_new_marker('3147867', -34.6430075, -58.62001049999999);
+  
+
+  
+add_new_marker('3147917', -34.6553422, -58.6084439);
+  
+
+  
+add_new_marker('3148098', -36.4870244, -56.6931113);
+  
+
+  
+add_new_marker('3148111', -34.669278677435464, -58.69259177014769);
+  
+
+  
+add_new_marker('3148124', -34.6879646, -58.50347769999999);
+  
+
+  
+add_new_marker('3148266', -34.646699, -58.62094899999999);
+  
+
+  
+add_new_marker('3148271', -34.657799, -58.66343819999999);
+  
+
+  
+add_new_marker('3148368', -34.6502303347, -58.6436720362);
+  
+
+  
+add_new_marker('3148412', -34.6367139, -58.61731349999999);
+  
+
+  
+add_new_marker('3148442', -34.6558611, -58.61672120000003);
+  
+
+  
+add_new_marker('3148481', -34.6548459, -58.61107630000001);
+  
+
+  
+add_new_marker('3148498', -34.6443714, -58.62317549999999);
+  
+
+  
+add_new_marker('3148622', -34.6446373, -58.6199264);
+  
+
+  
+add_new_marker('3148666', -34.6184508, -58.8168303);
+  
+
+  
+add_new_marker('3148730', -31.8991371, -64.7730365);
+  
+
+  
+add_new_marker('3148750', -34.645162, -58.6198766);
+  
+
+  
+add_new_marker('3148756', -34.6480672, -58.6359942);
+  
+
+  
+add_new_marker('3148778', -34.6453892, -58.623452999999984);
+  
+
+  
+add_new_marker('3148831', -34.644921, -58.61902269999999);
+  
+
+  
+add_new_marker('3148892', -34.6472389, -58.6301025);
+  
+
+  
+add_new_marker('3491952', -34.6476204, -58.6159235);
+  
+
+  
+add_new_marker('3569661', -34.6433391, -58.6308163);
+  
+
+  
+add_new_marker('3572712', -34.6472733, -58.6291475);
+  
+
+  
+add_new_marker('3573824', -34.6501939, -58.6444205);
+  
+
+  
+add_new_marker('3583609', -34.6538992, -58.6262319);
+  
+
+  
+add_new_marker('3631474', -34.6281116, -58.5898028);
+  
+
+  
+add_new_marker('3679891', -34.6497634, -58.6148487);
+  
+
+  
+add_new_marker('3699870', -34.6413942, -58.6261742);
+  
+
+  
+add_new_marker('3707455', -34.6557879, -58.6057861);
+  
+
+  
+add_new_marker('3760668', -34.6473927, -58.6229112);
+  
+
+  
+add_new_marker('3760696', -34.6453518, -58.6201544);
+  
+
+  
+add_new_marker('3775553', -34.643697, -58.6200375);
+  
+
+  
+add_new_marker('3793918', -34.6446897, -58.6453231);
+  
+
+  
+add_new_marker('3865469', -34.6644565463, -58.6267633906);
+  
+
+  
+add_new_marker('3890016', -34.6344463, -58.619083);
+  
+
+  
+add_new_marker('3903417', -34.6558611, -58.6167212);
+  
+
+  
+add_new_marker('3903498', -34.6558611, -58.6167212);
+  
+
+  
+add_new_marker('3943948', -34.6511415, -58.6163332);
+  
+
+  
+add_new_marker('3987423', -34.6517002, -58.6214192);
+  
+
+  
+add_new_marker('4023992', -34.6430439, -58.6223593);
+  
+
+  
+add_new_marker('4092078', -34.6443528937, -58.6143557614);
+  
+
+  
+add_new_marker('4112087', -34.6304816, -58.6208798);
+  
+
+  
+add_new_marker('4133757', -34.6437606, -58.6188167);
+  
+
+  
+add_new_marker('4203738', -34.5911465, -58.6653491);
+  
+
+  
+add_new_marker('4260357', -34.6331733, -58.5923587);
+  
+
+  
+add_new_marker('4291393', -34.6443882, -58.6141841);
+  
+
+  
+add_new_marker('4319298', -34.6747348, -58.6311984);
+  
+
+  
+add_new_marker('4326502', -34.6455103, -58.624686);
+  
+
+  
+add_new_marker('4459440', -34.6451554, -58.6172728);
+  
+
+  
+add_new_marker('4467693', -34.6436987, -58.6147021);
+  
+
+  
+add_new_marker('4482905', -34.6490736, -58.6234167);
+  
+
+  
+add_new_marker('4551639', -34.6362941, -58.619616);
+  
+
+  
+add_new_marker('4575086', -34.6469252, -58.61866500000002);
+  
+
+  
+add_new_marker('4614369', -34.6390637, -58.629456);
+  
+
+  
+add_new_marker('4619848', -34.6509203, -58.6252575);
+  
+
+  
+add_new_marker('4647967', -34.6638435, -58.6674538);
+  
+
+  
+add_new_marker('4681207', -34.6339895, -58.5919832);
+  
+
+  
+add_new_marker('4773784', -34.6489528, -58.613228);
+  
+
+  
+add_new_marker('4791324', -34.6428021, -58.619962);
+  
+
+  
+add_new_marker('4799316', -34.6291411, -58.6415185);
+  
+
+  
+add_new_marker('4805820', -34.6616388, -58.6236135);
+  
+
+  
+add_new_marker('4909543', -34.6514758, -58.6255668);
+  
+
+  
+add_new_marker('4967282', -34.6562972, -58.6389468);
+  
+
+  
+add_new_marker('4978138', -34.6527913, -58.6256673);
+  
+
+  
+add_new_marker('5024237', -34.6562972, -58.6389468);
+  
+
+  
+add_new_marker('5177798', -34.651109, -58.6415017);
+  
+
+  
+add_new_marker('5262620', -34.6544385, -58.6164481);
+  
+
+  
+add_new_marker('5476156', -34.6435573, -58.6138776);
+  
+
+  
+add_new_marker('5589045', -34.6406486, -58.6261214);
+  
+
+  
+add_new_marker('5639599', -34.636107, -58.6197729);
+  
+
+  
+add_new_marker('5640033', -34.636107, -58.6197729);
+  
+
+  
+add_new_marker('5653540', -34.681191, -58.632106);
+  
+
+  
+add_new_marker('5660397', -34.6253621, -58.4661223);
+  
+
+  
+add_new_marker('5800838', -34.6438437, -58.6207795);
+  
+
+  
+add_new_marker('5893317', -34.6490736, -58.6234167);
+  
+
+  
+add_new_marker('6075542', -34.6434209, -58.6150388);
+  
+
+  
+add_new_marker('6167636', -34.6401278, -58.6328973);
+  
+
+  
+add_new_marker('6213473', -34.6457249, -58.6197038);
+  
+
+  
+add_new_marker('6259873', -34.645162, -58.6198766);
+  
+
+  
+add_new_marker('6259892', -34.645162, -58.6198766);
+  
+
+  
+add_new_marker('6376158', -34.6540404, -58.6330695);
+  
+
+  
+add_new_marker('6408224', -34.6701549, -58.6853273);
+  
+
+  
+add_new_marker('6410604', -34.661389, -58.6635246);
+  
+
+  
+add_new_marker('6605745', -34.6463686, -58.6159966);
+  
+
+  
+add_new_marker('6628948', -34.6466432, -58.6208377);
+  
+
+  
+add_new_marker('6651176', -34.6509203, -58.6252575);
+  
+
+  
+add_new_marker('6822800', -34.6432299, -58.6496931);
+  
+
+  
+add_new_marker('6860978', -34.6662324, -58.625972);
+  
+
+  
+add_new_marker('6873609', -34.6414369, -58.6152686);
+  
+
+  
+add_new_marker('6884874', -34.644942, -58.6187681);
+  
+
+  
+add_new_marker('6898755', -34.6050706, -58.3995255);
+  
+
+  
+add_new_marker('6906252', -34.6287695, -58.6330679);
+  
+
+  
+add_new_marker('6995300', -34.6500714, -58.644776);
+  
+
+  
+add_new_marker('7091320', -34.6937284, -58.5728998);
+  
+
+  
+add_new_marker('7091482', -34.6469311, -58.6164165);
+  
+
+  
+add_new_marker('7106465', -34.6412713, -58.623786);
+  
+
+  
+add_new_marker('7235873', -34.6317009, -58.621057);
+  
+
+  
+add_new_marker('7235942', -34.6422758, -58.6196463);
+  
+
+  
+add_new_marker('7345663', -34.6554584, -58.6452437);
+  
+
+  
+add_new_marker('7362905', -34.6443636, -58.6147863);
+  
+
+  
+add_new_marker('7387973', -34.6383984, -58.6198526);
+  
+
+  
+add_new_marker('7442821', -34.6706919, -58.6629007);
+  
+
+  
+add_new_marker('7460725', -34.6443096, -58.6157182);
+  
+
+  
+add_new_marker('7603875', -34.6575244, -58.6392146);
+  
+
+  
+add_new_marker('7613870', -34.685, -58.6508633);
+  
+
+  
+add_new_marker('7808020', -34.637341, -58.6166414);
+  
+
+  
+add_new_marker('7940717', -34.6430439, -58.6223593);
+  
+
+  
+add_new_marker('7989683', -34.6415129, -58.6146257);
+  
+
+  
+add_new_marker('7999375', -34.6621644, -58.6331528);
+  
+
+  
+add_new_marker('8065550', -34.6447791, -58.6196312);
+  
+
+  
+add_new_marker('8067536', -34.6403256, -58.6211043);
+  
+
+  
+add_new_marker('8154766', -37.1039577, -56.8456546);
+  
+
+  
+add_new_marker('8353421', -34.6426217, -58.6206879);
+  
+
+  
+add_new_marker('8415392', -34.645704, -58.6197218);
+  
+
+  
+add_new_marker('8429785', -34.6326901, -58.6419847);
+  
+
+  
+add_new_marker('8491776', -34.6361604, -58.5673701);
+  
+
+  
+add_new_marker('8509250', -34.6174334, -58.6342756);
+  
+
+  
+add_new_marker('8510595', -34.685, -58.6508633);
+  
+
+}
+
+
+
+function vergrilla() {
+	is_map = false;
+	$("#resultados-vista-mapa").removeClass("selected");
+	$("#resultados-vista-grilla").addClass("selected");
+	$(".resultados-list").show();
+	$("#map-canvas-sticky-wrapper").hide();
+}
+
+</script>
+
+
+<section id="prop-box">
+	<div id="prop-list">
+    	<div class="resultadosB-titulo" style="color: #000000 !important;">
+	        <div id="resultadosB-subtitulo">196 Resultados de búsqueda</div>
+			    <h1 class="resultadosB-destacados-titulo">PROPIEDADES EN VENTA</h1>
+		  </div>
+
+      <div id="resultadosB-head" style="color: #000000 !important;">
+          <div id="resultadosB-ruta"><a href="/" style="color: #000000 !important;">Inicio</a> &gt; <a href="/Venta" style="color: #000000 !important;">Venta</a> &gt;  Resultados</div>
+          
+
+          <div id="resultadosB-ordenar">
+              Ordenar por 
+              <select id="order_by_select_tag" onchange = "window.location='?q=&currency=ANY&min-price=&max-price=&age=&credit_eligible=&is_exclusive=&min-front_measure=&max-front_measure=&min-depth_measure=&max-depth_measure=&min-roofed=&max-roofed=&min-total_surface=&max-total_surface=&min-surface=&max-surface=&suites=&rooms=&operation=&locations=&location_type=&ptypes=&tags=&o='+$(this).val()">
+                  <option value="1,1" >Precio más bajo</option>
+                  <option value="1,2" >Precio más alto</option>
+                  <option value="3,1" >Ambientes Ascendente</option>
+                  <option value="3,2" >Ambientes Descendente</option>
+                  <option value="4,1" >Zona</option>
+                  <option value="2,2" selected>Última actualización</option>
+                  <option value="5,2" >Destacadas primero</option>
+              </select>
+          </div>
+      </div>
+
+
+<div id="filtro" class="col-sm-3">
+  <button id="openFiltersBtn" class="detalleColor">
+    <div>
+      <i class="icon-filtros"></i>
+      <span>Filtrar</span>
+      <span>(1)</span>
+    </div>    
+  </button>
+	<div id="contFiltro" class="hide-for-mobile mobile-width-collapsed bgcolorA">
+    <div class="filters-cont-title-close">
+      <div>
+        <i class="icon-filtros" style="color: #000000;"></i>
+        <span style="color: #000000;">Filtrar</span>
+        <span id="selectedFiltersCount" data-val="1" style="color: #000000;">(1)</span>
+      </div>  
+      <i class="icon-cerrar" onclick="check_if_reload()" style="color: #000000;"></i>
+    </div>
+    <div class="filtros-activos bgcolorC" style="color: #FFFFFF !important;">
+        Filtros Activos
+    </div>
+		<div class="filtros-activos-box bgcolorC">
+        <ul id="filtros-activos-ul">
+            
+                <li onClick="removeMe('operation_type-1')" class="detalleColor filtroActivo operation_type" id="operation_type-1" data-val="1">Venta <i class="fa fa-times-circle"></i></li>
+            
+        </ul>
+		</div>
+<script>
+
+let mobile_filter = screen.width <= 959;
+let startFiltersSet = new Set();
+let map_display = "";
+let filterCounterElem = document.querySelector('#selectedFiltersCount')
+let filterCounterVal = Number(filterCounterElem.dataset.val);
+
+function changeFilterCount(val){  
+  filterCounterVal += val;
+  filterCounterElem.innerText = `(${filterCounterVal})`
+}  
+
+function removeMe(id){
+    $('#'+id).remove();
+    if ( !mobile_filter ){
+      reload_search();
+    }else{
+      changeFilterCount(-1);
+    }
+}
+
+
+
+function add_pt_filter(id, name){
+    let elem_id = "property_type-"+id;
+    let already_present = $(".property_type.filtroActivo").length > 0
+    $(".property_type.filtroActivo").remove();
+
+    $('#filtros-activos-ul').append('<li class="detalleColor filtroActivo property_type" id="'+elem_id+'" data-val="'+id+'" onClick="removeMe(`'+elem_id+'`)">'+name+' <i class="fa fa-times-circle"></i></li>');
+    if ( !mobile_filter ){
+      reload_search();
+    }else{
+      if ( !already_present ) changeFilterCount(1)
+    }
+}
+
+function appendLocationActiveFilter(id, name){
+  //prevent append twice
+  let elem_id = "location-"+id;
+  if(document.getElementById(elem_id) == null){
+    $('#filtros-activos-ul').append('<li class="detalleColor filtroActivo location" id="'+elem_id+'" data-val="'+id+'" onClick="removeMe(`'+elem_id+'`)">'+name+' <i class="fa fa-times-circle"></i></li>');
+  
+    if ( !mobile_filter ){
+      reload_search();
+    }else{
+      changeFilterCount(1)
+    }
+  }
+}
+
+function add_location_filter(id, name, parent_id, is_state_child=false){
+  if(is_state_child && !mobile_filter && document.getElementById("location-"+id) != null){
+    document.querySelectorAll(`.filtroActivo.location:not(#location-${id})`).forEach(el => {
+      removeMe(el.id)      
+    })
+    reload_search();
+  }else{
+    if(parent_id == null){
+      //try to remove parent
+      const parent_response = $.getJSON(`https://www.tokkobroker.com/api/v1/location/${id}/?format=json`, 
+        function (data) {
+          if(data.parent_division != null){
+            let new_parent_id = data.parent_division.split('/').slice(-2, -1)[0]
+            if(document.getElementById(`location-${new_parent_id}`) != null){
+                removeMe("location-"+new_parent_id)
+            }
+          }
+          appendLocationActiveFilter(id, name)
+       });
+    }else{
+      if(document.getElementById(`location-${parent_id}`) != null){
+        removeMe("location-"+parent_id)
+      }
+      appendLocationActiveFilter(id, name)
+    }
+  }
+}
+
+function toggle_location(loc_id){
+  $(`.${loc_id}-child`).toggle();
+  $(`#${loc_id}-state .fa-angle-down`).toggle();
+  $(`#${loc_id}-state .fa-angle-up`).toggle();
+}
+
+function add_tag_filter(id, name){
+    let elem_id = "tag-"+id;
+    $('#filtros-activos-ul').append('<li class="detalleColor filtroActivo tag" id="'+elem_id+'" data-val="'+id+'" onClick="removeMe(`'+elem_id+'`)">'+name+' <i class="fa fa-times-circle"></i></li>');
+    if ( !mobile_filter ){
+      reload_search();
+    }else{
+      changeFilterCount(1)
+    }
+}
+
+function add_exclusive_filter(){
+    let elem_id = "exclusive-1";
+    let already_present = $(".exclusive.filtroActivo").length > 0
+    $(".exclusive.filtroActivo").remove();
+    $('#filtros-activos-ul').append('<li class="detalleColor filtroActivo exclusive" id="'+elem_id+'" data-val="true" onClick="removeMe(`'+elem_id+'`)">Exclusividad <i class="fa fa-times-circle"></i></li>');
+    if ( !mobile_filter ){
+      reload_search();
+    }else{
+      if ( !already_present ) changeFilterCount(1)
+    }
+}
+
+
+function add_roofed_surface_filter(id, name){
+    let _id = id.replace(':','t')
+    let already_present = $(".roofed_surface.filtroActivo").length > 0
+    $(".roofed_surface.filtroActivo").remove();
+
+    let elem_id = "roofed_surface-"+_id;
+    $('#filtros-activos-ul').append('<li class="detalleColor filtroActivo roofed_surface" id="'+elem_id+'" data-val="'+id+'" onClick="removeMe(`'+elem_id+'`)">'+name+' <i class="fa fa-times-circle"></i></li>');
+    if ( !mobile_filter ){
+      reload_search();
+    }else{
+      if ( !already_present ) changeFilterCount(1)
+    }
+}
+function add_front_measure_filter(id, name){
+    let _id = id.replace(':','t')
+    let already_present = $(".front_measure.filtroActivo").length > 0
+    $(".front_measure.filtroActivo").remove();
+
+    let elem_id = "front_measure-"+_id;
+    $('#filtros-activos-ul').append('<li class="detalleColor filtroActivo front_measure" id="'+elem_id+'" data-val="'+id+'" onClick="removeMe(`'+elem_id+'`)">'+name+' <i class="fa fa-times-circle"></i></li>');
+    if ( !mobile_filter ){
+      reload_search();
+    }else{
+      if ( !already_present ) changeFilterCount(1)
+    }
+}
+function add_depth_measure_filter(id, name){
+    let _id = id.replace(':','t')
+    let already_present = $(".depth_measure.filtroActivo").length > 0
+    $(".depth_measure.filtroActivo").remove();
+
+    let elem_id = "depth_measure-"+_id;
+    $('#filtros-activos-ul').append('<li class="detalleColor filtroActivo depth_measure" id="'+elem_id+'" data-val="'+id+'" onClick="removeMe(`'+elem_id+'`)">'+name+' <i class="fa fa-times-circle"></i></li>');
+    if ( !mobile_filter ){
+      reload_search();
+    }else{
+      if ( !already_present ) changeFilterCount(1)
+    }
+}
+
+function add_surface_filter(id, name){
+    let _id = id.replace(':','t')
+    let already_present = $(".surface.filtroActivo").length > 0
+    $(".surface.filtroActivo").remove();
+
+    let elem_id = "surface-"+_id;
+    $('#filtros-activos-ul').append('<li class="detalleColor filtroActivo surface" id="'+elem_id+'" data-val="'+id+'" onClick="removeMe(`'+elem_id+'`)">'+name+' <i class="fa fa-times-circle"></i></li>');
+    if ( !mobile_filter ){
+      reload_search();
+    }else{
+      if ( !already_present ) changeFilterCount(1)
+    }
+}
+
+function add_total_surface_filter(id, name){
+    let _id = id.replace(':','t')
+    let already_present = $(".total_surface.filtroActivo").length > 0
+    $(".total_surface.filtroActivo").remove();
+
+    let elem_id = "total_surface-"+_id;
+    $('#filtros-activos-ul').append('<li class="detalleColor filtroActivo total_surface" id="'+elem_id+'" data-val="'+id+'" onClick="removeMe(`'+elem_id+'`)">'+name+' <i class="fa fa-times-circle"></i></li>');
+    if ( !mobile_filter ){
+      reload_search();
+    }else{
+      if ( !already_present ) changeFilterCount(1)
+    }
+}
+
+function leave_only_location(id, name){
+    let already_present = $(".location.filtroActivo").length > 0
+    $(".location.filtroActivo").remove();
+
+    let elem_id = "location-"+id;
+    $('#filtros-activos-ul').append('<li class="detalleColor filtroActivo location" id="'+elem_id+'" data-val="'+id+'" onClick="removeMe(`'+elem_id+'`)">'+name+' <i class="fa fa-times-circle"></i></li>');
+    if ( !mobile_filter ){
+      reload_search();
+    }else{
+      if ( !already_present ) changeFilterCount(1)
+    }
+}
+
+function add_room_filter(id){
+    let elem_id = "room-"+id;
+    let already_present = $(".room.filtroActivo").length > 0
+    $(".room.filtroActivo").remove();
+    
+    $('#filtros-activos-ul').append('<li class="detalleColor filtroActivo room" id="'+elem_id+'" data-val="'+id+'" onClick="removeMe(`'+elem_id+'`)">'+ id +' Ambientes<i class="fa fa-times-circle"></i></li>');
+    if ( !mobile_filter ){
+      reload_search();
+    }else{
+      if ( !already_present ) changeFilterCount(1)
+    }
+}
+
+function add_suite_filter(id){
+    let elem_id = "suite-"+id;
+    let already_present = $(".suite.filtroActivo").length > 0
+    $(".suite.filtroActivo").remove();
+    $('#filtros-activos-ul').append('<li class="detalleColor filtroActivo suite" id="'+elem_id+'" data-val="'+id+'" onClick="removeMe(`'+elem_id+'`)">'+ id +' Dormitorios<i class="fa fa-times-circle"></i></li>');
+    if ( !mobile_filter ){
+      reload_search();
+    }else{
+      if ( !already_present ) changeFilterCount(1)
+    }
+}
+
+function add_age_filter(id){
+    let elem_id = "age-"+id;
+    let already_present = $(".age.filtroActivo").length > 0
+    $(".age.filtroActivo").remove();
+    $('#filtros-activos-ul').append('<li class="detalleColor filtroActivo age" id="'+elem_id+'" data-val="'+id+'" onClick="removeMe(`'+elem_id+'`)">'+ id +' Antigüedad.<i class="fa fa-times-circle"></i></li>');
+    if ( !mobile_filter ){
+      reload_search();
+    }else{
+      if ( !already_present ) changeFilterCount(1)
+    }
+}
+
+function add_credit_eligible_filter(id, name){
+    let elem_id = "credit_eligible-"+id;
+    let already_present = $(".credit_eligible.filtroActivo").length > 0
+    $(".credit_eligible.filtroActivo").remove();
+    $('#filtros-activos-ul').append('<li class="detalleColor filtroActivo credit_eligible" id="'+elem_id+'" data-val="'+id+'" onClick="removeMe(`'+elem_id+'`)">'+name+' <i class="fa fa-times-circle"></i></li>');
+    if ( !mobile_filter ){
+      reload_search();
+    }else{
+      if ( !already_present ) changeFilterCount(1)
+    }
+}
+
+function add_price_filter(){
+
+  selected_currency = $("#price-filter-currencies input[name='currency']:checked").val()
+
+  var currencies_dict = {
+    "USD":"USD",
+    "ARS":"$",
+    "PYG":"Gs.",
+    "UYU":"$",
+    "CLP":"$",
+    "MXN":"MXN",
+    "PEN":"S/",
+  }
+
+  function get_currency_format(currencies_dict, selected_currency) {
+    if (currencies_dict.hasOwnProperty(selected_currency))
+      return currencies_dict[selected_currency];
+  }
+
+  var formatted_currency = get_currency_format(currencies_dict, selected_currency)
+
+  function get_safe_value(val){
+    var value = val
+    var safe_value = value.replace(/\D/g, '')
+
+    return safe_value
+  }
+
+  min_val = $("#filter-min-price").val()
+  max_val = $("#filter-max-price").val()
+
+  safe_min_val = get_safe_value(min_val)
+  safe_max_val = get_safe_value(max_val)
+
+  var formatted_min_val = parseInt(safe_min_val).toLocaleString("es-AR")
+  var formatted_max_val = parseInt(safe_max_val).toLocaleString("es-AR")
+
+  price_filter_text = ""
+
+  if(safe_min_val > 0 || safe_min_val != ""){
+    var from_str = "Desde"
+    var price_from = from_str +" "+ formatted_currency + formatted_min_val +" "
+    price_filter_text = price_from
+  }
+
+  if(safe_max_val != ""){
+    var to_str = "Hasta"
+    var price_to = to_str +" "+ formatted_currency + formatted_max_val
+    price_filter_text += price_to
+  }
+
+  if(price_filter_text != ""){
+    let elem_id = 'price-1'
+    let already_present = $("#price-1").length > 0
+    $("#price-1").remove()
+    $('#filtros-activos-ul')
+    .append(
+      '<li id="'+elem_id+'" class="detalleColor filtroActivo price" onClick="removeMe(`'+elem_id+'`)" data-val="'+selected_currency+'-'+(safe_min_val !== '' ? safe_min_val+'-' : '0-')+(safe_max_val !== '' ? safe_max_val : '0')+'">'+price_filter_text+'<i class="fa fa-times-circle"></i></li>'
+    );
+    if ( !mobile_filter ){
+      reload_search()
+    }else{
+      if ( !already_present ) changeFilterCount(1)
+    }
+  }
+}
+
+function check_if_reload(){
+  let filters_applied = Array.from(document.querySelectorAll('.filtroActivo'))
+  let new_filters_applied = filters_applied.filter(el => !startFiltersSet.has(el.id))
+
+  if (new_filters_applied.length > 0 || filters_applied.length < startFiltersSet.size) {
+    reload_search()
+  }else{
+    close_filters()
+  }
+}
+
+function reload_search(){
+    window.stop();
+    base = "/Buscar?"
+
+    operations = [];
+    $(".operation_type.filtroActivo").each(function(index){
+        operations.push($(this).data("val"))
+    })
+    if (operations.length > 0){base = base + 'operation=' + operations +'&'}
+
+    ptypes = [];
+    $(".property_type.filtroActivo").each(function(index){
+        ptypes.push($(this).data("val"))
+    })
+    if (ptypes.length > 0){base = base + 'ptypes='+ptypes +'&'}
+
+    locations = [];
+    $(".location.filtroActivo").each(function(index){
+        locations.push($(this).data("val"))
+    })
+    if (locations.length > 0){base = base + 'locations='+locations +'&'}
+
+    tags = [];
+    $(".tag.filtroActivo").each(function(index){
+        tags.push($(this).data("val"))
+    })
+    if (tags.length > 0){base = base + 'tags='+tags +'&'}
+
+    exclusive = $(".exclusive.filtroActivo").data("val")
+    if (exclusive != null){
+        base = base + "is_exclusive=true&";
+    }
+
+    rooms = $(".room.filtroActivo").data("val")
+    if (rooms > 0){
+        base = base + "rooms="+ rooms + '&';
+    }
+
+    age = $(".age.filtroActivo").data("val")
+    if (age != null){
+        base = base + "age="+ age + '&';
+    }
+
+    suites = $(".suite.filtroActivo").data("val")
+    if (suites > 0){
+        base = base + "suites="+ suites + '&';
+    }
+
+    credit_eligible = $(".credit_eligible.filtroActivo").data("val")
+    if (credit_eligible != null && credit_eligible != 0){
+        base = base + "credit_eligible="+ credit_eligible + '&';
+    }
+
+    roofed = $(".roofed_surface.filtroActivo").data("val")
+    if (roofed){
+        _bounds = roofed.split(":")
+        if (_bounds[0]){
+             base = base + "min-roofed="+ _bounds[0] + '&';
+        }
+        if (_bounds[1]){
+             base = base + "max-roofed="+ _bounds[1] + '&';
+        }
+    }
+
+    surface = $(".surface.filtroActivo").data("val")
+    if (surface){
+        _bounds = surface.split(":")
+        if (_bounds[0]){
+             base = base + "min-surface="+ _bounds[0] + '&';
+        }
+        if (_bounds[1]){
+             base = base + "max-surface="+ _bounds[1] + '&';
+        }
+    }
+
+    total_surface = $(".total_surface.filtroActivo").data("val")
+    if (total_surface){
+        _bounds = total_surface.split(":")
+        if (_bounds[0]){
+             base = base + "min-total_surface="+ _bounds[0] + '&';
+        }
+        if (_bounds[1]){
+             base = base + "max-total_surface="+ _bounds[1] + '&';
+        }
+    }
+    front_measure = $(".front_measure.filtroActivo").data("val")
+    if (front_measure){
+        _bounds = front_measure.split(":")
+        if (_bounds[0]){
+             base = base + "min-front_measure="+ _bounds[0] + '&';
+        }
+        if (_bounds[1]){
+             base = base + "max-front_measure="+ _bounds[1] + '&';
+        }
+    }
+    depth_measure = $(".depth_measure.filtroActivo").data("val")
+    if (depth_measure){
+        _bounds = depth_measure.split(":")
+        if (_bounds[0]){
+             base = base + "min-depth_measure="+ _bounds[0] + '&';
+        }
+        if (_bounds[1]){
+             base = base + "max-depth_measure="+ _bounds[1] + '&';
+        }
+    }
+
+    price = $(".price.filtroActivo").data("val")
+    if(price){
+      _price = price.split("-")
+      selected_currency = _price[0]
+      url = new URL(window.location.href);
+      min_price = url.searchParams.get("min-price") || "";
+      max_price = url.searchParams.get("max-price") || "";
+      if(_price.length > 2 || !min_price && !max_price){
+        min_val = _price[1] !== "0" ? _price[1] : ""
+        max_val = _price[2] !== "0" ? _price[2] : ""
+      }else{
+        min_val = min_price
+        max_val = max_price
+      }
+      if(min_val){
+        base = base + "min-price=" + min_val + "&"
+      }else{
+        base = base + "min-price=&"
+      }
+
+      if(max_val){
+        base = base + "max-price=" + max_val + "&"
+      }else{
+        base = base + "max-price=&"
+      }
+
+      if(selected_currency && min_val || max_val){
+        base = base + "currency=" + selected_currency + "&"
+      }
+    }
+
+
+    must_get_next_page = false;
+    $('#propiedades').remove();
+    $("#loading").show();
+    $('.pagination').css('float', 'right');
+    $('.pagination').css('width', '79%');
+
+    var order_by_selected = $('#order_by_select_tag').val()
+
+    window.location = base + "o="+order_by_selected + "&" + "1=1"
+}
+
+// $(".tipodeFiltro").click(function(){
+//   console.log(this)
+// })
+
+function close_filters(){
+    document.getElementById('footerB-box').style.display = 'block'
+    document.getElementById('propiedades').classList.remove('m-hide')
+    document.getElementById('map-canvas-sticky-wrapper').style.display = map_display   
+    document.getElementById('contFiltro').classList.remove('show-filters')
+    document.getElementById('contFiltro').classList.add('mobile-width-collapsed')
+}
+
+
+$(document).ready(function(){
+  $(".filtro-titulo").click(function() {
+    var next_item = $(this).next()
+    $(this).next().toggleClass("collapsible")
+    if ($(this).find("i").hasClass("fa-angle-down")) {
+      $(this).find("i").removeClass("fa-angle-down").addClass("fa-angle-up")
+    } else {
+      $(this).find("i").removeClass("fa-angle-up").addClass("fa-angle-down")
+    }
+    if ($(this).next().hasClass("collapsible")) {
+      $(this).next().slideToggle();
+    } else {
+      $(this).next().slideToggle();
+    }
+  })
+
+  let video_container_elem = document.getElementById('video-container')
+  let lateral_menu = document.getElementById('header_box')
+  if(video_container_elem != null && lateral_menu != null){
+    document.getElementById('contFiltro').style.top= "-100px"
+  }
+
+  document.getElementById('openFiltersBtn').addEventListener('click', function(){
+    map_display = window.getComputedStyle(document.getElementById('map-canvas-sticky-wrapper')).display;
+    document.getElementById('contFiltro').classList.remove("mobile-width-collapsed")
+    document.getElementById('contFiltro').classList.add('show-filters')
+    document.getElementById('footerB-box').style.display = 'none'
+    document.getElementById('propiedades').classList.add('m-hide')
+    document.getElementById('map-canvas-sticky-wrapper').style.display = 'none'   
+
+    startFiltersSet = new Set(Array.from(document.querySelectorAll('.filtroActivo')).map(el => el.id))
+  })
+  
+})
+</script>
+
+  <div class="tipodeFiltro" style="color: #000000 !important;">
+    <div id="results-price-filter">
+      <div class="filtro-titulo">
+              <div class="filtro-nombre" style="color: #000000 !important;">Precios</div><i class='fa fa-angle-up' aria-hidden="true"></i>
+            </div>
+              <div class="collapsible">
+                
+                <div id="price-filter-currencies">
+                  <label>
+                      <input checked type="radio" name="currency" value="USD" data-currency-text="USD">
+                        <span class="currency-radio-check-container">
+                          <span class="currency-radio-check detalleColor"></span>
+                        </span>
+                        <span class="filter-currency-text">USD</span>
+                    </label>
+                    <label>
+                      <input type="radio" name="currency" value="ARS" data-currency-text="$">
+                        <span class="currency-radio-check-container">
+                          <span class="currency-radio-check detalleColor"></span>
+                        </span>
+                        <span class="filter-currency-text">ARS</span>
+                    </label>
+                </div>  
+                
+                <div id="min-max-price-container">
+                    <input placeholder="Desde USD" type="number" name="min-price" id="filter-min-price" min="0" value="" step="1000" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                    <input placeholder="Hasta USD" type="number" name="max-price" id="filter-max-price" min="0" value="" step="1000" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                </div>
+                <button class="detalleColor" id="add_price_filter" onclick="add_price_filter()">Aplicar</button>
+              </div>
+          </div>
+  </div>
+
+
+<div class="tipodeFiltro" style="color: #000000 !important;">
+  <div class="filtro-titulo">
+    <div class="filtro-nombre" style="color: #000000 !important;">Apto crédito</div><i class='fa fa-angle-down' aria-hidden="true"></i>
+  </div>
+  <ul class="collapsible" style="display:none">
+    <li onClick="add_credit_eligible_filter(0, 'No especificado');"><a href="#" style="color: #000000 !important; opacity:0.8">No especificado</a></li>
+    <li onClick="add_credit_eligible_filter(1, 'Apto crédito');"><a href="#" style="color: #000000 !important; opacity:0.8">Apto crédito</a></li>
+    <li onClick="add_credit_eligible_filter(2, 'No apto crédito');"><a href="#" style="color: #000000 !important; opacity:0.8">No apto crédito</a></li>
+  </ul>
+  </div>
+
+<!-- tipodeFiltro -->
+
+    
+		<div class="tipodeFiltro">
+    <div class="filtro-titulo" style="color: #000000 !important;">
+      <div class="filtro-nombre">Tipo de Propiedad</div><i class='fa fa-angle-up' aria-hidden="true"></i>
+      </div>
+			<ul class="collapsible" style="color: #000000 !important;">
+        
+          <li onClick="add_pt_filter(2, 'Departamento')"><a href="#" style="color: #000000 !important; opacity:0.8">Departamento (54)</a></li>
+        
+          <li onClick="add_pt_filter(7, 'Local')"><a href="#" style="color: #000000 !important; opacity:0.8">Local (13)</a></li>
+        
+          <li onClick="add_pt_filter(13, 'PH')"><a href="#" style="color: #000000 !important; opacity:0.8">PH (31)</a></li>
+        
+          <li onClick="add_pt_filter(10, 'Cochera')"><a href="#" style="color: #000000 !important; opacity:0.8">Cochera (6)</a></li>
+        
+          <li onClick="add_pt_filter(11, 'Hotel')"><a href="#" style="color: #000000 !important; opacity:0.8">Hotel (1)</a></li>
+        
+          <li onClick="add_pt_filter(3, 'Casa')"><a href="#" style="color: #000000 !important; opacity:0.8">Casa (59)</a></li>
+        
+          <li onClick="add_pt_filter(12, 'Nave Industrial')"><a href="#" style="color: #000000 !important; opacity:0.8">Nave Industrial (1)</a></li>
+        
+          <li onClick="add_pt_filter(1, 'Terreno')"><a href="#" style="color: #000000 !important; opacity:0.8">Terreno (23)</a></li>
+        
+          <li onClick="add_pt_filter(5, 'Oficina')"><a href="#" style="color: #000000 !important; opacity:0.8">Oficina (1)</a></li>
+        
+          <li onClick="add_pt_filter(24, 'Galpón')"><a href="#" style="color: #000000 !important; opacity:0.8">Galpón (7)</a></li>
+        
+			</ul>
+		</div>
+    
+
+
+    
+        <div class="tipodeFiltro" id="barrios_content">
+          <div class="filtro-titulo" style="color: #000000 !important;">
+          <div class="filtro-nombre">Ubicación</div><i class='fa fa-angle-down' aria-hidden="true"></i>
+          </div>
+            <ul class="collapsible" style="display:none" id="barrio_ul">
+            </ul>
+        </div>
+    
+
+
+    
+        <div class="tipodeFiltro">
+        <div class="filtro-titulo" style="color: #000000 !important;">
+        <div class="filtro-nombre">Cantidad de Ambientes</div><i class='fa fa-angle-down' aria-hidden="true"></i>
+        </div>
+        <ul class="collapsible" style="display:none">
+        
+        
+            <li onClick="add_room_filter(1);"><a href="#" style="color: #000000 !important; opacity:0.8">1 Monoambiente (10)</a></li>
+            
+        
+        
+            <li onClick="add_room_filter(2);"><a href="#" style="color: #000000 !important; opacity:0.8">2 Ambientes (34)</a></li>
+            
+        
+        
+            <li onClick="add_room_filter(3);"><a href="#" style="color: #000000 !important; opacity:0.8">3 Ambientes (40)</a></li>
+            
+        
+        
+            <li onClick="add_room_filter(4);"><a href="#" style="color: #000000 !important; opacity:0.8">4 Ambientes (23)</a></li>
+            
+        
+        
+            <li onClick="add_room_filter(5);"><a href="#" style="color: #000000 !important; opacity:0.8">5 Ambientes (6)</a></li>
+            
+        
+        
+            <li onClick="add_room_filter(6);"><a href="#" style="color: #000000 !important; opacity:0.8">6+ Ambientes (7)</a></li>
+            
+        
+        </ul>
+        </div>
+    
+
+
+    
+      <div class="tipodeFiltro">
+        <div class="filtro-titulo" style="color: #000000 !important;">
+              <div class="filtro-nombre">Dormitorios</div><i class='fa fa-angle-down' aria-hidden="true"></i>
+        </div>
+              <ul class="collapsible" style="display:none">
+      
+          <li onClick="add_suite_filter(1);"><a href="#" style="color: #000000 !important; opacity:0.8">1 Dormitorio (44)</a></li>
+      
+          <li onClick="add_suite_filter(2);"><a href="#" style="color: #000000 !important; opacity:0.8">2 Dormitorio (49)</a></li>
+      
+          <li onClick="add_suite_filter(3);"><a href="#" style="color: #000000 !important; opacity:0.8">3 Dormitorio (34)</a></li>
+      
+          <li onClick="add_suite_filter(4);"><a href="#" style="color: #000000 !important; opacity:0.8">4 Dormitorio (10)</a></li>
+      
+          <li onClick="add_suite_filter(5);"><a href="#" style="color: #000000 !important; opacity:0.8">5 Dormitorio (2)</a></li>
+      
+          <li onClick="add_suite_filter(6);"><a href="#" style="color: #000000 !important; opacity:0.8">6+ Dormitorio (5)</a></li>
+      
+              </ul>
+      </div>
+    
+
+
+    
+    <div class="tipodeFiltro">
+      <div class="filtro-titulo" style="color: #000000 !important;">
+        <div class="filtro-nombre">Antigüedad</div><i class='fa fa-angle-down' aria-hidden="true"></i>
+      </div>
+        <ul class="collapsible" style="display:none">
+            
+                
+                
+                    <li onClick="add_age_filter('0');"><a href="#" style="color: #000000 !important; opacity:0.8">A Estrenar (101)</a></li>
+                
+                
+                
+            
+                
+                
+                
+                
+                    <li onClick="add_age_filter('4');"><a href="#" style="color: #000000 !important; opacity:0.8">4 Años (1)</a></li>
+                
+            
+                
+                
+                
+                
+                    <li onClick="add_age_filter('5');"><a href="#" style="color: #000000 !important; opacity:0.8">5 Años (2)</a></li>
+                
+            
+                
+                
+                
+                
+                    <li onClick="add_age_filter('6');"><a href="#" style="color: #000000 !important; opacity:0.8">6 Años (1)</a></li>
+                
+            
+                
+                
+                
+                
+                    <li onClick="add_age_filter('8');"><a href="#" style="color: #000000 !important; opacity:0.8">8 Años (2)</a></li>
+                
+            
+                
+                
+                
+                
+                    <li onClick="add_age_filter('10');"><a href="#" style="color: #000000 !important; opacity:0.8">10 Años (6)</a></li>
+                
+            
+                
+                
+                
+                
+                    <li onClick="add_age_filter('14');"><a href="#" style="color: #000000 !important; opacity:0.8">14 Años (1)</a></li>
+                
+            
+                
+                
+                
+                
+                    <li onClick="add_age_filter('15');"><a href="#" style="color: #000000 !important; opacity:0.8">15 Años (10)</a></li>
+                
+            
+                
+                
+                
+                
+                    <li onClick="add_age_filter('18');"><a href="#" style="color: #000000 !important; opacity:0.8">18 Años (1)</a></li>
+                
+            
+                
+                
+                
+                
+                    <li onClick="add_age_filter('20');"><a href="#" style="color: #000000 !important; opacity:0.8">20 Años (11)</a></li>
+                
+            
+                
+                
+                
+                
+                    <li onClick="add_age_filter('25');"><a href="#" style="color: #000000 !important; opacity:0.8">25 Años (8)</a></li>
+                
+            
+                
+                
+                
+                
+                    <li onClick="add_age_filter('28');"><a href="#" style="color: #000000 !important; opacity:0.8">28 Años (2)</a></li>
+                
+            
+                
+                
+                
+                
+                    <li onClick="add_age_filter('29');"><a href="#" style="color: #000000 !important; opacity:0.8">29 Años (2)</a></li>
+                
+            
+                
+                
+                
+                
+                    <li onClick="add_age_filter('30');"><a href="#" style="color: #000000 !important; opacity:0.8">30 Años (19)</a></li>
+                
+            
+                
+                
+                
+                
+                    <li onClick="add_age_filter('35');"><a href="#" style="color: #000000 !important; opacity:0.8">35 Años (5)</a></li>
+                
+            
+                
+                
+                
+                
+                    <li onClick="add_age_filter('39');"><a href="#" style="color: #000000 !important; opacity:0.8">39 Años (1)</a></li>
+                
+            
+                
+                
+                
+                
+                    <li onClick="add_age_filter('40');"><a href="#" style="color: #000000 !important; opacity:0.8">40 Años (14)</a></li>
+                
+            
+                
+                
+                
+                
+                    <li onClick="add_age_filter('45');"><a href="#" style="color: #000000 !important; opacity:0.8">45 Años (1)</a></li>
+                
+            
+                
+                
+                
+                
+                    <li onClick="add_age_filter('50');"><a href="#" style="color: #000000 !important; opacity:0.8">50 Años (5)</a></li>
+                
+            
+                
+                
+                
+                
+                    <li onClick="add_age_filter('60');"><a href="#" style="color: #000000 !important; opacity:0.8">60 Años (3)</a></li>
+                
+            
+        </ul>
+    </div>
+    
+
+
+  
+    <div class="tipodeFiltro">
+    <div class="filtro-titulo" style="color: #000000 !important;">
+    <div class="filtro-nombre">Superficie Cubierta</div><i class='fa fa-angle-down' aria-hidden="true"></i> </div>
+    <ul class="collapsible" style="display:none">
+    
+        <li onClick="add_roofed_surface_filter(':30', 'Hasta 30m²');"><a href="#" style="color: #000000 !important; opacity:0.8">Hasta 30m² (7)</a></li>
+    
+        <li onClick="add_roofed_surface_filter('30:50', 'Desde 30m² hasta 50m²');"><a href="#" style="color: #000000 !important; opacity:0.8">Desde 30m² hasta 50m² (10)</a></li>
+    
+        <li onClick="add_roofed_surface_filter('50:70', 'Desde 50m² hasta 70m²');"><a href="#" style="color: #000000 !important; opacity:0.8">Desde 50m² hasta 70m² (4)</a></li>
+    
+        <li onClick="add_roofed_surface_filter('70:90', 'Desde 70m² hasta 90m²');"><a href="#" style="color: #000000 !important; opacity:0.8">Desde 70m² hasta 90m² (5)</a></li>
+    
+        <li onClick="add_roofed_surface_filter('90:120', 'Desde 90m² hasta 120m²');"><a href="#" style="color: #000000 !important; opacity:0.8">Desde 90m² hasta 120m² (4)</a></li>
+    
+        <li onClick="add_roofed_surface_filter('120:150', 'Desde 120m² hasta 150m²');"><a href="#" style="color: #000000 !important; opacity:0.8">Desde 120m² hasta 150m² (4)</a></li>
+    
+        <li onClick="add_roofed_surface_filter('150:180', 'Desde 150m² hasta 180m²');"><a href="#" style="color: #000000 !important; opacity:0.8">Desde 150m² hasta 180m² (5)</a></li>
+    
+        <li onClick="add_roofed_surface_filter('180:240', 'Desde 180m² hasta 240m²');"><a href="#" style="color: #000000 !important; opacity:0.8">Desde 180m² hasta 240m² (4)</a></li>
+    
+        <li onClick="add_roofed_surface_filter('240:300', 'Desde 240m² hasta 300m²');"><a href="#" style="color: #000000 !important; opacity:0.8">Desde 240m² hasta 300m² (4)</a></li>
+    
+        <li onClick="add_roofed_surface_filter('300:420', 'Desde 300m² hasta 420m²');"><a href="#" style="color: #000000 !important; opacity:0.8">Desde 300m² hasta 420m² (2)</a></li>
+    
+        <li onClick="add_roofed_surface_filter('480:700', 'Desde 480m² hasta 700m²');"><a href="#" style="color: #000000 !important; opacity:0.8">Desde 480m² hasta 700m² (2)</a></li>
+    
+        <li onClick="add_roofed_surface_filter('800:10000', 'Desde 800m² hasta 10000m²');"><a href="#" style="color: #000000 !important; opacity:0.8">Desde 800m² hasta 10000m² (2)</a></li>
+    
+    </ul>
+    </div>
+  
+
+
+  
+    <div class="tipodeFiltro">
+    <div class="filtro-titulo" style="color: #000000 !important;">
+    <div class="filtro-nombre">Medida de frente</div><i class='fa fa-angle-down' aria-hidden="true"></i> </div>
+    <ul class="collapsible" style="display:none">
+    
+        <li onClick="add_front_measure_filter(':30', 'Hasta 30m');"><a href="#" style="color: #000000 !important; opacity:0.8">Hasta 30m (10)</a></li>
+    
+        <li onClick="add_front_measure_filter('30:50', 'Desde 30m hasta 50m');"><a href="#" style="color: #000000 !important; opacity:0.8">Desde 30m hasta 50m (4)</a></li>
+    
+    </ul>
+    </div>
+  
+
+
+  
+    <div class="tipodeFiltro">
+    <div class="filtro-titulo" style="color: #000000 !important;">
+    <div class="filtro-nombre">Medida de fondo</div><i class='fa fa-angle-down' aria-hidden="true"></i> </div>
+    <ul class="collapsible" style="display:none">
+    
+        <li onClick="add_depth_measure_filter(':30', 'Hasta 30m');"><a href="#" style="color: #000000 !important; opacity:0.8">Hasta 30m (12)</a></li>
+    
+        <li onClick="add_depth_measure_filter('30:50', 'Desde 30m hasta 50m');"><a href="#" style="color: #000000 !important; opacity:0.8">Desde 30m hasta 50m (8)</a></li>
+    
+        <li onClick="add_depth_measure_filter('50:70', 'Desde 50m hasta 70m');"><a href="#" style="color: #000000 !important; opacity:0.8">Desde 50m hasta 70m (2)</a></li>
+    
+        <li onClick="add_depth_measure_filter('70:90', 'Desde 70m hasta 90m');"><a href="#" style="color: #000000 !important; opacity:0.8">Desde 70m hasta 90m (1)</a></li>
+    
+    </ul>
+    </div>
+  
+
+
+    
+      <div class="tipodeFiltro">
+        <div class="filtro-titulo" style="color: #000000 !important;">
+              <div class="filtro-nombre">Superficies</div><i class='fa fa-angle-down' aria-hidden="true"></i>
+        </div>
+              <ul class="collapsible" style="display:none">
+      
+          <li onClick="add_surface_filter(':30', 'Hasta 30m²');"><a href="#" style="color: #000000 !important; opacity:0.8">Hasta 30m² (8)</a></li>
+      
+          <li onClick="add_surface_filter('30:50', 'Desde 30m² hasta 50m²');"><a href="#" style="color: #000000 !important; opacity:0.8">Desde 30m² hasta 50m² (10)</a></li>
+      
+          <li onClick="add_surface_filter('50:70', 'Desde 50m² hasta 70m²');"><a href="#" style="color: #000000 !important; opacity:0.8">Desde 50m² hasta 70m² (6)</a></li>
+      
+          <li onClick="add_surface_filter('70:90', 'Desde 70m² hasta 90m²');"><a href="#" style="color: #000000 !important; opacity:0.8">Desde 70m² hasta 90m² (3)</a></li>
+      
+          <li onClick="add_surface_filter('90:120', 'Desde 90m² hasta 120m²');"><a href="#" style="color: #000000 !important; opacity:0.8">Desde 90m² hasta 120m² (3)</a></li>
+      
+          <li onClick="add_surface_filter('120:150', 'Desde 120m² hasta 150m²');"><a href="#" style="color: #000000 !important; opacity:0.8">Desde 120m² hasta 150m² (1)</a></li>
+      
+          <li onClick="add_surface_filter('150:180', 'Desde 150m² hasta 180m²');"><a href="#" style="color: #000000 !important; opacity:0.8">Desde 150m² hasta 180m² (4)</a></li>
+      
+          <li onClick="add_surface_filter('180:240', 'Desde 180m² hasta 240m²');"><a href="#" style="color: #000000 !important; opacity:0.8">Desde 180m² hasta 240m² (7)</a></li>
+      
+          <li onClick="add_surface_filter('240:300', 'Desde 240m² hasta 300m²');"><a href="#" style="color: #000000 !important; opacity:0.8">Desde 240m² hasta 300m² (9)</a></li>
+      
+          <li onClick="add_surface_filter('300:420', 'Desde 300m² hasta 420m²');"><a href="#" style="color: #000000 !important; opacity:0.8">Desde 300m² hasta 420m² (10)</a></li>
+      
+          <li onClick="add_surface_filter('420:480', 'Desde 420m² hasta 480m²');"><a href="#" style="color: #000000 !important; opacity:0.8">Desde 420m² hasta 480m² (1)</a></li>
+      
+          <li onClick="add_surface_filter('480:700', 'Desde 480m² hasta 700m²');"><a href="#" style="color: #000000 !important; opacity:0.8">Desde 480m² hasta 700m² (2)</a></li>
+      
+          <li onClick="add_surface_filter('800:10000', 'Desde 800m² hasta 10000m²');"><a href="#" style="color: #000000 !important; opacity:0.8">Desde 800m² hasta 10000m² (9)</a></li>
+      
+      </ul>
+      </div>
+    
+
+
+    
+        <div class="tipodeFiltro">
+          <div class="filtro-titulo" style="color: #000000 !important;">
+                <div class="filtro-nombre">Superficie Total</div><i class='fa fa-angle-down' aria-hidden="true"></i>
+          </div>
+                <ul class="collapsible" style="display:none">
+        
+            <li onClick="add_total_surface_filter(':30', 'Hasta 30m²');"><a href="#" style="color: #000000 !important; opacity:0.8">Hasta 30m² (8)</a></li>
+        
+            <li onClick="add_total_surface_filter('30:50', 'Desde 30m² hasta 50m²');"><a href="#" style="color: #000000 !important; opacity:0.8">Desde 30m² hasta 50m² (11)</a></li>
+        
+            <li onClick="add_total_surface_filter('50:70', 'Desde 50m² hasta 70m²');"><a href="#" style="color: #000000 !important; opacity:0.8">Desde 50m² hasta 70m² (6)</a></li>
+        
+            <li onClick="add_total_surface_filter('70:90', 'Desde 70m² hasta 90m²');"><a href="#" style="color: #000000 !important; opacity:0.8">Desde 70m² hasta 90m² (5)</a></li>
+        
+            <li onClick="add_total_surface_filter('90:120', 'Desde 90m² hasta 120m²');"><a href="#" style="color: #000000 !important; opacity:0.8">Desde 90m² hasta 120m² (6)</a></li>
+        
+            <li onClick="add_total_surface_filter('120:150', 'Desde 120m² hasta 150m²');"><a href="#" style="color: #000000 !important; opacity:0.8">Desde 120m² hasta 150m² (3)</a></li>
+        
+            <li onClick="add_total_surface_filter('150:180', 'Desde 150m² hasta 180m²');"><a href="#" style="color: #000000 !important; opacity:0.8">Desde 150m² hasta 180m² (7)</a></li>
+        
+            <li onClick="add_total_surface_filter('180:240', 'Desde 180m² hasta 240m²');"><a href="#" style="color: #000000 !important; opacity:0.8">Desde 180m² hasta 240m² (4)</a></li>
+        
+            <li onClick="add_total_surface_filter('240:300', 'Desde 240m² hasta 300m²');"><a href="#" style="color: #000000 !important; opacity:0.8">Desde 240m² hasta 300m² (6)</a></li>
+        
+            <li onClick="add_total_surface_filter('300:420', 'Desde 300m² hasta 420m²');"><a href="#" style="color: #000000 !important; opacity:0.8">Desde 300m² hasta 420m² (3)</a></li>
+        
+            <li onClick="add_total_surface_filter('480:700', 'Desde 480m² hasta 700m²');"><a href="#" style="color: #000000 !important; opacity:0.8">Desde 480m² hasta 700m² (2)</a></li>
+        
+            <li onClick="add_total_surface_filter('800:10000', 'Desde 800m² hasta 10000m²');"><a href="#" style="color: #000000 !important; opacity:0.8">Desde 800m² hasta 10000m² (9)</a></li>
+        
+        </ul>
+        </div>
+    
+
+
+  
+    <div class="tipodeFiltro" id="tags_content">
+      <div class="filtro-titulo" style="color: #000000 !important;">
+        <div class="filtro-nombre">Características</div><i class='fa fa-angle-down' aria-hidden="true"></i>
+      </div>
+      <ul class="collapsible" style="display:none">
+                
+                    
+                    <li onClick="add_tag_filter('1', 'Agua Corriente');"><a href="#" style="color: #000000 !important; opacity:0.8">Agua Corriente (48)</a></li>
+                    
+                
+                    
+                    <li onClick="add_tag_filter('2', 'Cloaca');"><a href="#" style="color: #000000 !important; opacity:0.8">Cloaca (5)</a></li>
+                    
+                
+                    
+                    <li onClick="add_tag_filter('3', 'Gas Natural');"><a href="#" style="color: #000000 !important; opacity:0.8">Gas Natural (50)</a></li>
+                    
+                
+                    
+                    <li onClick="add_tag_filter('4', 'Internet');"><a href="#" style="color: #000000 !important; opacity:0.8">Internet (41)</a></li>
+                    
+                
+                    
+                    <li onClick="add_tag_filter('5', 'Electricidad');"><a href="#" style="color: #000000 !important; opacity:0.8">Electricidad (49)</a></li>
+                    
+                
+                    
+                    <li onClick="add_tag_filter('6', 'Pavimento');"><a href="#" style="color: #000000 !important; opacity:0.8">Pavimento (47)</a></li>
+                    
+                
+                    
+                    <li onClick="add_tag_filter('7', 'Teléfono');"><a href="#" style="color: #000000 !important; opacity:0.8">Teléfono (42)</a></li>
+                    
+                
+                    
+                    <li onClick="add_tag_filter('8', 'Cable');"><a href="#" style="color: #000000 !important; opacity:0.8">Cable (39)</a></li>
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                    <li onClick="add_tag_filter('28', 'Aire Acondicionado individual');"><a href="#" style="color: #000000 !important; opacity:0.8">Aire Acondicionado individual (5)</a></li>
+                    
+                
+                    
+                    <li onClick="add_tag_filter('29', 'Alarma');"><a href="#" style="color: #000000 !important; opacity:0.8">Alarma (2)</a></li>
+                    
+                
+                    
+                    <li onClick="add_tag_filter('30', 'Amoblado');"><a href="#" style="color: #000000 !important; opacity:0.8">Amoblado (2)</a></li>
+                    
+                
+                    
+                    <li onClick="add_tag_filter('33', 'Gimnasio');"><a href="#" style="color: #000000 !important; opacity:0.8">Gimnasio (4)</a></li>
+                    
+                
+                    
+                    <li onClick="add_tag_filter('35', 'Parrilla');"><a href="#" style="color: #000000 !important; opacity:0.8">Parrilla (9)</a></li>
+                    
+                
+                    
+                    <li onClick="add_tag_filter('36', 'Quincho');"><a href="#" style="color: #000000 !important; opacity:0.8">Quincho (4)</a></li>
+                    
+                
+                    
+                    <li onClick="add_tag_filter('39', 'Sauna');"><a href="#" style="color: #000000 !important; opacity:0.8">Sauna (2)</a></li>
+                    
+                
+                    
+                    <li onClick="add_tag_filter('41', 'SUM');"><a href="#" style="color: #000000 !important; opacity:0.8">SUM (4)</a></li>
+                    
+                
+                    
+                    <li onClick="add_tag_filter('42', 'Seguridad');"><a href="#" style="color: #000000 !important; opacity:0.8">Seguridad (4)</a></li>
+                    
+                
+                    
+                    <li onClick="add_tag_filter('47', 'Apto profesional');"><a href="#" style="color: #000000 !important; opacity:0.8">Apto profesional (3)</a></li>
+                    
+                
+                    
+                    <li onClick="add_tag_filter('51', 'Pileta');"><a href="#" style="color: #000000 !important; opacity:0.8">Pileta (6)</a></li>
+                    
+                
+                    
+                    <li onClick="add_tag_filter('101', 'Calefacción central');"><a href="#" style="color: #000000 !important; opacity:0.8">Calefacción central (2)</a></li>
+                    
+                
+                    
+                
+                    
+                    <li onClick="add_tag_filter('948', 'Guarda de seguridad');"><a href="#" style="color: #000000 !important; opacity:0.8">Guarda de seguridad (1)</a></li>
+                    
+                
+                    
+                    <li onClick="add_tag_filter('1030', 'Cochera subterránea');"><a href="#" style="color: #000000 !important; opacity:0.8">Cochera subterránea (4)</a></li>
+                    
+                
+                    
+                    <li onClick="add_tag_filter('1390', 'Luminoso');"><a href="#" style="color: #000000 !important; opacity:0.8">Luminoso (3)</a></li>
+                    
+                
+                    
+                    <li onClick="add_tag_filter('1505', 'Laundry');"><a href="#" style="color: #000000 !important; opacity:0.8">Laundry (4)</a></li>
+                    
+                
+                    
+                    <li onClick="add_tag_filter('1512', 'Calefacción individual');"><a href="#" style="color: #000000 !important; opacity:0.8">Calefacción individual (1)</a></li>
+                    
+                
+                    
+                    <li onClick="add_tag_filter('1513', 'Calefacción por aire');"><a href="#" style="color: #000000 !important; opacity:0.8">Calefacción por aire (2)</a></li>
+                    
+                
+                    
+                    <li onClick="add_tag_filter('1524', 'Seguridad 24hs');"><a href="#" style="color: #000000 !important; opacity:0.8">Seguridad 24hs (3)</a></li>
+                    
+                
+                    
+                    <li onClick="add_tag_filter('1526', 'Seguridad portería');"><a href="#" style="color: #000000 !important; opacity:0.8">Seguridad portería (4)</a></li>
+                    
+                
+                    
+                    <li onClick="add_tag_filter('1583', 'Termotanque Individual');"><a href="#" style="color: #000000 !important; opacity:0.8">Termotanque Individual (1)</a></li>
+                    
+                
+                    
+                    <li onClick="add_tag_filter('1586', 'Red de desagües pluviales');"><a href="#" style="color: #000000 !important; opacity:0.8">Red de desagües pluviales (43)</a></li>
+                    
+                
+                    
+                
+                    
+                    <li onClick="add_tag_filter('1664', 'Estacionamiento gratuito');"><a href="#" style="color: #000000 !important; opacity:0.8">Estacionamiento gratuito (1)</a></li>
+                    
+                
+                
+      </ul>
+    </div>
+  
+
+
+
+	</div>
+</div>
+
+        <div id="map-canvas" class="mapabusqueda" style="display:none;height:600px;"></div>
+        <ul id="propiedades" class="resultados-list">
+
+
+       <li prop-id="8429785">
+              <a href="/p/8429785-Casa-en-Venta-en-Castelar-Norte-Cardoso-2949">
+                <div class="prop-img">
+                
+                <div class="detalleColor resultadosB-favoritaSi animated bounceIn star-8429785" ><i class="fa fa-star" ></i></div>
+                <div class="resultadosB-favoritaNo animated fadeInUp"><i class="fa fa-star-o"></i></div>
+                <div class="prop-data"><div>320 m²</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/suptotalconst.6dc67aaa9732.png"></div><div class="prop-data2"><div>4</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/dormitorios.37b1923375d9.png"></div>
+              	<div class="prop-img-bg animated fadeIn "><div class="ver-ficha-box animated fadeInUp">MÁS DETALLES</div></div><img class="dest-img" src="https://static.tokkobroker.com/pictures/8429785_101146665248981993429552104899775876993957215737883384600463095345846573258336.jpg" alt="Foto Casa en Venta en Castelar Norte, Castelar Cardoso 2949" title="Foto Casa en Venta en Castelar Norte, Castelar Cardoso 2949"/></div>
+
+                <div class="prop-desc">
+                    <div class="prop-desc-tipo-ub">Casa en Venta   en Castelar Norte, Castelar</div>
+                    <div class="prop-desc-dir">Cardoso 2949</div>
+                </div>
+</a>
+				<div class="prop-valor-nro" style="cursor:pointer" onClick="star_unstar_prop(8429785)">          
+            USD390.000
+          <div class='codref '>CHO8429785</div>
+          <div class="detalleColor resultadosB-interesa animated fadeInUp">
+            <i class="fa fa-star"></i> +/- Favorito
+          </div>
+        </div>
+            </li>
+  
+       <li prop-id="8510595">
+              <a href="/p/8510595-PH-en-Venta-en-Castelar-Sur-Cogliatti--al-3477">
+                <div class="prop-img">
+                
+                <div class="detalleColor resultadosB-favoritaSi animated bounceIn star-8510595" ><i class="fa fa-star" ></i></div>
+                <div class="resultadosB-favoritaNo animated fadeInUp"><i class="fa fa-star-o"></i></div>
+                <div class="prop-data"><div>0 m²</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/suptotalconst.6dc67aaa9732.png"></div><div class="prop-data2"><div>3</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/ambientes.293a107dbbca.png"></div>
+              	<div class="prop-img-bg animated fadeIn "><div class="ver-ficha-box animated fadeInUp">MÁS DETALLES</div></div><img class="dest-img" src="https://static.tokkobroker.com/pictures/8510595_115350183581281766058963663445989244769701087167083681922844236460838633746156.jpg" alt="Foto PH en Venta en Castelar Sur, Castelar Cogliatti  al 3477" title="Foto PH en Venta en Castelar Sur, Castelar Cogliatti  al 3477"/></div>
+
+                <div class="prop-desc">
+                    <div class="prop-desc-tipo-ub">PH en Venta   en Castelar Sur, Castelar</div>
+                    <div class="prop-desc-dir">Cogliatti  al 3477</div>
+                </div>
+</a>
+				<div class="prop-valor-nro" style="cursor:pointer" onClick="star_unstar_prop(8510595)">          
+            USD45.000
+          <div class='codref '>CPH8510595</div>
+          <div class="detalleColor resultadosB-interesa animated fadeInUp">
+            <i class="fa fa-star"></i> +/- Favorito
+          </div>
+        </div>
+            </li>
+  
+       <li prop-id="3146536">
+              <a href="/p/3146536-Galpón-en-Venta-en-Moron-Rawson-al-400">
+                <div class="prop-img">
+                
+                <div class="detalleColor resultadosB-favoritaSi animated bounceIn star-3146536" ><i class="fa fa-star" ></i></div>
+                <div class="resultadosB-favoritaNo animated fadeInUp"><i class="fa fa-star-o"></i></div>
+                <div class="prop-data"><div>300 m²</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/suptotalconst.6dc67aaa9732.png"></div><div class="prop-data2"><div>-</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/dormitorios.37b1923375d9.png"></div>
+              	<div class="prop-img-bg animated fadeIn "><div class="ver-ficha-box animated fadeInUp">MÁS DETALLES</div></div><img class="dest-img" src="https://static.tokkobroker.com/pictures/72473946139271904597103468428654636024574283911585756594609637433896578584461.jpg" alt="Foto Galpón en Venta en Moron, Moron Rawson al 400" title="Foto Galpón en Venta en Moron, Moron Rawson al 400"/></div>
+
+                <div class="prop-desc">
+                    <div class="prop-desc-tipo-ub">Galpón en Venta   en Moron, Moron</div>
+                    <div class="prop-desc-dir">Rawson al 400</div>
+                </div>
+</a>
+				<div class="prop-valor-nro" style="cursor:pointer" onClick="star_unstar_prop(3146536)">          
+            USD230.000
+          <div class='codref '>SP_1155003_422</div>
+          <div class="detalleColor resultadosB-interesa animated fadeInUp">
+            <i class="fa fa-star"></i> +/- Favorito
+          </div>
+        </div>
+            </li>
+  
+       <li prop-id="8509250">
+              <a href="/p/8509250-Terreno-en-Venta-en-Villa-Santos-Tesei-Av.-Vergara--al-2132">
+                <div class="prop-img">
+                
+                <div class="detalleColor resultadosB-favoritaSi animated bounceIn star-8509250" ><i class="fa fa-star" ></i></div>
+                <div class="resultadosB-favoritaNo animated fadeInUp"><i class="fa fa-star-o"></i></div>
+                <div class="prop-data"><div>406.56 m²</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/supterreno.946e483a499e.png"></div><div class="prop-data2"><div>-</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/disposicion.08d661c89399.png"></div>
+              	<div class="prop-img-bg animated fadeIn "><div class="ver-ficha-box animated fadeInUp">MÁS DETALLES</div></div><img class="dest-img" src="https://static.tokkobroker.com/pictures/8509250_13156328547899523583308403657201726976682847535933597962053213362522217857511.jpg" alt="Foto Terreno en Venta en Villa Santos Tesei, Hurlingham Av. Vergara  al 2132" title="Foto Terreno en Venta en Villa Santos Tesei, Hurlingham Av. Vergara  al 2132"/></div>
+
+                <div class="prop-desc">
+                    <div class="prop-desc-tipo-ub">Terreno en Venta   en Villa Santos Tesei, Hurlingham</div>
+                    <div class="prop-desc-dir">Av. Vergara  al 2132</div>
+                </div>
+</a>
+				<div class="prop-valor-nro" style="cursor:pointer" onClick="star_unstar_prop(8509250)">          
+            USD450.000
+          <div class='codref '>CLA8509250</div>
+          <div class="detalleColor resultadosB-interesa animated fadeInUp">
+            <i class="fa fa-star"></i> +/- Favorito
+          </div>
+        </div>
+            </li>
+  
+       <li prop-id="7603875">
+              <a href="/p/7603875-Casa-en-Venta-en-Castelar-Sur-Aristobulo-del-Valle-al-800">
+                <div class="prop-img">
+                
+                <div class="detalleColor resultadosB-favoritaSi animated bounceIn star-7603875" ><i class="fa fa-star" ></i></div>
+                <div class="resultadosB-favoritaNo animated fadeInUp"><i class="fa fa-star-o"></i></div>
+                <div class="prop-data"><div>0 m²</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/suptotalconst.6dc67aaa9732.png"></div><div class="prop-data2"><div>4</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/dormitorios.37b1923375d9.png"></div>
+              	<div class="prop-img-bg animated fadeIn "><div class="ver-ficha-box animated fadeInUp">MÁS DETALLES</div></div><img class="dest-img" src="https://static.tokkobroker.com/pictures/7603875_63830018880702959554473995542745497423363714848040724258940924999578944204188.jpg" alt="Foto Casa en Venta en Castelar Sur, Castelar Aristobulo del Valle al 800" title="Foto Casa en Venta en Castelar Sur, Castelar Aristobulo del Valle al 800"/></div>
+
+                <div class="prop-desc">
+                    <div class="prop-desc-tipo-ub">Casa en Venta   en Castelar Sur, Castelar</div>
+                    <div class="prop-desc-dir">Aristobulo del Valle al 800</div>
+                </div>
+</a>
+				<div class="prop-valor-nro" style="cursor:pointer" onClick="star_unstar_prop(7603875)">          
+            USD179.900
+          <div class='codref '>CHO7603875</div>
+          <div class="detalleColor resultadosB-interesa animated fadeInUp">
+            <i class="fa fa-star"></i> +/- Favorito
+          </div>
+        </div>
+            </li>
+  
+       <li prop-id="3147867">
+              <a href="/p/3147867-Casa-en-Venta-en-Moron-Larrea-al-700">
+                <div class="prop-img">
+                
+                <div class="detalleColor resultadosB-favoritaSi animated bounceIn star-3147867" ><i class="fa fa-star" ></i></div>
+                <div class="resultadosB-favoritaNo animated fadeInUp"><i class="fa fa-star-o"></i></div>
+                <div class="prop-data"><div>177 m²</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/suptotalconst.6dc67aaa9732.png"></div><div class="prop-data2"><div>3</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/dormitorios.37b1923375d9.png"></div>
+              	<div class="prop-img-bg animated fadeIn "><div class="ver-ficha-box animated fadeInUp">MÁS DETALLES</div></div><img class="dest-img" src="https://static.tokkobroker.com/pictures/22518441639173709863454941615467405303034466638675818708998692257654150284375.jpg" alt="Foto Casa en Venta en Moron, Moron Larrea al 700" title="Foto Casa en Venta en Moron, Moron Larrea al 700"/></div>
+
+                <div class="prop-desc">
+                    <div class="prop-desc-tipo-ub">Casa en Venta   en Moron, Moron</div>
+                    <div class="prop-desc-dir">Larrea al 700</div>
+                </div>
+</a>
+				<div class="prop-valor-nro" style="cursor:pointer" onClick="star_unstar_prop(3147867)">          
+            USD125.000
+          <div class='codref '>SP_1387989</div>
+          <div class="detalleColor resultadosB-interesa animated fadeInUp">
+            <i class="fa fa-star"></i> +/- Favorito
+          </div>
+        </div>
+            </li>
+  
+       <li prop-id="8415392">
+              <a href="/p/8415392-Local-en-Venta-en-Moron-Norte-Cabildo-al-200">
+                <div class="prop-img">
+                
+                <div class="detalleColor resultadosB-favoritaSi animated bounceIn star-8415392" ><i class="fa fa-star" ></i></div>
+                <div class="resultadosB-favoritaNo animated fadeInUp"><i class="fa fa-star-o"></i></div>
+                <div class="prop-data"><div>22 m²</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/suptotalconst.6dc67aaa9732.png"></div><div class="prop-data2"><div>-</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/disposicion.08d661c89399.png"></div>
+              	<div class="prop-img-bg animated fadeIn "><div class="ver-ficha-box animated fadeInUp">MÁS DETALLES</div></div><img class="dest-img" src="https://static.tokkobroker.com/pictures/8415392_21339161913441496553615998316426156576084643433796787038847299189269459818885.jpg" alt="Foto Local en Venta en Moron Norte, Moron Cabildo al 200" title="Foto Local en Venta en Moron Norte, Moron Cabildo al 200"/></div>
+
+                <div class="prop-desc">
+                    <div class="prop-desc-tipo-ub">Local en Venta   en Moron Norte, Moron</div>
+                    <div class="prop-desc-dir">Cabildo al 200</div>
+                </div>
+</a>
+				<div class="prop-valor-nro" style="cursor:pointer" onClick="star_unstar_prop(8415392)">          
+            USD45.000
+          <div class='codref '>CLO8415392</div>
+          <div class="detalleColor resultadosB-interesa animated fadeInUp">
+            <i class="fa fa-star"></i> +/- Favorito
+          </div>
+        </div>
+            </li>
+  
+       <li prop-id="8491776">
+              <a href="/p/8491776-Departamento-en-Venta-en-Villa-Sarmiento-Yapeyu-al-700">
+                <div class="prop-img">
+                
+                <div class="detalleColor resultadosB-favoritaSi animated bounceIn star-8491776" ><i class="fa fa-star" ></i></div>
+                <div class="resultadosB-favoritaNo animated fadeInUp"><i class="fa fa-star-o"></i></div>
+                <div class="prop-data"><div>30 m²</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/suptotalconst.6dc67aaa9732.png"></div><div class="prop-data2"><div>2</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/ambientes.293a107dbbca.png"></div>
+              	<div class="prop-img-bg animated fadeIn "><div class="ver-ficha-box animated fadeInUp">MÁS DETALLES</div></div><img class="dest-img" src="https://static.tokkobroker.com/pictures/8491776_81768019008793202578924698030436755432970052618625368459561447834722918072552.jpg" alt="Foto Departamento en Venta en Villa Sarmiento, Moron Yapeyu al 700" title="Foto Departamento en Venta en Villa Sarmiento, Moron Yapeyu al 700"/></div>
+
+                <div class="prop-desc">
+                    <div class="prop-desc-tipo-ub">Departamento en Venta   en Villa Sarmiento, Moron</div>
+                    <div class="prop-desc-dir">Yapeyu al 700</div>
+                </div>
+</a>
+				<div class="prop-valor-nro" style="cursor:pointer" onClick="star_unstar_prop(8491776)">          
+            USD50.000
+          <div class='codref '>CAP8491776</div>
+          <div class="detalleColor resultadosB-interesa animated fadeInUp">
+            <i class="fa fa-star"></i> +/- Favorito
+          </div>
+        </div>
+            </li>
+  
+       <li prop-id="5476156">
+              <a href="/p/5476156-Departamento-en-Venta-en-Moron-Norte-Juez-de-la-Gandara-al-700">
+                <div class="prop-img">
+                
+                <div class="detalleColor resultadosB-favoritaSi animated bounceIn star-5476156" ><i class="fa fa-star" ></i></div>
+                <div class="resultadosB-favoritaNo animated fadeInUp"><i class="fa fa-star-o"></i></div>
+                <div class="prop-data"><div>60 m²</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/suptotalconst.6dc67aaa9732.png"></div><div class="prop-data2"><div>3</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/ambientes.293a107dbbca.png"></div>
+              	<div class="prop-img-bg animated fadeIn "><div class="ver-ficha-box animated fadeInUp">MÁS DETALLES</div></div><img class="dest-img" src="https://static.tokkobroker.com/pictures/81903891698747060386809527660221167799965488417980839107063007419340136398796.jpg" alt="Foto Departamento en Venta en Moron Norte, Moron Juez de la Gandara al 700" title="Foto Departamento en Venta en Moron Norte, Moron Juez de la Gandara al 700"/></div>
+
+                <div class="prop-desc">
+                    <div class="prop-desc-tipo-ub">Departamento en Venta   en Moron Norte, Moron</div>
+                    <div class="prop-desc-dir">Juez de la Gandara al 700</div>
+                </div>
+</a>
+				<div class="prop-valor-nro" style="cursor:pointer" onClick="star_unstar_prop(5476156)">          
+            USD50.000
+          <div class='codref '>CAP5476156</div>
+          <div class="detalleColor resultadosB-interesa animated fadeInUp">
+            <i class="fa fa-star"></i> +/- Favorito
+          </div>
+        </div>
+            </li>
+  
+       <li prop-id="8353421">
+              <a href="/p/8353421-Casa-en-Venta-en-Moron-Norte-Larrea--758">
+                <div class="prop-img">
+                
+                <div class="detalleColor resultadosB-favoritaSi animated bounceIn star-8353421" ><i class="fa fa-star" ></i></div>
+                <div class="resultadosB-favoritaNo animated fadeInUp"><i class="fa fa-star-o"></i></div>
+                <div class="prop-data"><div>160 m²</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/suptotalconst.6dc67aaa9732.png"></div><div class="prop-data2"><div>2</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/dormitorios.37b1923375d9.png"></div>
+              	<div class="prop-img-bg animated fadeIn "><div class="ver-ficha-box animated fadeInUp">MÁS DETALLES</div></div><img class="dest-img" src="https://static.tokkobroker.com/pictures/8353421_106253897517181381856457431733264412672307037667915304826331382244956907057912.jpg" alt="Foto Casa en Venta en Moron Norte, Moron Larrea  758" title="Foto Casa en Venta en Moron Norte, Moron Larrea  758"/></div>
+
+                <div class="prop-desc">
+                    <div class="prop-desc-tipo-ub">Casa en Venta   en Moron Norte, Moron</div>
+                    <div class="prop-desc-dir">Larrea  758</div>
+                </div>
+</a>
+				<div class="prop-valor-nro" style="cursor:pointer" onClick="star_unstar_prop(8353421)">          
+            USD110.000
+          <div class='codref '>CHO8353421</div>
+          <div class="detalleColor resultadosB-interesa animated fadeInUp">
+            <i class="fa fa-star"></i> +/- Favorito
+          </div>
+        </div>
+            </li>
+  
+       <li prop-id="6167636">
+              <a href="/p/6167636-Casa-en-Venta-en-Castelar-Norte-Florencio-Sanchez-1794">
+                <div class="prop-img">
+                
+                <div class="detalleColor resultadosB-favoritaSi animated bounceIn star-6167636" ><i class="fa fa-star" ></i></div>
+                <div class="resultadosB-favoritaNo animated fadeInUp"><i class="fa fa-star-o"></i></div>
+                <div class="prop-data"><div>187 m²</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/suptotalconst.6dc67aaa9732.png"></div><div class="prop-data2"><div>3</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/dormitorios.37b1923375d9.png"></div>
+              	<div class="prop-img-bg animated fadeIn "><div class="ver-ficha-box animated fadeInUp">MÁS DETALLES</div></div><img class="dest-img" src="https://static.tokkobroker.com/pictures/20572177237941377803687005824199411562179492797864862357169952638136118657685.jpg" alt="Foto Casa en Venta en Castelar Norte, Castelar Florencio Sanchez 1794" title="Foto Casa en Venta en Castelar Norte, Castelar Florencio Sanchez 1794"/></div>
+
+                <div class="prop-desc">
+                    <div class="prop-desc-tipo-ub">Casa en Venta   en Castelar Norte, Castelar</div>
+                    <div class="prop-desc-dir">Florencio Sanchez 1794</div>
+                </div>
+</a>
+				<div class="prop-valor-nro" style="cursor:pointer" onClick="star_unstar_prop(6167636)">          
+            USD185.000
+          <div class='codref '>CHO6167636</div>
+          <div class="detalleColor resultadosB-interesa animated fadeInUp">
+            <i class="fa fa-star"></i> +/- Favorito
+          </div>
+        </div>
+            </li>
+  
+       <li prop-id="7808020">
+              <a href="/p/7808020-Casa-en-Venta-en-Haedo-Norte-Barcelona-1313">
+                <div class="prop-img">
+                
+                <div class="detalleColor resultadosB-favoritaSi animated bounceIn star-7808020" ><i class="fa fa-star" ></i></div>
+                <div class="resultadosB-favoritaNo animated fadeInUp"><i class="fa fa-star-o"></i></div>
+                <div class="prop-data"><div>120 m²</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/suptotalconst.6dc67aaa9732.png"></div><div class="prop-data2"><div>3</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/dormitorios.37b1923375d9.png"></div>
+              	<div class="prop-img-bg animated fadeIn "><div class="ver-ficha-box animated fadeInUp">MÁS DETALLES</div></div><img class="dest-img" src="https://static.tokkobroker.com/pictures/7808020_65117181334414177241049306951401652838973141398338605497042461074724435891706.jpg" alt="Foto Casa en Venta en Haedo Norte, Haedo Barcelona 1313" title="Foto Casa en Venta en Haedo Norte, Haedo Barcelona 1313"/></div>
+
+                <div class="prop-desc">
+                    <div class="prop-desc-tipo-ub">Casa en Venta   en Haedo Norte, Haedo</div>
+                    <div class="prop-desc-dir">Barcelona 1313</div>
+                </div>
+</a>
+				<div class="prop-valor-nro" style="cursor:pointer" onClick="star_unstar_prop(7808020)">          
+            USD80.000
+          <div class='codref '>CHO7808020</div>
+          <div class="detalleColor resultadosB-interesa animated fadeInUp">
+            <i class="fa fa-star"></i> +/- Favorito
+          </div>
+        </div>
+            </li>
+  
+       <li prop-id="8154766">
+              <a href="/p/8154766-Casa-en-Venta-en-Centro-Playa-Libertador-1513">
+                <div class="prop-img">
+                
+                <div class="detalleColor resultadosB-favoritaSi animated bounceIn star-8154766" ><i class="fa fa-star" ></i></div>
+                <div class="resultadosB-favoritaNo animated fadeInUp"><i class="fa fa-star-o"></i></div>
+                <div class="prop-data"><div>150 m²</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/suptotalconst.6dc67aaa9732.png"></div><div class="prop-data2"><div>3</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/dormitorios.37b1923375d9.png"></div>
+              	<div class="prop-img-bg animated fadeIn "><div class="ver-ficha-box animated fadeInUp">MÁS DETALLES</div></div><img class="dest-img" src="https://static.tokkobroker.com/pictures/8154766_42955431817147015461722705691642641793103555543283614805789253573211879670305.jpg" alt="Foto Casa en Venta en Centro Playa, Pinamar Libertador 1513" title="Foto Casa en Venta en Centro Playa, Pinamar Libertador 1513"/></div>
+
+                <div class="prop-desc">
+                    <div class="prop-desc-tipo-ub">Casa en Venta   en Centro Playa, Pinamar</div>
+                    <div class="prop-desc-dir">Libertador 1513</div>
+                </div>
+</a>
+				<div class="prop-valor-nro" style="cursor:pointer" onClick="star_unstar_prop(8154766)">          
+            USD190.000
+          <div class='codref '>CHO8154766</div>
+          <div class="detalleColor resultadosB-interesa animated fadeInUp">
+            <i class="fa fa-star"></i> +/- Favorito
+          </div>
+        </div>
+            </li>
+  
+       <li prop-id="8067536">
+              <a href="/p/8067536-Casa-en-Venta-en-Moron-Norte-Berutti-986">
+                <div class="prop-img">
+                
+                <div class="detalleColor resultadosB-favoritaSi animated bounceIn star-8067536" ><i class="fa fa-star" ></i></div>
+                <div class="resultadosB-favoritaNo animated fadeInUp"><i class="fa fa-star-o"></i></div>
+                <div class="prop-data"><div>100 m²</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/suptotalconst.6dc67aaa9732.png"></div><div class="prop-data2"><div>2</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/dormitorios.37b1923375d9.png"></div>
+              	<div class="prop-img-bg animated fadeIn "><div class="ver-ficha-box animated fadeInUp">MÁS DETALLES</div></div><img class="dest-img" src="https://static.tokkobroker.com/pictures/8067536_58559608018089625805233103905003155059496180445071278194919112182185648822418.jpg" alt="Foto Casa en Venta en Moron Norte, Moron Berutti 986" title="Foto Casa en Venta en Moron Norte, Moron Berutti 986"/></div>
+
+                <div class="prop-desc">
+                    <div class="prop-desc-tipo-ub">Casa en Venta   en Moron Norte, Moron</div>
+                    <div class="prop-desc-dir">Berutti 986</div>
+                </div>
+</a>
+				<div class="prop-valor-nro" style="cursor:pointer" onClick="star_unstar_prop(8067536)">          
+            USD80.000
+          <div class='codref '>CHO8067536</div>
+          <div class="detalleColor resultadosB-interesa animated fadeInUp">
+            <i class="fa fa-star"></i> +/- Favorito
+          </div>
+        </div>
+            </li>
+  
+       <li prop-id="8065550">
+              <a href="/p/8065550-Departamento-en-Venta-en-Moron-Norte-Azcuénaga--al-594">
+                <div class="prop-img">
+                
+                <div class="detalleColor resultadosB-favoritaSi animated bounceIn star-8065550" ><i class="fa fa-star" ></i></div>
+                <div class="resultadosB-favoritaNo animated fadeInUp"><i class="fa fa-star-o"></i></div>
+                <div class="prop-data"><div>0 m²</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/suptotalconst.6dc67aaa9732.png"></div><div class="prop-data2"><div>1</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/ambientes.293a107dbbca.png"></div>
+              	<div class="prop-img-bg animated fadeIn "><div class="ver-ficha-box animated fadeInUp">MÁS DETALLES</div></div><img class="dest-img" src="https://static.tokkobroker.com/pictures/8065550_53237761153957869463529227357338509670827021798451435079283820426478836924840.jpg" alt="Foto Departamento en Venta en Moron Norte, Moron Azcuénaga  al 594" title="Foto Departamento en Venta en Moron Norte, Moron Azcuénaga  al 594"/></div>
+
+                <div class="prop-desc">
+                    <div class="prop-desc-tipo-ub">Departamento en Venta   en Moron Norte, Moron</div>
+                    <div class="prop-desc-dir">Azcuénaga  al 594</div>
+                </div>
+</a>
+				<div class="prop-valor-nro" style="cursor:pointer" onClick="star_unstar_prop(8065550)">          
+            USD35.000
+          <div class='codref '>CAP8065550</div>
+          <div class="detalleColor resultadosB-interesa animated fadeInUp">
+            <i class="fa fa-star"></i> +/- Favorito
+          </div>
+        </div>
+            </li>
+  
+       <li prop-id="7362905">
+              <a href="/p/7362905-PH-en-Venta-en-Moron-Norte-Juez-de-la-gandara-al-834">
+                <div class="prop-img">
+                
+                <div class="detalleColor resultadosB-favoritaSi animated bounceIn star-7362905" ><i class="fa fa-star" ></i></div>
+                <div class="resultadosB-favoritaNo animated fadeInUp"><i class="fa fa-star-o"></i></div>
+                <div class="prop-data"><div>0 m²</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/suptotalconst.6dc67aaa9732.png"></div><div class="prop-data2"><div>2</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/ambientes.293a107dbbca.png"></div>
+              	<div class="prop-img-bg animated fadeIn "><div class="ver-ficha-box animated fadeInUp">MÁS DETALLES</div></div><img class="dest-img" src="https://static.tokkobroker.com/pictures/7362905_64194150787315423874159406316341770798438383814707778303432456776744608845047.jpg" alt="Foto PH en Venta en Moron Norte, Moron Juez de la gandara al 834" title="Foto PH en Venta en Moron Norte, Moron Juez de la gandara al 834"/></div>
+
+                <div class="prop-desc">
+                    <div class="prop-desc-tipo-ub">PH en Venta   en Moron Norte, Moron</div>
+                    <div class="prop-desc-dir">Juez de la gandara al 834</div>
+                </div>
+</a>
+				<div class="prop-valor-nro" style="cursor:pointer" onClick="star_unstar_prop(7362905)">          
+            USD35.000
+          <div class='codref '>CPH7362905</div>
+          <div class="detalleColor resultadosB-interesa animated fadeInUp">
+            <i class="fa fa-star"></i> +/- Favorito
+          </div>
+        </div>
+            </li>
+  
+       <li prop-id="7999375">
+              <a href="/p/7999375-PH-en-Venta-en-San-Justo-Hipolito-Yrigoyen-1055">
+                <div class="prop-img">
+                
+                <div class="detalleColor resultadosB-favoritaSi animated bounceIn star-7999375" ><i class="fa fa-star" ></i></div>
+                <div class="resultadosB-favoritaNo animated fadeInUp"><i class="fa fa-star-o"></i></div>
+                <div class="prop-data"><div>120 m²</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/suptotalconst.6dc67aaa9732.png"></div><div class="prop-data2"><div>3</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/ambientes.293a107dbbca.png"></div>
+              	<div class="prop-img-bg animated fadeIn "><div class="ver-ficha-box animated fadeInUp">MÁS DETALLES</div></div><img class="dest-img" src="https://static.tokkobroker.com/pictures/7999375_58136998945183226853556197251900648111550614542399420524620136147738780638719.jpg" alt="Foto PH en Venta en San Justo, La Matanza Hipolito Yrigoyen 1055" title="Foto PH en Venta en San Justo, La Matanza Hipolito Yrigoyen 1055"/></div>
+
+                <div class="prop-desc">
+                    <div class="prop-desc-tipo-ub">PH en Venta   en San Justo, La Matanza</div>
+                    <div class="prop-desc-dir">Hipolito Yrigoyen 1055</div>
+                </div>
+</a>
+				<div class="prop-valor-nro" style="cursor:pointer" onClick="star_unstar_prop(7999375)">          
+            USD95.000
+          <div class='codref '>CPH7999375</div>
+          <div class="detalleColor resultadosB-interesa animated fadeInUp">
+            <i class="fa fa-star"></i> +/- Favorito
+          </div>
+        </div>
+            </li>
+  
+       <li prop-id="7989683">
+              <a href="/p/7989683-Casa-en-Venta-en-Haedo-Norte-Luis-Lhoner-494">
+                <div class="prop-img">
+                
+                <div class="detalleColor resultadosB-favoritaSi animated bounceIn star-7989683" ><i class="fa fa-star" ></i></div>
+                <div class="resultadosB-favoritaNo animated fadeInUp"><i class="fa fa-star-o"></i></div>
+                <div class="prop-data"><div>100 m²</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/suptotalconst.6dc67aaa9732.png"></div><div class="prop-data2"><div>2</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/dormitorios.37b1923375d9.png"></div>
+              	<div class="prop-img-bg animated fadeIn "><div class="ver-ficha-box animated fadeInUp">MÁS DETALLES</div></div><img class="dest-img" src="https://static.tokkobroker.com/pictures/7989683_85965643888741728416154255967829018939264855170397265265125085956989716715689.jpg" alt="Foto Casa en Venta en Haedo Norte, Haedo Luis Lhoner 494" title="Foto Casa en Venta en Haedo Norte, Haedo Luis Lhoner 494"/></div>
+
+                <div class="prop-desc">
+                    <div class="prop-desc-tipo-ub">Casa en Venta   en Haedo Norte, Haedo</div>
+                    <div class="prop-desc-dir">Luis Lhoner 494</div>
+                </div>
+</a>
+				<div class="prop-valor-nro" style="cursor:pointer" onClick="star_unstar_prop(7989683)">          
+            USD95.000
+          <div class='codref '>CHO7989683</div>
+          <div class="detalleColor resultadosB-interesa animated fadeInUp">
+            <i class="fa fa-star"></i> +/- Favorito
+          </div>
+        </div>
+            </li>
+  
+       <li prop-id="7235873">
+              <a href="/p/7235873-PH-en-Venta-en-Villa-Santos-Tesei-Salazar-804">
+                <div class="prop-img">
+                
+                <div class="detalleColor resultadosB-favoritaSi animated bounceIn star-7235873" ><i class="fa fa-star" ></i></div>
+                <div class="resultadosB-favoritaNo animated fadeInUp"><i class="fa fa-star-o"></i></div>
+                <div class="prop-data"><div>70 m²</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/suptotalconst.6dc67aaa9732.png"></div><div class="prop-data2"><div>3</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/ambientes.293a107dbbca.png"></div>
+              	<div class="prop-img-bg animated fadeIn "><div class="ver-ficha-box animated fadeInUp">MÁS DETALLES</div></div><img class="dest-img" src="https://static.tokkobroker.com/pictures/7235873_50158401819881382438974174289228483918469817893073497914315091687596785536371.jpg" alt="Foto PH en Venta en Villa Santos Tesei, Hurlingham Salazar 804" title="Foto PH en Venta en Villa Santos Tesei, Hurlingham Salazar 804"/></div>
+
+                <div class="prop-desc">
+                    <div class="prop-desc-tipo-ub">PH en Venta   en Villa Santos Tesei, Hurlingham</div>
+                    <div class="prop-desc-dir">Salazar 804</div>
+                </div>
+</a>
+				<div class="prop-valor-nro" style="cursor:pointer" onClick="star_unstar_prop(7235873)">          
+            USD40.000
+          <div class='codref '>CPH7235873</div>
+          <div class="detalleColor resultadosB-interesa animated fadeInUp">
+            <i class="fa fa-star"></i> +/- Favorito
+          </div>
+        </div>
+            </li>
+  
+       <li prop-id="7940717">
+              <a href="/p/7940717-Departamento-en-Venta-en-Moron-Norte-Mendoza-al-500">
+                <div class="prop-img">
+                
+                <div class="detalleColor resultadosB-favoritaSi animated bounceIn star-7940717" ><i class="fa fa-star" ></i></div>
+                <div class="resultadosB-favoritaNo animated fadeInUp"><i class="fa fa-star-o"></i></div>
+                <div class="prop-data"><div>50 m²</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/suptotalconst.6dc67aaa9732.png"></div><div class="prop-data2"><div>3</div><img src="https://static.tokkobroker.com/tfw/img/prop-icons/ambientes.293a107dbbca.png"></div>
+              	<div class="prop-img-bg animated fadeIn "><div class="ver-ficha-box animated fadeInUp">MÁS DETALLES</div></div><img class="dest-img" src="https://static.tokkobroker.com/pictures/7940717_103564878143868092527121917624308383021528623002799479005555349773266687125149.jpg" alt="Foto Departamento en Venta en Moron Norte, Moron Mendoza al 500" title="Foto Departamento en Venta en Moron Norte, Moron Mendoza al 500"/></div>
+
+                <div class="prop-desc">
+                    <div class="prop-desc-tipo-ub">Departamento en Venta   en Moron Norte, Moron</div>
+                    <div class="prop-desc-dir">Mendoza al 500</div>
+                </div>
+</a>
+				<div class="prop-valor-nro" style="cursor:pointer" onClick="star_unstar_prop(7940717)">          
+            USD50.000
+          <div class='codref '>CAP7940717</div>
+          <div class="detalleColor resultadosB-interesa animated fadeInUp">
+            <i class="fa fa-star"></i> +/- Favorito
+          </div>
+        </div>
+            </li>
+  
+        </ul>
+            <div class="pagination">
+                <div id="loading" class="loader" style="display:none"></div>
+            </div>
+            
+
+    </div>
+
+<script>
+
+	$(".resultados-list li").hover( $(".resultadosB-interesa").slideUp() );
+
+	$(".resultadosB-combinar").click(function() {
+		$("#resultadosB-combinar").show();
+	});
+	$(".resultadosB-combinar-close").click(function() {
+		$("#resultadosB-combinar").fadeOut();
+	});
+
+	$(document).ready(function(){
+		var propheight = 375 / 500 * $("#prop-list ul.resultados-list li").width();
+		$('.prop-img').height( propheight );
+
+
+		var bottomSpace = $("#contacto-forms").height() + $("#footerB-box").height() + 70;
+		var newH = (600/800) * $(".resultados-list li").width();
+		$(".prop-img").height( newH );
+
+	    $("#map-canvas").sticky({topSpacing:0, bottomSpacing: bottomSpace, });
+
+      load_summary_locations()
+	});
+
+	$(window).resize(function(){
+
+		var imgheight = 510 / 1349 * ($(window).width() * 0.85 );
+		if ( imgheight < 450 ) {
+			imgheight= 450;
+		}
+		$("#banner-box").height( imgheight );
+		$('.banner-img').height( imgheight );
+		$('.banner-img-vert img').height(imgheight);
+		$('.banner-img-hor').height(imgheight);
+		$('.banner-img-hor1').height(imgheight/2);
+		$('.banner-img-hor2').height(imgheight/2);
+
+
+		var propheight = 375 / 500 * $("#prop-list ul.resultados-list li").width();
+		$('.prop-img').height( propheight );
+	});
+
+function load_summary_locations(location_filter){
+  
+    var locations_response = [{"count": 1, "location_id": 24676, "location_name": "Balvanera", "parent_id": 146, "parent_name": "Capital Federal"}, {"count": 1, "location_id": 51400, "location_name": "Capital Federal", "parent_id": 146, "parent_name": "Capital Federal"}, {"count": 10, "location_id": 26316, "location_name": "Castelar", "parent_id": 26315, "parent_name": "Moron"}, {"count": 13, "location_id": 26318, "location_name": "Castelar Norte", "parent_id": 26316, "parent_name": "Castelar"}, {"count": 7, "location_id": 26319, "location_name": "Castelar Sur", "parent_id": 26316, "parent_name": "Castelar"}, {"count": 1, "location_id": 82350, "location_name": "Centro Playa", "parent_id": 26724, "parent_name": "Pinamar"}, {"count": 1, "location_id": 26340, "location_name": "Ciudadela", "parent_id": 26335, "parent_name": "Tres De Febrero"}, {"count": 3, "location_id": 26320, "location_name": "El Palomar", "parent_id": 26315, "parent_name": "Moron"}, {"count": 1, "location_id": 24710, "location_name": "Flores", "parent_id": 146, "parent_name": "Capital Federal"}, {"count": 3, "location_id": 26321, "location_name": "Haedo", "parent_id": 26315, "parent_name": "Moron"}, {"count": 7, "location_id": 26323, "location_name": "Haedo Norte", "parent_id": 26321, "parent_name": "Haedo"}, {"count": 1, "location_id": 26236, "location_name": "Haras Maria Elena", "parent_id": 26227, "parent_name": "Countries/B.Cerrado (Moreno)"}, {"count": 5, "location_id": 33760, "location_name": "Ituzaing\u00f3", "parent_id": 33759, "parent_name": "Ituzaing\u00f3"}, {"count": 1, "location_id": 81264, "location_name": "Ituzaing\u00f3 Norte", "parent_id": 25992, "parent_name": "Ituzaing\u00f3"}, {"count": 3, "location_id": 81265, "location_name": "Ituzaing\u00f3 Sur", "parent_id": 25992, "parent_name": "Ituzaing\u00f3"}, {"count": 1, "location_id": 26619, "location_name": "Las Toninas", "parent_id": 150, "parent_name": "Costa Atlantica"}, {"count": 1, "location_id": 26201, "location_name": "Merlo", "parent_id": 26192, "parent_name": "Merlo"}, {"count": 66, "location_id": 26326, "location_name": "Moron", "parent_id": 26315, "parent_name": "Moron"}, {"count": 33, "location_id": 26330, "location_name": "Moron Norte", "parent_id": 26326, "parent_name": "Moron"}, {"count": 19, "location_id": 26331, "location_name": "Moron Sur", "parent_id": 26326, "parent_name": "Moron"}, {"count": 1, "location_id": 26051, "location_name": "Ramos Mejia", "parent_id": 25995, "parent_name": "La Matanza"}, {"count": 1, "location_id": 26225, "location_name": "San Antonio De Padua", "parent_id": 26192, "parent_name": "Merlo"}, {"count": 2, "location_id": 26056, "location_name": "San Justo", "parent_id": 25995, "parent_name": "La Matanza"}, {"count": 1, "location_id": 30833, "location_name": "Santa Rosa De Calamuchita", "parent_id": 30763, "parent_name": "Calamuchita"}, {"count": 1, "location_id": 28664, "location_name": "Villa Gesell", "parent_id": 151, "parent_name": "Interior Buenos Aires"}, {"count": 10, "location_id": 25982, "location_name": "Villa Santos Tesei", "parent_id": 25973, "parent_name": "Hurlingham"}, {"count": 1, "location_id": 26334, "location_name": "Villa Sarmiento", "parent_id": 26315, "parent_name": "Moron"}, {"count": 1, "location_id": 25981, "location_name": "William Morris", "parent_id": 25977, "parent_name": "Hurlingham"}]
+  
+
+  if(locations_response != undefined && locations_response.length > 0){
+    var sortedTree = createTree(locations_response);
+
+    
+      var active_filter = undefined
+    
+
+    if(active_filter == undefined){
+      var locations = Object.values(sortedTree)
+      render_summary_locations(locations)
+    }
+
+  }else{
+    return false
+  }
+}
+
+function render_summary_locations(locations){
+
+    var locationsByName = locations.sort(function (a, b) {
+      if (a.name > b.name) {
+        return 1;
+      }
+      if (a.name < b.name) {
+        return -1;
+      }
+    return 0;
+    });
+
+
+    locationsByName.forEach(function(location){
+      var item;
+
+      if(!location.hasOwnProperty('children')){
+      item = `
+        <li onClick='add_location_filter(${location.location_id}, "${location.name}" , ${location.parent_id});'>
+          <a href='#' style='color: #000000 !important; opacity:0.8'>
+            ${location.name} (${location.count})
+          </a>
+        </li>`
+
+      }else{
+        
+      item = `
+        <li id="${location.location_id}-state" class="state_node" onClick='toggle_location(${location.location_id});'>
+          <a class="state_node_name" style='color: #000000 !important; opacity:0.8'>
+            ${location.name} (${location.count})
+          </a>
+          <i class='fa fa-angle-down' aria-hidden="true"></i>
+          <i class='fa fa-angle-up' aria-hidden="true"></i>
+        </li>`
+
+        let child_nodes = location["children"]
+        for(let node_key in child_nodes){
+          let child_node_dict = child_nodes[node_key]
+          let child_elem = `
+            <li class="state_child_node ${location.location_id}-child" onClick='add_location_filter(${child_node_dict.location_id}, "${child_node_dict.name}" , ${child_node_dict.parent_id}, true);'>
+              <a href='#' style='color: #000000 !important; opacity:0.8'>
+                ${child_node_dict.name} (${child_node_dict.count})
+              </a>
+            </li>`
+            item += child_elem
+        }
+      }
+
+      $('#barrio_ul').append(item)
+    })
+}
+
+
+var filterByParent = function(tree, filter){
+    var filtered = tree.getNodeById(filter)
+    return filtered.getResults();
+}
+
+var Node = function (prop) {
+
+  this.prop = prop;
+  this.parent = null;
+  this.children = {};
+
+  this.getId = function () {
+    return this.prop.location_id;
+  }
+
+  this.getParentId = function () {
+    return this.prop.parent_id;
+  }
+
+  this.addChild = function (node) {
+    node.parent = this;
+    this.children[node.getId()] = node;
+  }
+
+  this.getChildrenAsArray = function () {
+    return Object.values(this.children);
+  }
+
+  this.changeParent = function (parent) {
+    this.parent.removeChild(this);
+    parent.addChild(this);
+  }
+
+  this.removeChild = function (node) {
+    delete this.children[node.getId()];
+  }
+
+  this.getNodeById = function (id) {
+    if (this.children[id]) {
+      return this.children[id];
+    }
+
+    var childrenArray = this.getChildrenAsArray();
+    for (var i = 0; i < childrenArray.length; i++) {
+      var node = childrenArray[i].getNodeById(id);
+      if (node) {
+        return node;
+      }
+    }
+  }
+
+
+  this.getAllChildNodes = function (parentId) {
+    return this.getChildrenAsArray().filter(function (node) {
+      return node.getParentId() === parentId;
+    });
+  }
+
+  this.getCount = function () {
+    return this.prop.count;
+  }
+
+  this.getTotalCount = function () {
+
+    var sum = 0;
+
+    Object.values(this.children).forEach(function (node) {
+      sum += node.getTotalCount();
+
+    });
+
+    var count = this.getCount();
+
+    return count + sum;
+  }
+
+  this.getResults = function () {
+    return this.getChildrenAsArray().reduce(function (result, node) {
+      result[node.prop.location_name] = {
+        name: node.prop.location_name,
+        count: node.getTotalCount(),
+        location_id: node.prop.location_id,
+        parent_id: node.prop.parent_id
+      };
+
+      if(node.prop.location_id < 10000){ //= state node        
+        result[node.prop.location_name]["children"] = []
+        for(let child_node_id in node.children){
+          let child_node = node.children[child_node_id]
+          result[node.prop.location_name]["children"][child_node.prop.location_name] = {
+              name: child_node.prop.location_name,
+              count: child_node.getTotalCount(),
+              location_id: child_node.prop.location_id,
+              parent_id: child_node.prop.parent_id
+            }
+        }
+      }
+      return result;
+    }, {});
+  }
+}
+
+
+var createTree = function (props) {
+
+  var tree = new Node();
+
+  props.forEach(function (p) {
+    var actualNode = new Node(p);
+    var parentNode = tree.getNodeById(actualNode.getParentId());
+
+    if (parentNode) {
+      parentNode.addChild(actualNode);
+    } else {
+      tree.addChild(actualNode);
+    }
+
+    var childs = tree.getAllChildNodes(actualNode.getId());
+    childs.forEach(function (c) {
+      c.changeParent(actualNode);
+    });
+  });
+  
+  no_parent_in_list(tree);
+  
+    var locations_filter = undefined
+  
+
+  if(locations_filter != undefined && locations_filter.length > 0){
+
+    locations_filter.forEach(function(filter){
+      if(filter > 10000){ //es una division o un state ?
+        var filter_active = filterByParent(tree, filter)
+        render_summary_locations(Object.values(filter_active))
+      }
+    })
+
+    function render_parents_no_filters(parent){
+      var excluded_parents = []
+      excluded_parents.push(parent)
+      render_summary_locations(excluded_parents)
+    }
+
+    var parents_as_array = Object.values(tree.getResults())
+
+    parents_as_array.forEach(function(parent){
+      if ( locations_filter.includes(parent.location_id) ){
+        return false
+      }else{
+        render_parents_no_filters(parent)
+      }
+    })
+  }
+
+  return tree.getResults();
+};
+
+
+function no_parent_in_list(tree) {
+  var all_parentds_id = tree.getChildrenAsArray()
+    .filter(function (node) {return node.prop.parent_id})
+    .map(function (node) {return node.prop.parent_id});
+
+  getDuplicatedValues(all_parentds_id).forEach(function (parentId) {
+    var nodes = tree.getAllChildNodes(parentId);
+
+    var locationName = nodes[0].prop.parent_name;
+    var parentProp = {
+      count: 0,
+      parent_name: null,
+      parent_id: null,
+      location_id: parentId,
+      location_name: locationName,
+    };
+
+    var parentNode = new Node(parentProp);
+
+    tree.addChild(parentNode);
+    nodes.forEach(function (node) {
+      node.changeParent(parentNode);
+    });
+  });
+}
+
+function getDuplicatedValues(array) {
+  var counts = {};
+
+  array.forEach(function (parentId) {
+    if (counts[parentId]) {
+      counts[parentId] = counts[parentId] + 1;
+    } else {
+      counts[parentId] = 1
+    }
+  });
+
+  return Object.keys(counts)
+    .filter(function (parentId) {
+      return counts[parentId] > 1;
+    })
+    .map(function (parentId) {
+      return parseInt(parentId);
+    });
+}
+
+$("#price-filter-currencies label input[name='currency']").click(function(){
+  var val = $("#price-filter-currencies label input[name='currency']:checked").data('currency-text')
+  $("#filter-min-price").attr('placeholder', "Desde" + " " + val)
+  $("#filter-max-price").attr('placeholder', "Hasta" + " " + val)
+})
+
+</script>
+</section>
+
+
+</div> <!-- wrapper -->
+
+        
+    
+    
+    
+    
+    
+
+    </div>
+
+</div>
+
+<script>
+//Save operations searched by, to use in property_detail contact form
+let operations_searched_by = [1];
+let original_price_from = ""
+let original_price_to = "";
+
+let jsonObject = JSON.stringify(operations_searched_by);
+sessionStorage.setItem('operations_searched_by', jsonObject);
+
+jsonObject = JSON.stringify(original_price_from)
+sessionStorage.setItem('filter_price_from', jsonObject);
+jsonObject = JSON.stringify(original_price_to)
+sessionStorage.setItem('filter_price_to', jsonObject);
+
+let loaded_props_ids 
+
+
+must_get_next_page = true;
+loaded_props_ids = new Set(JSON.parse("[8429785, 8510595, 3146536, 8509250, 7603875, 3147867, 8415392, 8491776, 5476156, 8353421, 6167636, 7808020, 8154766, 8067536, 8065550, 7362905, 7999375, 7989683, 7235873, 7940717]"))
+
+
+is_loading = false;
+var current_page = 2;
+
+function get_next_page(){
+    if (must_get_next_page && !is_loading){
+        $("#loading").show();
+        is_loading = true;
+
+        var jqxhr = $.ajax('?q=&currency=ANY&min-price=&max-price=&min-roofed=&max-roofed=&min-surface=&max-surface=&min-total_surface=&max-total_surface=&min-front_measure=&max-front_measure=&min-depth_measure=&max-depth_measure=&age=&min-age=&max-age=&suites=&rooms=&credit_eligible=&is_exclusive=&tags=&operation=&locations=&location_type=&ptypes=&o=2,2&watermark=&p='+current_page)
+        .done(function(result){
+            if(result.indexOf("--NoMoreProperties--") != -1){
+                $("#loading").hide();
+                must_get_next_page = false;
+            }else{
+                if (must_get_next_page){
+                    $("#propiedades").append(result);
+                    $("#loading").hide();
+                    current_page = current_page+1;
+                    var newH = (600/800) * $(".resultados-list li").width();
+                    $(".prop-img").height( newH );
+                }
+            }
+            is_loading = false;
+        })
+    }
+}
+
+$(window).scroll(function(){
+       if($(this).scrollTop()+$(this).height()+800 >= $(document).height() && must_get_next_page && is_loading == false){
+           get_next_page();
+       }
+   });
+get_next_page();
+</script>
+
+
+
+
+  
+    
+
+
+    <div style="display:block" onclick="window.location='/Favoritos'" id="fav-btn" class="animated bounceIn detalleColor" rel="nofollow"><i class="fa fa-star"></i><span id="favcounter">0</span></div>
+
+
+<footer id="footerB-box" class="noprint">
+        <div id="footerB">
+            <div class="footerB-col logo">
+                <div class="footerB-logo"><img src="https://static.tokkobroker.com/tfw_images/6898_Carlos%20F.%20Fernandez/perfil%20(2).jpg" width="200"></div>
+                
+                    <br>Encontranos en
+                    <div class="footerB-tel"><a href="tel:(011) 4628-5652 "><img src="https://static.tokkobroker.com/tfw/img/phone.604342640ae9.png">(011) 4628-5652 </a></div>
+                
+                
+                    <div class="footerB-address">Azcuénaga 598 , Morón</div>
+                
+            </div>
+
+        <div class="footerB-col footerB-col-txt">
+          <div class="footerB-txt">
+            
+            Empresa líder en zona oeste. Experiencia en el mercado de bienes y raices.&nbsp;<span style="font-family: Lato, sans-serif; font-size: 14px; font-style: normal;">Estamos a tu disposición!&nbsp;</span>
+            
+            
+           </div>
+        </div>
+
+        <div class="footerB-col footerB-col-redes">
+        
+            <b>Seguinos en</b><br>
+            <div class="footerB-redes">
+                
+                <a href="https://m.facebook.com/CarlosF.FernandezPropiedades/?locale2=es_LA" target="_blank"><img src="https://static.tokkobroker.com/tfw/img/r-facebook.956838008eb8.svg" width="40" height="40"></a>
+                
+                
+                
+                <a href="https://www.instagram.com/carlosfernandezprop/?hl=es" target="_blank"><img src="https://static.tokkobroker.com/tfw/img/r-instagram.a5a5678e02c4.svg" width="40" height="40"></a>
+                
+                
+                
+                
+                
+            </div>
+        
+                                
+            <b>Asociados con</b><br>                
+            <div class="asociaciones">                
+                
+                    
+                        
+                    
+                        
+                    
+                
+                    
+                        
+                    
+                
+                    
+                        
+                    
+                        
+                    
+                
+                    
+                        
+                    
+                
+                    
+                        
+                    
+                
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                
+            </div>              
+        
+        </div>
+        <div class="footerB-col qr footerB-col-nav">            
+            
+                <b>¿Qué estás buscando?</b><br><br>
+                    
+
+
+  
+      · <a href="/Terrenos">Terrenos</a></br>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+      · <a href="/Departamentos">Departamentos</a></br>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+  
+      · <a href="/Casas">Casas</a></br>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+  
+  
+      · <a href="/Oficinas">Oficinas</a></br>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+      · <a href="/Locales">Locales</a></br>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+            
+                <br>
+            
+            
+        </div>
+
+        <div class="footerB-full aclaracion">
+            Todas las medidas enunciadas son meramente orientativas, las medidas exactas serán las que se expresen en el respectivo título de propiedad de cada inmueble. Todas las fotos, imagenes y videos son meramente ilustrativos y no contractuales. Los precios enunciados son meramente orientativos y no contractuales.
+        </div>
+        <div class="footerB-full bottom">
+            <div class="footerB-copyright" style="display: inline-block;">© 2026 carlosfernandezprop.com.ar.</div>
+            
+            <div class="footerB-powered"><a href="https://www.tokkobroker.com/crm-sistema-inmobiliario?n=carlosfernandezprop.com.ar" target="_blank" alt="Software Inmobiliario Tokko Broker">Software Inmobiliario - Tokko Broker</a></div>
+        </div>
+    </div>
+</footer>
+<script>
+
+    $('#openmenu').click( function() { $('#menu').slideToggle() })
+    $('#mobile-menu-mini').click( function() { $('#menu').slideToggle() })
+
+</script>
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+</body>
+</html>
