@@ -1,0 +1,74 @@
+# Reglas de alcance del relevamiento.
+# Este archivo se edita a mano: no hace falta tocar código Python.
+
+# ---------------------------------------------------------------------------
+# QUÉ SE RECOLECTA (conservador: ampliar es gratis, recuperar el pasado no)
+# ---------------------------------------------------------------------------
+recoleccion:
+  operacion: venta          # los alquileres se descartan
+  tipologias:
+    - casa
+    - ph
+    - departamento
+  # Los departamentos de menos ambientes se descartan al recolectar.
+  ambientes_minimos_departamento: 3
+
+# ---------------------------------------------------------------------------
+# QUÉ SE MUESTRA POR DEFECTO (se puede cambiar desde la app, sin tocar esto)
+# ---------------------------------------------------------------------------
+vista_por_defecto:
+  # Las propiedades más caras SE SIGUEN GUARDANDO: son el marco de referencia
+  # para saber si un precio es bueno. Esto solo define qué se ve de entrada.
+  precio_maximo_usd: 150000
+  categorias_zona:
+    - objetivo
+
+# ---------------------------------------------------------------------------
+# ZONAS
+# La zona no filtra: clasifica. Ver PLAN.md sección 1.b.
+# ---------------------------------------------------------------------------
+zonas:
+  objetivo:        # partido de Morón — lo que se ve en el listado
+    - moron
+    - castelar
+    - haedo
+    - el_palomar
+    - villa_sarmiento
+  referencia:      # no se listan, pero SÍ entran en las comparaciones de precio/m²
+    - ramos_mejia
+    - ituzaingo
+    - ciudadela
+    - hurlingham
+    - villa_tesei
+    - san_antonio_de_padua
+    - villa_luzuriaga
+
+# ---------------------------------------------------------------------------
+# ALIAS DE LOCALIDAD
+# Cada inmobiliaria escribe la dirección a su manera. Sin esta tabla, la
+# clasificación por zona no funciona. Se completa en la fase 2, a medida que
+# aparecen variantes reales en los datos.
+# Formato:  texto_como_viene: localidad_normalizada
+# ---------------------------------------------------------------------------
+alias_localidad:
+  "moron": moron
+  "morón": moron
+  "morón sur": moron
+  "morón norte": moron
+  "castelar": castelar
+  "castelar sur": castelar
+  "castelar norte": castelar
+  "haedo": haedo
+  "el palomar": el_palomar
+  "palomar": el_palomar
+  "villa sarmiento": villa_sarmiento
+  "ramos mejia": ramos_mejia
+  "ramos mejía": ramos_mejia
+  "ituzaingo": ituzaingo
+  "ituzaingó": ituzaingo
+  "ciudadela": ciudadela
+  "hurlingham": hurlingham
+  "villa tesei": villa_tesei
+  "san antonio de padua": san_antonio_de_padua
+  "padua": san_antonio_de_padua
+  "villa luzuriaga": villa_luzuriaga

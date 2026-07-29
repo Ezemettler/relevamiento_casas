@@ -1,0 +1,43 @@
+[project]
+name = "relevamiento"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "alembic>=1.18.5",
+    "httpx>=0.28.1",
+    "psycopg[binary]>=3.3.4",
+    "pydantic>=2.13.4",
+    "pydantic-settings>=2.14.2",
+    "pyyaml>=6.0.3",
+    "selectolax>=0.4.11",
+    "sqlalchemy>=2.0.51",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "ruff>=0.16.0",
+]
+
+# Le dice a uv que el código vive en src/ y que instale el proyecto en modo
+# editable: los cambios se ven al instante, sin reinstalar nada.
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/relevamiento"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 90
+# Las migraciones las genera Alembic automáticamente: no se les aplica
+# nuestro estilo, igual que no se corrige el estilo de una librería externa.
+extend-exclude = ["migraciones/versions"]
+
+[tool.ruff.lint]
+# E,F = errores y bugs potenciales | I = ordena los imports
+# UP = moderniza sintaxis vieja    | B = atrapa errores lógicos comunes
+select = ["E", "F", "I", "UP", "B"]
