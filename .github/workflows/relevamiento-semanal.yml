@@ -1,0 +1,30 @@
+name: Relevamiento semanal
+
+on:
+  # Lunes 08:00 hora Argentina (UTC-3) = 11:00 UTC.
+  schedule:
+    - cron: "0 11 * * 1"
+  # Permite dispararlo a mano desde la pestaña Actions de GitHub, sin
+  # esperar al lunes — útil para probar cambios en una fuente.
+  workflow_dispatch:
+
+jobs:
+  relevar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Instalar uv
+        uses: astral-sh/setup-uv@v9
+        with:
+          enable-cache: true
+
+      - name: Instalar dependencias (según uv.lock, sin resolver de nuevo)
+        run: uv sync --frozen
+
+      - name: Correr el relevamiento de todas las fuentes activas
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          USER_AGENT: ${{ secrets.USER_AGENT }}
+        run: uv run python scripts/relevamiento_semanal.py
