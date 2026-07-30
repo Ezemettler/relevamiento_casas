@@ -140,3 +140,21 @@ def clasificar_zona(
     if normalizada in zonas.get("referencia", []):
         return CategoriaZona.REFERENCIA
     return CategoriaZona.FUERA_DE_ALCANCE
+
+
+def nombre_legible_localidad(localidad: str | None) -> str | None:
+    """'Moron' y 'Morón' -> 'Morón' — un solo nombre prolijo por localidad.
+
+    Sin esto, agrupar por `Propiedad.localidad` cuenta la misma localidad
+    dos veces cuando distintas fuentes la escriben con o sin tilde. Si no
+    está en la tabla de alias (una localidad fuera de alcance, ej. "Merlo"),
+    se devuelve el texto tal cual vino — no hay nada que unificar.
+    """
+    if not localidad:
+        return localidad
+
+    config = cargar_yaml("filtros.yaml")
+    slug = config.get("alias_localidad", {}).get(_slug(localidad))
+    if slug is None:
+        return localidad
+    return config.get("nombres_localidad", {}).get(slug, localidad)

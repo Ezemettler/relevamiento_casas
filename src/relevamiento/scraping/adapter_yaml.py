@@ -77,6 +77,20 @@ def _extraer_campo(nodo: Node, definicion: dict[str, Any]) -> str | None:
     return texto or None
 
 
+def _limpiar_texto_html(texto: str | None) -> str | None:
+    """Saca etiquetas HTML que algunas fuentes (Marcelo Milano, Carlos
+    Fernández Prop.) dejan como texto literal en la descripción — ej.
+    "<p>VENTA</p><div><br></div>..." — no es un error de nuestro parseo,
+    viene así en el campo de origen. Re-parsear el texto como HTML y volver
+    a extraer el texto limpia las etiquetas y decodifica entidades como
+    &nbsp; de paso. Si el texto no tiene ninguna etiqueta, no cambia nada.
+    """
+    if not texto:
+        return None
+    limpio = HTMLParser(texto).text(deep=True, separator=" ", strip=True)
+    return limpio or None
+
+
 def iterar_listado(config: ConfigFuente, descargar: DescargarFn) -> Iterator[ItemListado]:
     """Recorre todas las páginas del listado hasta el marcador de fin.
 
@@ -163,6 +177,10 @@ def obtener_detalle(
                 caracteristicas[campo] = valor.strip()
 
     descripcion_def = config.detalle.get("descripcion")
-    descripcion = _extraer_campo(arbol, descripcion_def) if descripcion_def else None
+    descripcion = (
+        _limpiar_texto_html(_extraer_campo(arbol, descripcion_def))
+        if descripcion_def
+        else None
+    )
 
     return DetalleCrudo(caracteristicas=caracteristicas, descripcion=descripcion)

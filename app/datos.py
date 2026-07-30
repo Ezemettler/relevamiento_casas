@@ -9,7 +9,7 @@ UI que vive en reruns cortos como Streamlit.
 
 from __future__ import annotations
 
-from datetime import date
+from datetime import date, datetime
 from typing import Any
 
 import pandas as pd
@@ -23,9 +23,12 @@ from relevamiento.modelos import (
     Corrida,
     EstadoPropiedad,
     Evaluacion,
+    Fuente,
+    Observacion,
     Propiedad,
     TipoCambio,
 )
+from relevamiento.normalizacion.ubicacion import nombre_legible_localidad
 
 
 def filtros_configurados() -> dict[str, Any]:
@@ -52,13 +55,17 @@ def _tendencia_texto(
     bajadas: int, variacion_pct: float | None, dias_en_mercado: int
 ) -> str:
     """Resumen compacto para una columna del listado — de un vistazo, sin
-    tener que abrir el detalle de cada propiedad."""
-    if bajadas == 0 and dias_en_mercado <= 7:
-        return "nueva"
+    tener que abrir el detalle de cada propiedad. Reemplaza a la vieja
+    columna "señal" (fuerte/moderada/baja): esa categoría abstracta no decía
+    nada por sí sola, esto muestra el hecho concreto detrás."""
     if bajadas == 0:
-        return "—"
-    variacion = f" ({variacion_pct:.0f}%)" if variacion_pct else ""
-    return f"↓ {bajadas} baja{'s' if bajadas != 1 else ''}{variacion}"
+        if dias_en_mercado <= 7:
+            return "nueva"
+        return f"{dias_en_mercado} días sin cambios"
+    plural = "s" if bajadas != 1 else ""
+    if variacion_pct:
+        return f"↓{abs(variacion_pct):.0f}% en {bajadas} baja{plural}"
+    return f"↓ {bajadas} baja{plural}"
 
 
 def _contar_bajadas_por_propiedad(s: Session) -> dict[int, int]:
@@ -72,7 +79,10 @@ def _contar_bajadas_por_propiedad(s: Session) -> dict[int, int]:
 
 
 def _fila_propiedad(
-    p: Propiedad, bajadas: int, disponible: bool | None = True
+    p: Propiedad,
+    bajadas: int,
+    evaluacion: Evaluacion | None = None,
+    inmobiliaria: str | None = None,
 ) -> dict[str, Any]:
     precio = float(p.precio_actual) if p.precio_actual is not None else None
     precio_inicial = float(p.precio_inicial) if p.precio_inicial is not None else None
@@ -91,6 +101,8 @@ def _fila_propiedad(
         "barrio": p.barrio,
         "localidad": p.localidad,
         "zona": p.categoria_zona.value if p.categoria_zona else None,
+        "inmobiliaria": inmobiliaria,
+        "precio_inicial": precio_inicial,
         "precio": precio,
         "moneda": p.moneda_actual.value if p.moneda_actual else None,
         "precio_m2": round(precio / m2, 0) if precio and m2 else None,
@@ -98,8 +110,10 @@ def _fila_propiedad(
         "dormitorios": p.dormitorios,
         "banos": p.banos,
         "m2_cubiertos": m2,
+        "m2_totales": float(p.m2_totales) if p.m2_totales is not None else None,
         "m2_terreno": float(p.m2_terreno) if p.m2_terreno is not None else None,
         "antiguedad_anios": p.antiguedad_anios,
+        "fecha_primera_vista": p.fecha_primera_vista,
         "dias_en_mercado": dias_en_mercado,
         "bajadas": bajadas,
         "variacion_pct": variacion_pct,
@@ -107,7 +121,16 @@ def _fila_propiedad(
         "tendencia": _tendencia_texto(bajadas, variacion_pct, dias_en_mercado),
         # None en `Evaluacion.disponible` (sin fila todavía) cuenta como
         # disponible: ver docstring de `Evaluacion` en modelos.py.
-        "disponible": disponible if disponible is not None else True,
+        "disponible": evaluacion.disponible if evaluacion else True,
+        "humedad": evaluacion.humedad if evaluacion else None,
+        "cochera": evaluacion.cochera if evaluacion else None,
+        "patio_jardin": evaluacion.patio_jardin if evaluacion else None,
+        "posibilidad_ampliacion": evaluacion.posibilidad_ampliacion
+        if evaluacion
+        else None,
+        "ventilacion_cruzada": evaluacion.ventilacion_cruzada if evaluacion else None,
+        "grietas": evaluacion.grietas if evaluacion else None,
+        "desniveles": evaluacion.desniveles if evaluacion else None,
         "url": p.url,
     }
 
@@ -117,6 +140,8 @@ def listado_propiedades(
     categorias_zona: list[str] | None = None,
     precio_maximo: float | None = None,
     solo_disponibles: bool = True,
+    inmobiliarias: list[str] | None = None,
+    barrios: list[str] | None = None,
 ) -> pd.DataFrame:
     """Propiedades activas, con los filtros aplicados. `None` = sin filtrar.
 
@@ -127,7 +152,8 @@ def listado_propiedades(
     """
     with sesion() as s:
         consulta = (
-            select(Propiedad, Evaluacion.disponible)
+            select(Propiedad, Evaluacion, Fuente.nombre)
+            .join(Fuente, Fuente.id == Propiedad.fuente_id)
             .outerjoin(Evaluacion, Evaluacion.propiedad_id == Propiedad.id)
             .where(Propiedad.estado == EstadoPropiedad.ACTIVA)
         )
@@ -141,13 +167,17 @@ def listado_propiedades(
             consulta = consulta.where(
                 or_(Evaluacion.disponible.is_(None), Evaluacion.disponible.is_(True))
             )
+        if inmobiliarias:
+            consulta = consulta.where(Fuente.nombre.in_(inmobiliarias))
+        if barrios:
+            consulta = consulta.where(Propiedad.barrio.in_(barrios))
 
         bajadas_por_id = _contar_bajadas_por_propiedad(s)
         consulta = consulta.order_by(Propiedad.fecha_primera_vista.desc())
         filas_db = s.execute(consulta).all()
         filas = [
-            _fila_propiedad(p, bajadas_por_id.get(p.id, 0), disponible)
-            for p, disponible in filas_db
+            _fila_propiedad(p, bajadas_por_id.get(p.id, 0), evaluacion, inmobiliaria)
+            for p, evaluacion, inmobiliaria in filas_db
         ]
 
     return pd.DataFrame(filas)
@@ -160,9 +190,15 @@ def _evaluacion_a_dict(e: Evaluacion) -> dict[str, Any]:
         "luz_natural": e.luz_natural.value if e.luz_natural else None,
         "humedad": e.humedad,
         "orientacion": e.orientacion.value if e.orientacion else None,
-        "ruido_entorno": e.ruido_entorno.value if e.ruido_entorno else None,
-        "distancia_estacion_metros": e.distancia_estacion_metros,
-        "entorno": e.entorno,
+        "distancia_estacion_km": float(e.distancia_estacion_km)
+        if e.distancia_estacion_km is not None
+        else None,
+        "cochera": e.cochera,
+        "patio_jardin": e.patio_jardin,
+        "posibilidad_ampliacion": e.posibilidad_ampliacion,
+        "ventilacion_cruzada": e.ventilacion_cruzada,
+        "grietas": e.grietas,
+        "desniveles": e.desniveles,
         "notas": e.notas,
     }
 
@@ -195,13 +231,15 @@ def guardar_o_actualizar_evaluacion(propiedad_id: int, datos: dict[str, Any]) ->
 
 def detalle_propiedad(propiedad_id: int) -> dict[str, Any] | None:
     """Todo lo necesario para el panel de detalle: la propiedad, su
-    historial de cambios y los datos complementarios ya cargados."""
+    historial de cambios, el historial de precios semana a semana y los
+    datos complementarios ya cargados."""
     with sesion() as s:
         p = s.get(Propiedad, propiedad_id)
         if p is None:
             return None
 
         bajadas_por_id = _contar_bajadas_por_propiedad(s)
+        inmobiliaria = s.scalar(select(Fuente.nombre).where(Fuente.id == p.fuente_id))
 
         cambios = s.execute(
             select(Cambio)
@@ -220,16 +258,80 @@ def detalle_propiedad(propiedad_id: int) -> dict[str, Any] | None:
             for c in cambios
         ]
 
+        # Una fila por corrida (haya cambiado el precio o no) — a diferencia
+        # de `cambios`, que solo registra cuándo algo cambió. Esto es lo que
+        # arma la serie semanal completa para el gráfico de línea.
+        observaciones = s.execute(
+            select(Observacion.fecha, Observacion.precio)
+            .where(
+                Observacion.propiedad_id == propiedad_id,
+                Observacion.precio.is_not(None),
+            )
+            .order_by(Observacion.fecha)
+        ).all()
+        historial_precios = [
+            {"fecha": fecha, "precio": float(precio)} for fecha, precio in observaciones
+        ]
+
         evaluacion = s.scalar(
             select(Evaluacion).where(Evaluacion.propiedad_id == propiedad_id)
         )
 
         return {
-            "propiedad": _fila_propiedad(p, bajadas_por_id.get(p.id, 0))
+            "propiedad": _fila_propiedad(
+                p, bajadas_por_id.get(p.id, 0), evaluacion, inmobiliaria
+            )
             | {"descripcion": p.descripcion},
             "cambios": cambios_lista,
+            "historial_precios": historial_precios,
             "evaluacion": _evaluacion_a_dict(evaluacion) if evaluacion else None,
         }
+
+
+def inmobiliarias_disponibles() -> list[str]:
+    """Nombres de fuentes activas — opciones para el filtro de inmobiliaria."""
+    with sesion() as s:
+        return sorted(
+            s.scalars(select(Fuente.nombre).where(Fuente.activa.is_(True))).all()
+        )
+
+
+def barrios_disponibles(
+    categorias_zona: list[str] | None = None, precio_maximo: float | None = None
+) -> list[str]:
+    """Barrios de propiedades disponibles — opciones para el filtro.
+
+    Sin `categorias_zona`/`precio_maximo` traería barrios de cualquier zona
+    (hasta de "fuera de alcance", como la costa) y de cualquier precio —
+    acá se restringe a lo mismo que ve el listado por defecto, para no
+    ofrecer barrios que después no van a aparecer nunca en la tabla.
+    """
+    with sesion() as s:
+        consulta = (
+            select(Propiedad.barrio)
+            .outerjoin(Evaluacion, Evaluacion.propiedad_id == Propiedad.id)
+            .where(
+                Propiedad.estado == EstadoPropiedad.ACTIVA,
+                Propiedad.barrio.is_not(None),
+                or_(Evaluacion.disponible.is_(None), Evaluacion.disponible.is_(True)),
+            )
+            .distinct()
+        )
+        if categorias_zona:
+            consulta = consulta.where(Propiedad.categoria_zona.in_(categorias_zona))
+        if precio_maximo:
+            consulta = consulta.where(Propiedad.precio_actual <= precio_maximo)
+        return sorted(s.scalars(consulta).all())
+
+
+def ultima_actualizacion() -> datetime | None:
+    """Cuándo corrió la última corrida — para el cartel de 'actualizado el...'
+    que aparece en todas las páginas. `None` si todavía no corrió ninguna."""
+    with sesion() as s:
+        corrida = s.execute(
+            select(Corrida).order_by(Corrida.id.desc()).limit(1)
+        ).scalar_one_or_none()
+        return corrida.inicio if corrida else None
 
 
 def resumen_general() -> dict[str, Any]:
@@ -267,24 +369,31 @@ def resumen_general() -> dict[str, Any]:
         }
 
 
-def metricas_por_zona_y_tipologia() -> pd.DataFrame:
-    """Precio/m² promedio, agrupado — la referencia que sirve para comparar."""
-    df = listado_propiedades()
+def precio_m2_por_localidad() -> pd.DataFrame:
+    """Precio/m² promedio y stock, por localidad (Morón, Haedo, Castelar...).
+
+    Más granular que agrupar por categoría de zona: permite comparar
+    barrios entre sí, no solo "objetivo" contra "referencia" en bloque.
+    Excluye "fuera de alcance" (Pinamar, Merlo...) — no sirven de
+    comparación para la zona de compra.
+    """
+    df = listado_propiedades(categorias_zona=["objetivo", "referencia"])
     if df.empty:
         return df
+    df = df.dropna(subset=["precio_m2", "localidad"]).copy()
+    # Sin esto, "Morón" y "Moron" (distintas fuentes, mismo lugar) quedan
+    # como dos barras separadas en vez de una.
+    df["localidad"] = df["localidad"].map(nombre_legible_localidad)
     return (
-        df.dropna(subset=["precio_m2"])
-        .groupby(["zona", "tipologia"], dropna=False)["precio_m2"]
-        .agg(["mean", "median", "count"])
-        .rename(
-            columns={
-                "mean": "precio_m2_promedio",
-                "median": "precio_m2_mediana",
-                "count": "cantidad",
-            }
+        df.groupby("localidad")
+        .agg(
+            precio_m2_promedio=("precio_m2", "mean"),
+            cantidad=("precio_m2", "count"),
+            zona=("zona", "first"),
         )
-        .round(0)
+        .round({"precio_m2_promedio": 0})
         .reset_index()
+        .sort_values("precio_m2_promedio", ascending=False)
     )
 
 

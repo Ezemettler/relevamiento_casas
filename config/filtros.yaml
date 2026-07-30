@@ -72,3 +72,23 @@ alias_localidad:
   "san antonio de padua": san_antonio_de_padua
   "padua": san_antonio_de_padua
   "villa luzuriaga": villa_luzuriaga
+
+# ---------------------------------------------------------------------------
+# NOMBRE PARA MOSTRAR
+# Cada fuente escribe la misma localidad con o sin tilde ("Moron"/"Morón") —
+# sin esto, un gráfico agrupado por localidad las cuenta como dos barrios
+# distintos. Un solo nombre prolijo por localidad normalizada.
+# ---------------------------------------------------------------------------
+nombres_localidad:
+  moron: Morón
+  castelar: Castelar
+  haedo: Haedo
+  el_palomar: El Palomar
+  villa_sarmiento: Villa Sarmiento
+  ramos_mejia: Ramos Mejía
+  ituzaingo: Ituzaingó
+  ciudadela: Ciudadela
+  hurlingham: Hurlingham
+  villa_tesei: Villa Tesei
+  san_antonio_de_padua: San Antonio de Padua
+  villa_luzuriaga: Villa Luzuriaga

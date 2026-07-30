@@ -8,7 +8,7 @@
         "run",
         "streamlit",
         "run",
-        "app/Mercado.py",
+        "app/Inicio.py",
         "--server.headless",
         "true"
       ],

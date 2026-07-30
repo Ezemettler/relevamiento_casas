@@ -119,16 +119,6 @@ class NivelLuz(enum.StrEnum):
     MUCHA = "mucha"
 
 
-class NivelRuido(enum.StrEnum):
-    """Categorías abiertas a ajuste — primera versión, ver conversación con
-    el usuario del 2026-07-29."""
-
-    TRANQUILA = "tranquila"
-    MODERADA = "moderada"
-    TRANSITADA = "transitada"
-    AVENIDA = "avenida"
-
-
 class Orientacion(enum.StrEnum):
     N = "N"
     NE = "NE"
@@ -207,7 +197,6 @@ class Propiedad(Base):
     moneda_inicial: Mapped[Moneda | None] = mapped_column(_enum(Moneda, "moneda_inicial"))
     precio_actual: Mapped[float | None] = mapped_column(Numeric(14, 2))
     moneda_actual: Mapped[Moneda | None] = mapped_column(_enum(Moneda, "moneda_actual"))
-    expensas: Mapped[float | None] = mapped_column(Numeric(12, 2))
 
     titulo: Mapped[str | None] = mapped_column(String(400))
     descripcion: Mapped[str | None] = mapped_column(Text)
@@ -337,11 +326,13 @@ class Evaluacion(Base):
     orientacion: Mapped[Orientacion | None] = mapped_column(
         _enum(Orientacion, "orientacion")
     )
-    ruido_entorno: Mapped[NivelRuido | None] = mapped_column(
-        _enum(NivelRuido, "nivel_ruido")
-    )
-    distancia_estacion_metros: Mapped[int | None]
-    entorno: Mapped[str | None] = mapped_column(Text)
+    distancia_estacion_km: Mapped[float | None] = mapped_column(Numeric(4, 1))
+    cochera: Mapped[bool | None] = mapped_column(Boolean)
+    patio_jardin: Mapped[bool | None] = mapped_column(Boolean)
+    posibilidad_ampliacion: Mapped[bool | None] = mapped_column(Boolean)
+    ventilacion_cruzada: Mapped[bool | None] = mapped_column(Boolean)
+    grietas: Mapped[bool | None] = mapped_column(Boolean)
+    desniveles: Mapped[bool | None] = mapped_column(Boolean)
     notas: Mapped[str | None] = mapped_column(Text)
     fotos: Mapped[list | None] = mapped_column(Json)  # URLs en Supabase Storage
 

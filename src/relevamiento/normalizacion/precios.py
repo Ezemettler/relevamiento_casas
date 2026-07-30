@@ -50,12 +50,18 @@ def parsear_precio(texto: str | None) -> tuple[float, Moneda] | None:
 
 
 def _parsear_monto(texto: str) -> float:
-    """'390.000' -> 390000.0 | '145.500,50' -> 145500.5
+    """'390.000' -> 390000.0 | '145.500,50' -> 145500.5 | '254,000' -> 254000.0
 
-    Los precios de estas fuentes casi nunca llevan decimales, pero se
-    soporta el formato por si alguna fuente lo usa (coma = decimal,
-    punto = separador de miles, como es estándar en Argentina).
+    Por defecto la coma es decimal y el punto separador de miles (formato
+    argentino). Pero si hay exactamente tres dígitos después de la coma, se
+    la trata como separador de miles en formato inglés en vez de decimal:
+    un precio de casa nunca tiene centavos, así que "254,000" son 254 mil
+    dólares, no 254 con algo. Pasó de verdad con una propiedad de Sarro
+    Pucheta que quedó guardada en USD 254 en vez de USD 254.000.
     """
     if "," in texto:
+        parte_decimal = texto.rsplit(",", 1)[1]
+        if len(parte_decimal) == 3:
+            return float(texto.replace(".", "").replace(",", ""))
         return float(texto.replace(".", "").replace(",", "."))
     return float(texto.replace(".", ""))

@@ -6,7 +6,11 @@ formato, estos tests son los primeros en avisarlo.
 from relevamiento.modelos import CategoriaZona, Moneda
 from relevamiento.normalizacion.precios import parsear_precio
 from relevamiento.normalizacion.superficie import parsear_entero, parsear_numero
-from relevamiento.normalizacion.ubicacion import clasificar_zona, parsear_tipo_ubicacion
+from relevamiento.normalizacion.ubicacion import (
+    clasificar_zona,
+    nombre_legible_localidad,
+    parsear_tipo_ubicacion,
+)
 
 
 def test_precio_usd_simple():
@@ -29,6 +33,13 @@ def test_precio_pesos():
 
 def test_precio_con_decimales():
     assert parsear_precio("USD145.500,50") == (145500.5, Moneda.USD)
+
+
+def test_precio_con_coma_como_separador_de_miles():
+    """Sarro Pucheta usa a veces coma en vez de punto como separador de
+    miles ("254,000" = 254 mil, no 254 con decimales) — pasó de verdad y
+    dejó una propiedad guardada con precio 254 en vez de 254.000."""
+    assert parsear_precio("Precio de venta USD 254,000") == (254000.0, Moneda.USD)
 
 
 def test_precio_ausente():
@@ -94,3 +105,21 @@ def test_clasificar_zona_desconocida():
 
 def test_clasificar_zona_vacia():
     assert clasificar_zona(None) is None
+
+
+def test_nombre_legible_unifica_variantes_con_y_sin_tilde():
+    """El bug real: 'Morón' y 'Moron' contaban como dos barrios distintos
+    al agrupar métricas de mercado."""
+    assert nombre_legible_localidad("Moron") == "Morón"
+    assert nombre_legible_localidad("morón") == "Morón"
+    assert nombre_legible_localidad("Ramos Mejia") == "Ramos Mejía"
+    assert nombre_legible_localidad("ituzaingo") == "Ituzaingó"
+
+
+def test_nombre_legible_localidad_desconocida_se_devuelve_tal_cual():
+    """Fuera de alcance (ej. 'Merlo'): no hay nada que unificar."""
+    assert nombre_legible_localidad("Merlo") == "Merlo"
+
+
+def test_nombre_legible_vacio():
+    assert nombre_legible_localidad(None) is None

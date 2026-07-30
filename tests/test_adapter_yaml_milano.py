@@ -52,3 +52,16 @@ def test_detalle_de_milano_trae_caracteristicas_mapeadas():
     assert detalle.caracteristicas["ambientes"] == "6"
     assert detalle.caracteristicas["dormitorios"] == "5"
     assert detalle.caracteristicas["banos"] == "5"
+
+
+def test_detalle_de_milano_limpia_html_crudo_de_la_descripcion():
+    """Milano deja "<div><br></div>" y similares como texto literal en la
+    descripción — no es un error de nuestro parseo, viene así en el campo
+    de origen. Confirma que se limpia antes de guardar."""
+    config = ConfigFuente.desde_yaml(cargar_yaml("fuentes/marcelo_milano.yaml"))
+    html = _leer("marcelo_milano_detalle.html")
+    detalle = obtener_detalle("https://ejemplo.test/p/1", config, lambda _url: html)
+
+    assert "<div>" not in detalle.descripcion
+    assert "<br>" not in detalle.descripcion
+    assert "Residencia exclusiva en Casco de Leloir" in detalle.descripcion

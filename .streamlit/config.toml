@@ -1,0 +1,10 @@
+# Tema de la app. Es la forma soportada de fijar colores en Streamlit — a
+# diferencia del CSS a mano que usamos para la navegación (ver app/Inicio.py),
+# esto no depende de nombres de clases internas y no se rompe con updates.
+[theme]
+base = "dark"
+# Celeste — define el color de acento en toda la app: los "chips" de los
+# multiselect (tipología, zona), checkboxes tildados, botones primarios,
+# la selección de fila en las tablas. Antes usaba el rojo por defecto de
+# Streamlit.
+primaryColor = "#38BDF8"
