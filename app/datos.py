@@ -229,6 +229,23 @@ def guardar_o_actualizar_evaluacion(propiedad_id: int, datos: dict[str, Any]) ->
             s.add(Evaluacion(propiedad_id=propiedad_id, **datos))
 
 
+def actualizar_atributos_propiedad(propiedad_id: int, datos: dict[str, Any]) -> None:
+    """Corrección manual de atributos físicos (m², ambientes, antigüedad...)
+    que el scraping sacó mal o no encontró.
+
+    Es la única escritura manual sobre `propiedades` en toda la app —
+    separada de `guardar_o_actualizar_evaluacion` porque escribe en la
+    tabla del scraping, no en evaluaciones. No hay conflicto con corridas
+    futuras: `persistir.py` solo vuelve a tocar `precio_actual` y `estado`
+    en propiedades ya vistas (ver `_actualizar_propiedad`), nunca estos
+    campos — una corrección acá no se pierde en la próxima corrida.
+    """
+    with sesion() as s:
+        propiedad = s.get(Propiedad, propiedad_id)
+        for campo, valor in datos.items():
+            setattr(propiedad, campo, valor)
+
+
 def detalle_propiedad(propiedad_id: int) -> dict[str, Any] | None:
     """Todo lo necesario para el panel de detalle: la propiedad, su
     historial de cambios, el historial de precios semana a semana y los

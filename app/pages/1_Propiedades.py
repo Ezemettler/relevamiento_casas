@@ -21,6 +21,7 @@ import pandas as pd  # noqa: E402
 import streamlit as st  # noqa: E402
 from componentes import encabezado  # noqa: E402
 from datos import (  # noqa: E402
+    actualizar_atributos_propiedad,
     barrios_disponibles,
     detalle_propiedad,
     filtros_configurados,
@@ -57,12 +58,60 @@ def _selector_si_no(etiqueta: str, actual: dict | None, campo: str) -> bool | No
 
 
 @st.dialog("Modificar datos de la propiedad")
-def _modal_completar_datos(propiedad_id: int, etiqueta: str, actual: dict | None) -> None:
+def _modal_completar_datos(
+    propiedad_id: int, etiqueta: str, propiedad: dict, actual: dict | None
+) -> None:
     st.caption(etiqueta)
     st.caption(
         "Lo que el scraping no puede sacar solo — mirando fotos del aviso o "
         "después de visitarla. Guardar reemplaza lo que hayas cargado antes."
     )
+
+    # El scraping carga estos atributos una sola vez, al crear la propiedad
+    # (ver persistir.py), y nunca los vuelve a tocar — si vino vacío o mal,
+    # se queda así para siempre salvo que se corrija acá a mano.
+    st.markdown("**Atributos físicos**")
+    st.caption("Por si el scraping no los sacó bien o quedaron vacíos.")
+    col_m1, col_m2 = st.columns(2)
+    with col_m1:
+        m2_cubiertos = st.number_input(
+            "M² cubiertos",
+            min_value=0.0,
+            step=1.0,
+            value=float(propiedad.get("m2_cubiertos") or 0),
+        )
+        ambientes = st.number_input(
+            "Ambientes",
+            min_value=0,
+            step=1,
+            value=int(propiedad.get("ambientes") or 0),
+        )
+        antiguedad_anios = st.number_input(
+            "Antigüedad (años)",
+            min_value=0,
+            step=1,
+            value=int(propiedad.get("antiguedad_anios") or 0),
+        )
+    with col_m2:
+        m2_totales = st.number_input(
+            "M² totales",
+            min_value=0.0,
+            step=1.0,
+            value=float(propiedad.get("m2_totales") or 0),
+        )
+        dormitorios = st.number_input(
+            "Dormitorios",
+            min_value=0,
+            step=1,
+            value=int(propiedad.get("dormitorios") or 0),
+        )
+        banos = st.number_input(
+            "Baños",
+            min_value=0,
+            step=1,
+            value=int(propiedad.get("banos") or 0),
+        )
+    st.divider()
 
     disponible = st.checkbox(
         "Disponible para el análisis",
@@ -128,6 +177,17 @@ def _modal_completar_datos(propiedad_id: int, etiqueta: str, actual: dict | None
     notas = st.text_area("Notas libres", value=notas_defecto)
 
     if st.button("Guardar", type="primary", use_container_width=True):
+        actualizar_atributos_propiedad(
+            propiedad_id,
+            {
+                "m2_cubiertos": m2_cubiertos or None,
+                "m2_totales": m2_totales or None,
+                "ambientes": ambientes or None,
+                "dormitorios": dormitorios or None,
+                "banos": banos or None,
+                "antiguedad_anios": antiguedad_anios or None,
+            },
+        )
         guardar_o_actualizar_evaluacion(
             propiedad_id,
             {
@@ -212,6 +272,10 @@ _CAMPOS_POSITIVOS = [
 _CAMPOS_NEGATIVOS = ["grietas", "desniveles"]
 _VERDE = "color: #4ADE80"
 _ROJO = "color: #F87171"
+_AMARILLO = "color: #FBBF24"
+
+# Corte del semáforo para distancia a la estación, definido por el usuario.
+_DISTANCIA_MAXIMA_VERDE_KM = 2.0
 
 _EMOJI_TIPO = {"casa": "🏠", "ph": "🏘️", "departamento": "🏢", "otro": "📍"}
 
@@ -246,14 +310,39 @@ _CARACTERISTICAS = [
 ]
 
 
-def _semaforo_caracteristicas(p: dict) -> None:
+def _semaforo_caracteristicas(p: dict, evaluacion: dict | None) -> None:
     """Bloque tipo semáforo: un vistazo rápido a los criterios de descarte
-    de la propiedad, sin tener que leer una tabla."""
-    columnas = st.columns(2)
-    for i, (campo, etiqueta, positivo) in enumerate(_CARACTERISTICAS):
+    de la propiedad, sin tener que leer una tabla. Además de los sí/no de
+    siempre, suma luz natural (mucha/media/poca) y distancia a la estación
+    (con un corte en km) — no son booleanos, pero es el mismo bloque."""
+    items: list[tuple[str, str, str]] = []
+    for campo, etiqueta, positivo in _CARACTERISTICAS:
         texto = _si_no(p.get(campo))
         color = _color_positivo(texto) if positivo else _color_negativo(texto)
-        emoji = "🟢" if color == _VERDE else "🔴" if color == _ROJO else "⚪"
+        items.append((etiqueta, texto, color))
+
+    luz = evaluacion.get("luz_natural") if evaluacion else None
+    color_luz = {"mucha": _VERDE, "media": _AMARILLO, "poca": _ROJO}.get(luz, "")
+    items.append(("Luz natural", luz.capitalize() if luz else "—", color_luz))
+
+    distancia = evaluacion.get("distancia_estacion_km") if evaluacion else None
+    if distancia is None:
+        texto_distancia, color_distancia = "—", ""
+    else:
+        texto_distancia = f"{distancia} km"
+        color_distancia = _VERDE if distancia <= _DISTANCIA_MAXIMA_VERDE_KM else _ROJO
+    items.append(("Distancia estación", texto_distancia, color_distancia))
+
+    columnas = st.columns(2)
+    for i, (etiqueta, texto, color) in enumerate(items):
+        if color == _VERDE:
+            emoji = "🟢"
+        elif color == _ROJO:
+            emoji = "🔴"
+        elif color == _AMARILLO:
+            emoji = "🟡"
+        else:
+            emoji = "⚪"
         columnas[i % 2].markdown(f"{emoji} **{etiqueta}:** {texto}")
 
 
@@ -471,35 +560,19 @@ with col_detalle:
             st.divider()
 
             st.markdown("🚦 **Características**")
-            _semaforo_caracteristicas(p)
+            _semaforo_caracteristicas(p, evaluacion)
+            if evaluacion and evaluacion.get("orientacion"):
+                st.caption(f"Orientación: {evaluacion['orientacion']}")
 
             st.link_button("🔗 Ver aviso original", p["url"], use_container_width=True)
             if st.button(
                 "📝 Modificar datos de esta propiedad", use_container_width=True
             ):
-                _modal_completar_datos(propiedad_id, etiqueta, evaluacion)
+                _modal_completar_datos(propiedad_id, etiqueta, p, evaluacion)
 
             if p.get("descripcion"):
                 with st.expander("Descripción de la fuente"):
                     st.write(p["descripcion"])
-
-            hay_otros_datos = evaluacion and (
-                evaluacion.get("luz_natural")
-                or evaluacion.get("orientacion")
-                or evaluacion.get("distancia_estacion_km")
-                or evaluacion.get("notas")
-            )
-            if hay_otros_datos:
-                with st.expander("Otros datos cargados"):
-                    if evaluacion.get("luz_natural"):
-                        st.write(f"Luz natural: {evaluacion['luz_natural'].capitalize()}")
-                    if evaluacion.get("orientacion"):
-                        st.write(f"Orientación: {evaluacion['orientacion']}")
-                    if evaluacion.get("distancia_estacion_km"):
-                        distancia = evaluacion["distancia_estacion_km"]
-                        st.write(f"Distancia a la estación: {distancia} km")
-                    if evaluacion.get("notas"):
-                        st.write(f"Notas: {evaluacion['notas']}")
 
             st.divider()
             st.markdown("📈 **Historial de precios**")
@@ -528,3 +601,8 @@ with col_detalle:
             else:
                 for cambio in datos["cambios"]:
                     st.markdown(_texto_cambio(cambio))
+
+            st.divider()
+            st.markdown("📝 **Notas**")
+            notas_texto = evaluacion.get("notas") if evaluacion else None
+            st.write(notas_texto if notas_texto else "—")
