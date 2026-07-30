@@ -113,10 +113,20 @@ class ResultadoCriterio(enum.StrEnum):
     SIN_DATOS = "sin_datos"  # requiere criterio humano -> va al formulario
 
 
-class NivelHumedad(enum.StrEnum):
-    NO_DETECTADA = "no_detectada"
-    LEVE = "leve"
-    IMPORTANTE = "importante"
+class NivelLuz(enum.StrEnum):
+    POCA = "poca"
+    MEDIA = "media"
+    MUCHA = "mucha"
+
+
+class NivelRuido(enum.StrEnum):
+    """Categorías abiertas a ajuste — primera versión, ver conversación con
+    el usuario del 2026-07-29."""
+
+    TRANQUILA = "tranquila"
+    MODERADA = "moderada"
+    TRANSITADA = "transitada"
+    AVENIDA = "avenida"
 
 
 class Orientacion(enum.StrEnum):
@@ -297,30 +307,41 @@ class Cambio(Base):
 
 
 class Evaluacion(Base):
-    """Evaluación humana de una visita.
+    """Datos complementarios de una propiedad, cargados a mano.
 
     Regla 2 de CLAUDE.md: el scraping NUNCA escribe acá. Está en una tabla
     aparte justamente para que ningún re-scrapeo pueda pisarla.
+
+    Un solo registro por propiedad (no un historial de visitas): la
+    intención es "completar/corregir lo que el scraping no puede sacar",
+    no llevar un diario de visitas fechadas. `fecha_visita` es la fecha de
+    la última actualización de estos datos, no un identificador de una
+    visita en particular.
     """
 
     __tablename__ = "evaluaciones"
+    __table_args__ = (UniqueConstraint("propiedad_id", name="uq_evaluacion_propiedad"),)
 
     id: Mapped[int] = mapped_column(primary_key=True)
     propiedad_id: Mapped[int] = mapped_column(ForeignKey("propiedades.id"))
     fecha_visita: Mapped[date] = mapped_column(Date)
 
-    luz_natural: Mapped[int | None]  # 1 a 5
-    humedad: Mapped[NivelHumedad | None] = mapped_column(
-        _enum(NivelHumedad, "nivel_humedad")
-    )
+    # Curación manual: por defecto toda propiedad está disponible (una
+    # propiedad SIN fila en esta tabla también cuenta como disponible — ver
+    # datos.py). El scraping sigue registrando cambios de precio de una
+    # propiedad descartada igual; solo se la oculta del análisis.
+    disponible: Mapped[bool] = mapped_column(Boolean, default=True)
+
+    luz_natural: Mapped[NivelLuz | None] = mapped_column(_enum(NivelLuz, "nivel_luz"))
+    humedad: Mapped[bool | None] = mapped_column(Boolean)  # tiene / no tiene
     orientacion: Mapped[Orientacion | None] = mapped_column(
         _enum(Orientacion, "orientacion")
     )
-    estado_general: Mapped[int | None]  # 1 a 5
-    ruido_entorno: Mapped[int | None]  # 1 a 5
+    ruido_entorno: Mapped[NivelRuido | None] = mapped_column(
+        _enum(NivelRuido, "nivel_ruido")
+    )
+    distancia_estacion_metros: Mapped[int | None]
     entorno: Mapped[str | None] = mapped_column(Text)
-    requiere_refaccion: Mapped[bool | None] = mapped_column(Boolean)
-    refaccion_estimada: Mapped[float | None] = mapped_column(Numeric(12, 2))
     notas: Mapped[str | None] = mapped_column(Text)
     fotos: Mapped[list | None] = mapped_column(Json)  # URLs en Supabase Storage
 

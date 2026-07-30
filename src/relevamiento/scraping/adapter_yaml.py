@@ -1,19 +1,26 @@
-"""Adapter guiado por config/fuentes/*.yaml para sitios sobre Tokkobroker.
+"""Adapter genérico guiado por config/fuentes/*.yaml.
 
-Tokkobroker es un CMS muy usado por inmobiliarias argentinas: HTML servido
-por el servidor (sin JavaScript de por medio) y paginación por scroll
-infinito vía un parámetro de página en la misma URL. Confirmado en Carlos
-Fernández Prop. y Marcelo Milano (ver PLAN.md sección 2.b).
+Sirve para cualquier sitio con HTML servido por el servidor (sin JavaScript
+de por medio) y paginación por un parámetro de página en la URL — eso cubre
+tanto los sitios sobre Tokkobroker (Carlos Fernández Prop., Marcelo Milano)
+como sitios con su propia plantilla (Sarro Pucheta). Sumar una fuente que
+encaje en ese patrón es escribir un YAML nuevo, no código.
 
-Si una fuente nueva usa otra plataforma, este adapter no le sirve — hace
-falta escribir uno distinto. Lo reutilizable entre fuentes Tokko es este
-mismo archivo: para sumar Milano alcanza con un YAML nuevo, no con código.
+Dos formas de fin de paginación, ambas soportadas:
+  - Un marcador de texto exacto en la respuesta (scroll infinito estilo
+    Tokko: `marcador_fin` en el YAML).
+  - Una página que simplemente no trae más ítems (paginación tradicional
+    estilo Sarro Pucheta: `marcador_fin` se omite en el YAML).
+
+Si una fuente nueva no encaja en ninguno de los dos patrones (por ejemplo,
+un sitio que arma el listado enteramente con JavaScript), este adapter no
+alcanza y hace falta escribir uno distinto.
 """
 
 from __future__ import annotations
 
 from collections.abc import Callable, Iterator
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any
 from urllib.parse import urljoin
 
@@ -35,6 +42,9 @@ class ConfigFuente:
     listado: dict[str, Any]
     detalle: dict[str, Any]
     mapeo_tipologia: dict[str, str]
+    # Para fuentes con `tipologia_texto` (dirección y barrio combinados) —
+    # ver `normalizacion.ubicacion.parsear_direccion_con_barrio`.
+    localidades_conocidas: list[str] = field(default_factory=list)
 
     @classmethod
     def desde_yaml(cls, datos: dict[str, Any]) -> ConfigFuente:
@@ -45,6 +55,7 @@ class ConfigFuente:
             listado=datos["listado"],
             detalle=datos["detalle"],
             mapeo_tipologia=datos.get("mapeo_tipologia", {}),
+            localidades_conocidas=datos.get("localidades_conocidas", []),
         )
 
 
@@ -74,7 +85,9 @@ def iterar_listado(config: ConfigFuente, descargar: DescargarFn) -> Iterator[Ite
     verificación de salud (regla 5 de CLAUDE.md) sin que este módulo lo sepa.
     """
     pagina = config.listado["primera_pagina"]
-    marcador_fin = config.listado["marcador_fin"]
+    # Ausente = la fuente usa paginación tradicional; el fin se detecta
+    # solo por "esta página no trajo ítems" (más abajo).
+    marcador_fin = config.listado.get("marcador_fin")
     # Sin este tope, un cambio de plantilla que rompa la detección del fin
     # de paginación dejaría el bucle pidiendo páginas para siempre.
     max_paginas = config.listado.get("max_paginas", 100)
@@ -87,7 +100,7 @@ def iterar_listado(config: ConfigFuente, descargar: DescargarFn) -> Iterator[Ite
         # "in": la página 1 completa lo menciona dentro de su propio
         # JavaScript (el código que define esta misma condición de corte),
         # así que ese chequeo daba un falso positivo en la primera página.
-        if html.strip() == marcador_fin:
+        if marcador_fin and html.strip() == marcador_fin:
             return
 
         nodos = HTMLParser(html).css(config.listado["item"])
@@ -100,6 +113,14 @@ def iterar_listado(config: ConfigFuente, descargar: DescargarFn) -> Iterator[Ite
         pagina += 1
 
 
+def _extraer_opcional(nodo: Node, campos: dict[str, Any], nombre: str) -> str | None:
+    """Como `_extraer_campo`, pero el campo del YAML puede no existir —
+    para las variantes que solo algunas fuentes necesitan (ver
+    `ItemListado`)."""
+    definicion = campos.get(nombre)
+    return _extraer_campo(nodo, definicion) if definicion else None
+
+
 def _parsear_item(nodo: Node, config: ConfigFuente) -> ItemListado:
     campos = config.listado["campos"]
     id_en_fuente = _extraer_campo(nodo, campos["id_en_fuente"])
@@ -107,9 +128,11 @@ def _parsear_item(nodo: Node, config: ConfigFuente) -> ItemListado:
     return ItemListado(
         id_en_fuente=id_en_fuente or "",
         url=urljoin(config.url_base, url_relativa) if url_relativa else config.url_base,
-        tipo_ubicacion_texto=_extraer_campo(nodo, campos["tipo_ubicacion_texto"]),
+        tipo_ubicacion_texto=_extraer_opcional(nodo, campos, "tipo_ubicacion_texto"),
+        tipologia_texto=_extraer_opcional(nodo, campos, "tipologia_texto"),
         direccion_texto=_extraer_campo(nodo, campos["direccion_texto"]),
         precio_texto=_extraer_campo(nodo, campos["precio_texto"]),
+        titulo_texto=_extraer_opcional(nodo, campos, "titulo_texto"),
     )
 
 

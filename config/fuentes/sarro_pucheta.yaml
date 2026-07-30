@@ -1,0 +1,84 @@
+# Sarro Pucheta — inmobiliaria de Haedo/Morón.
+#
+# Plataforma propia (no Tokkobroker), HTML servido por el servidor con
+# paginación tradicional por ?page=N — sin scroll infinito ni marcador de
+# fin especial: se sabe que terminó cuando una página no trae tarjetas.
+# Confirmado por reconocimiento manual del 2026-07-29.
+#
+# Da la tipología en un atributo aparte (data-type), no mezclada en un
+# texto combinado como Tokko — por eso usa `tipologia_texto` en vez de
+# `tipo_ubicacion_texto`. La dirección viene junto con el barrio, pero de
+# forma INCONSISTENTE: a veces "Concordia al 900 - Haedo" (con guión), a
+# veces "Rep.Oriental del Uruguay 800 Moron" (sin ningún separador).
+# Confirmado en datos reales de la primera corrida (2026-07-29): separar
+# solo por " - " dejaba `barrio` vacío en la mayoría de los casos. Por eso
+# `localidades_conocidas` reconoce el barrio por sufijo — son las mismas
+# tres sucursales que el propio sitio declara en su pie de página.
+#
+# No publica "ambientes" como característica de la ficha — se intenta
+# sacar del título del aviso como respaldo (ver
+# normalizacion/superficie.py: extraer_ambientes_de_titulo).
+#
+# Si este archivo deja de funcionar, el motivo casi seguro es que el sitio
+# cambió de plantilla. Solución: abrir la web en el navegador, inspeccionar
+# el HTML nuevo, y actualizar los selectores de acá.
+
+nombre: Sarro Pucheta
+tipo: inmobiliaria_local
+url_base: https://sarropucheta.com
+
+listado:
+  url: /propiedades/todas/venta?page={pagina}
+  primera_pagina: 1
+  # ~412 propiedades a 10 por página (~42 páginas). Margen generoso.
+  max_paginas: 80
+
+  item: "div.card.property-item.list"
+  campos:
+    id_en_fuente:
+      atributo: data-id
+    url:
+      selector: "h5 a"
+      atributo: href
+    tipologia_texto:
+      atributo: data-type
+    direccion_texto:
+      selector: .address-to-show
+    precio_texto:
+      selector: ".price h6"
+    titulo_texto:
+      selector: h5
+
+detalle:
+  listas_caracteristicas:
+    - "ul.details.row li"
+  descripcion:
+    selector: .description
+  # Etiquetas del sitio ya sin acentos y en minúscula (así las compara el
+  # adapter). "código", "tipo", "plantas", "situación", "orientación" y
+  # "fondo" quedan sin mapear a propósito: no tenemos campo para algunos
+  # (plantas, fondo), la tipología ya viene del atributo data-type, y
+  # orientación es dato exclusivo del usuario (regla 2 de CLAUDE.md) —
+  # aunque la fuente lo mencione, el scraping no lo persiste.
+  mapeo_caracteristicas:
+    dormitorios: dormitorios
+    banos: banos
+    antiguedad: antiguedad_anios
+    "sup. total": m2_totales
+    "sup. cubierta": m2_cubiertos
+    "sup. del terreno": m2_terreno
+
+mapeo_tipologia:
+  casa: casa
+  ph: ph
+  departamento: departamento
+
+# Sucursales que el propio sitio declara (pie de página, atributo
+# data-city) — se usan para separar barrio de calle en la dirección.
+# De más larga a más corta no hace falta acá: el código ya lo ordena.
+localidades_conocidas:
+  - Morón
+  - Moron
+  - Haedo
+  - Ramos Mejía
+  - Ramos Mejia

@@ -25,3 +25,20 @@ def parsear_entero(texto: str | None) -> int | None:
     """Como `parsear_numero`, pero trunca a entero (ambientes, antigüedad)."""
     numero = parsear_numero(texto)
     return int(numero) if numero is not None else None
+
+
+_PATRON_AMBIENTES_EN_TITULO = re.compile(r"(\d+)\s*amb", re.IGNORECASE)
+
+
+def extraer_ambientes_de_titulo(texto: str | None) -> int | None:
+    """'PH 2 ambientes con patio en Haedo Sur' -> 2
+
+    Respaldo para cuando la ficha de detalle no publica "ambientes" como
+    característica aparte (pasa en Sarro Pucheta) pero sí lo menciona en el
+    título. Sin esto, cualquier departamento de esa fuente quedaría afuera
+    del relevamiento — el filtro de 3+ ambientes trata "sin dato" como 0.
+    """
+    if not texto:
+        return None
+    match = _PATRON_AMBIENTES_EN_TITULO.search(texto)
+    return int(match.group(1)) if match else None

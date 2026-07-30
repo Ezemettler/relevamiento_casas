@@ -42,9 +42,17 @@ from relevamiento.modelos import (
     Tipologia,
 )
 from relevamiento.normalizacion.precios import parsear_precio
-from relevamiento.normalizacion.superficie import parsear_entero, parsear_numero
+from relevamiento.normalizacion.superficie import (
+    extraer_ambientes_de_titulo,
+    parsear_entero,
+    parsear_numero,
+)
 from relevamiento.normalizacion.texto import quitar_acentos
-from relevamiento.normalizacion.ubicacion import clasificar_zona, parsear_tipo_ubicacion
+from relevamiento.normalizacion.ubicacion import (
+    clasificar_zona,
+    parsear_direccion_con_barrio,
+    parsear_tipo_ubicacion,
+)
 from relevamiento.scraping.base import DetalleCrudo, ItemListado
 
 ObtenerDetalleFn = Callable[[ItemListado], DetalleCrudo]
@@ -70,6 +78,7 @@ def ejecutar_corrida(
     mapeo_tipologia: dict[str, str],
     filtros: dict[str, Any] | None = None,
     hoy: date | None = None,
+    localidades_conocidas: list[str] | None = None,
 ) -> ResultadoCorrida:
     hoy = hoy or date.today()
     filtros = filtros if filtros is not None else cargar_yaml("filtros.yaml")
@@ -126,7 +135,15 @@ def ejecutar_corrida(
             continue
 
         creada = _crear_propiedad(
-            sesion, fuente, item, obtener_detalle, mapeo_tipologia, filtros, corrida, hoy
+            sesion,
+            fuente,
+            item,
+            obtener_detalle,
+            mapeo_tipologia,
+            filtros,
+            corrida,
+            hoy,
+            localidades_conocidas,
         )
         if creada:
             corrida.nuevas += 1
@@ -159,6 +176,33 @@ def _tipologia_permitida(
     return Tipologia(nombre)
 
 
+def _resolver_ubicacion(
+    item: ItemListado, localidades_conocidas: list[str] | None = None
+) -> dict[str, str | None]:
+    """Resuelve tipología + dirección + barrio + localidad, sea cual sea
+    la forma en que la fuente los haya dado — ver el docstring de
+    `ItemListado` en scraping/base.py.
+    """
+    if item.tipologia_texto:
+        direccion_info = parsear_direccion_con_barrio(
+            item.direccion_texto, localidades_conocidas
+        )
+        return {
+            "tipo_texto": item.tipologia_texto,
+            "direccion": direccion_info["direccion"],
+            "barrio": direccion_info["barrio"],
+            "localidad": direccion_info["localidad"],
+        }
+
+    ubicacion = parsear_tipo_ubicacion(item.tipo_ubicacion_texto)
+    return {
+        "tipo_texto": ubicacion["tipo_texto"],
+        "direccion": item.direccion_texto,
+        "barrio": ubicacion["barrio"],
+        "localidad": ubicacion["localidad"],
+    }
+
+
 def _crear_propiedad(
     sesion: Session,
     fuente: Fuente,
@@ -168,8 +212,9 @@ def _crear_propiedad(
     filtros: dict[str, Any],
     corrida: Corrida,
     hoy: date,
+    localidades_conocidas: list[str] | None = None,
 ) -> bool:
-    ubicacion = parsear_tipo_ubicacion(item.tipo_ubicacion_texto)
+    ubicacion = _resolver_ubicacion(item, localidades_conocidas)
     tipologia = _tipologia_permitida(ubicacion["tipo_texto"], mapeo_tipologia, filtros)
     if tipologia is None:
         return False
@@ -177,7 +222,12 @@ def _crear_propiedad(
     detalle = obtener_detalle(item)
     caract = detalle.caracteristicas
 
-    ambientes = parsear_entero(caract.get("ambientes"))
+    # Si la ficha de detalle no publica "ambientes" aparte (pasa en Sarro
+    # Pucheta), se busca en el título antes de rendirse — sin esto, todo
+    # departamento de esa fuente quedaría afuera (None cuenta como 0).
+    ambientes = parsear_entero(caract.get("ambientes")) or extraer_ambientes_de_titulo(
+        item.titulo_texto
+    )
     minimo_depto = filtros.get("recoleccion", {}).get("ambientes_minimos_departamento", 0)
     if tipologia == Tipologia.DEPARTAMENTO and (ambientes or 0) < minimo_depto:
         return False
@@ -198,7 +248,7 @@ def _crear_propiedad(
         m2_totales=parsear_numero(caract.get("m2_totales")),
         m2_terreno=parsear_numero(caract.get("m2_terreno")),
         antiguedad_anios=parsear_entero(caract.get("antiguedad_anios")),
-        direccion_texto=item.direccion_texto,
+        direccion_texto=ubicacion["direccion"],
         barrio=ubicacion["barrio"],
         localidad=localidad,
         categoria_zona=clasificar_zona(localidad, barrio=ubicacion["barrio"]),

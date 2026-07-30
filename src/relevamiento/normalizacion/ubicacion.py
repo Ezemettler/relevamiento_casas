@@ -52,6 +52,57 @@ def parsear_tipo_ubicacion(texto: str | None) -> dict[str, str | None]:
     }
 
 
+def parsear_direccion_con_barrio(
+    texto: str | None,
+    localidades_conocidas: list[str] | None = None,
+    separador: str = " - ",
+) -> dict[str, str | None]:
+    """Separa un texto tipo 'Concordia al 900 - Haedo' en calle y barrio.
+
+    Para fuentes que dan la tipología aparte (`ItemListado.tipologia_texto`)
+    y combinan la dirección con el barrio en un solo campo, en vez de tres
+    piezas como Tokko.
+
+    El separador solo no alcanza: en Sarro Pucheta se comprobó que el mismo
+    sitio escribe esto de forma inconsistente — "Concordia al 900 - Haedo"
+    pero también "Rep.Oriental del Uruguay 800 Moron" (sin separador
+    ninguno). Por eso primero se intenta reconocer el barrio por sufijo,
+    contra una lista de localidades conocidas de la fuente (viene de su
+    propio config/fuentes/*.yaml, no inventada acá); recién si eso no
+    matchea se cae al separador. Si nada matchea, todo el texto queda como
+    dirección — es preferible eso a adivinar.
+    """
+    vacio = {"direccion": None, "barrio": None, "localidad": None}
+    if not texto:
+        return vacio
+    texto = texto.strip()
+
+    # De más larga a más corta: "Ramos Mejía" tiene que probarse antes que
+    # cualquier localidad de una sola palabra que sea substring suyo.
+    for localidad in sorted(localidades_conocidas or [], key=len, reverse=True):
+        if texto.lower().endswith(localidad.lower()):
+            resto = texto[: -len(localidad)].rstrip(" -,")
+            return {
+                "direccion": resto or None,
+                "barrio": localidad,
+                "localidad": localidad,
+            }
+
+    partes = [p.strip() for p in texto.split(separador, maxsplit=1)]
+    if len(partes) == 2:
+        direccion, barrio = partes
+    else:
+        direccion, barrio = partes[0], None
+
+    return {
+        "direccion": direccion or None,
+        "barrio": barrio,
+        # Mismo criterio que parsear_tipo_ubicacion: sin un segundo nivel,
+        # el barrio también hace de localidad para clasificar la zona.
+        "localidad": barrio,
+    }
+
+
 def _slug(texto: str) -> str:
     """'Ramos Mejía' -> 'ramos mejia' (sin acentos, minúsculas)."""
     return quitar_acentos(texto).strip().lower()

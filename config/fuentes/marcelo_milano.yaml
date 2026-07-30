@@ -1,0 +1,56 @@
+# Marcelo Milano — inmobiliaria de Castelar/Morón.
+#
+# Corre sobre Tokkobroker, la misma plataforma que Carlos Fernández Prop.
+# Confirmado por reconocimiento manual del 2026-07-29: HTML y estructura de
+# paginación idénticas — este archivo es prácticamente el mismo que
+# carlos_fernandez.yaml, solo cambia el nombre y la URL base.
+#
+# Si este archivo deja de funcionar (la corrida marca esta fuente en error),
+# el motivo casi seguro es que el sitio cambió de plantilla. Solución: abrir
+# la web en el navegador, inspeccionar el HTML nuevo, y actualizar los
+# selectores de acá. No hace falta tocar código Python.
+
+nombre: Marcelo Milano
+tipo: inmobiliaria_local
+url_base: https://www.marcelomilano.com.ar
+
+listado:
+  url: /Venta?q=&currency=ANY&o=2,2&p={pagina}
+  primera_pagina: 1
+  marcador_fin: "--NoMoreProperties--"
+  # Inventario ~258 propiedades a 20 por página (~13 páginas). Más margen
+  # que Carlos Fernández porque este catálogo es más grande.
+  max_paginas: 60
+
+  item: "li[prop-id]"
+  campos:
+    id_en_fuente:
+      atributo: prop-id
+    url:
+      selector: a
+      atributo: href
+    tipo_ubicacion_texto:
+      selector: .prop-desc-tipo-ub
+    direccion_texto:
+      selector: .prop-desc-dir
+    precio_texto:
+      selector: .prop-valor-nro
+
+detalle:
+  listas_caracteristicas:
+    - "#lista_informacion_basica li"
+    - "#lista_superficies li"
+  descripcion:
+    selector: "#prop-desc"
+  mapeo_caracteristicas:
+    ambientes: ambientes
+    dormitorios: dormitorios
+    banos: banos
+    antiguedad: antiguedad_anios
+    terreno: m2_terreno
+    "total construido": m2_cubiertos
+
+mapeo_tipologia:
+  casa: casa
+  ph: ph
+  departamento: departamento

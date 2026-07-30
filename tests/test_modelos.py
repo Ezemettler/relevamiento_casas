@@ -19,7 +19,6 @@ from relevamiento.modelos import (
     EstadoPropiedad,
     Evaluacion,
     Fuente,
-    NivelHumedad,
     Propiedad,
     TipoFuente,
     Tipologia,
@@ -145,8 +144,7 @@ def test_la_evaluacion_humana_vive_aparte_de_la_propiedad(sesion, fuente):
         Evaluacion(
             propiedad_id=p.id,
             fecha_visita=date(2026, 8, 10),
-            luz_natural=4,
-            humedad=NivelHumedad.LEVE,
+            humedad=True,
             notas="Humedad en el fondo, cerca del lavadero.",
         )
     )
@@ -158,8 +156,8 @@ def test_la_evaluacion_humana_vive_aparte_de_la_propiedad(sesion, fuente):
     sesion.commit()
 
     evaluacion = sesion.query(Evaluacion).one()
-    assert evaluacion.luz_natural == 4
-    assert evaluacion.humedad == NivelHumedad.LEVE
+    assert evaluacion.humedad is True
+    assert evaluacion.disponible is True  # por defecto, disponible
     assert evaluacion.notas.startswith("Humedad en el fondo")
 
 

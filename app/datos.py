@@ -1,0 +1,370 @@
+"""Consultas de datos compartidas entre las páginas de la app.
+
+Cada función abre su propia sesión y devuelve datos ya "desconectados"
+(dicts, DataFrames) en vez de objetos de SQLAlchemy — así ninguna página
+corre el riesgo de acceder a un atributo después de que la sesión se cerró
+(`DetachedInstanceError`), que es el error clásico de mezclar ORM con una
+UI que vive en reruns cortos como Streamlit.
+"""
+
+from __future__ import annotations
+
+from datetime import date
+from typing import Any
+
+import pandas as pd
+from sqlalchemy import func, or_, select
+from sqlalchemy.orm import Session
+
+from relevamiento.config import cargar_yaml
+from relevamiento.db import sesion
+from relevamiento.modelos import (
+    Cambio,
+    Corrida,
+    EstadoPropiedad,
+    Evaluacion,
+    Propiedad,
+    TipoCambio,
+)
+
+
+def filtros_configurados() -> dict[str, Any]:
+    """Valores por defecto que vienen de config/filtros.yaml, no del código."""
+    return cargar_yaml("filtros.yaml")
+
+
+def senial_negociacion(bajadas: int, dias_en_mercado: int) -> str:
+    """'fuerte' / 'moderada' / 'baja' — cuánto margen hay para negociar.
+
+    Combina cantidad de bajas de precio con tiempo publicado: varias bajas,
+    o bajas + mucho tiempo sin venderse, sugieren un vendedor con necesidad
+    real. Ver PLAN.md — es la síntesis de la señal más valiosa del sistema,
+    para no tener que leer el historial completo de cada propiedad.
+    """
+    if bajadas >= 3 or (bajadas >= 2 and dias_en_mercado > 90):
+        return "fuerte"
+    if bajadas >= 1 or dias_en_mercado > 60:
+        return "moderada"
+    return "baja"
+
+
+def _tendencia_texto(
+    bajadas: int, variacion_pct: float | None, dias_en_mercado: int
+) -> str:
+    """Resumen compacto para una columna del listado — de un vistazo, sin
+    tener que abrir el detalle de cada propiedad."""
+    if bajadas == 0 and dias_en_mercado <= 7:
+        return "nueva"
+    if bajadas == 0:
+        return "—"
+    variacion = f" ({variacion_pct:.0f}%)" if variacion_pct else ""
+    return f"↓ {bajadas} baja{'s' if bajadas != 1 else ''}{variacion}"
+
+
+def _contar_bajadas_por_propiedad(s: Session) -> dict[int, int]:
+    """Una sola consulta agrupada, no una por propiedad (evita N+1)."""
+    filas = s.execute(
+        select(Cambio.propiedad_id, func.count())
+        .where(Cambio.tipo == TipoCambio.PRECIO)
+        .group_by(Cambio.propiedad_id)
+    ).all()
+    return dict(filas)
+
+
+def _fila_propiedad(
+    p: Propiedad, bajadas: int, disponible: bool | None = True
+) -> dict[str, Any]:
+    precio = float(p.precio_actual) if p.precio_actual is not None else None
+    precio_inicial = float(p.precio_inicial) if p.precio_inicial is not None else None
+    m2 = float(p.m2_cubiertos) if p.m2_cubiertos is not None else None
+    dias_en_mercado = (date.today() - p.fecha_primera_vista).days
+    variacion_pct = (
+        round((precio - precio_inicial) / precio_inicial * 100, 1)
+        if precio and precio_inicial
+        else None
+    )
+
+    return {
+        "id": p.id,
+        "tipologia": p.tipologia.value if p.tipologia else None,
+        "direccion": p.direccion_texto,
+        "barrio": p.barrio,
+        "localidad": p.localidad,
+        "zona": p.categoria_zona.value if p.categoria_zona else None,
+        "precio": precio,
+        "moneda": p.moneda_actual.value if p.moneda_actual else None,
+        "precio_m2": round(precio / m2, 0) if precio and m2 else None,
+        "ambientes": p.ambientes,
+        "dormitorios": p.dormitorios,
+        "banos": p.banos,
+        "m2_cubiertos": m2,
+        "m2_terreno": float(p.m2_terreno) if p.m2_terreno is not None else None,
+        "antiguedad_anios": p.antiguedad_anios,
+        "dias_en_mercado": dias_en_mercado,
+        "bajadas": bajadas,
+        "variacion_pct": variacion_pct,
+        "senial": senial_negociacion(bajadas, dias_en_mercado),
+        "tendencia": _tendencia_texto(bajadas, variacion_pct, dias_en_mercado),
+        # None en `Evaluacion.disponible` (sin fila todavía) cuenta como
+        # disponible: ver docstring de `Evaluacion` en modelos.py.
+        "disponible": disponible if disponible is not None else True,
+        "url": p.url,
+    }
+
+
+def listado_propiedades(
+    tipologias: list[str] | None = None,
+    categorias_zona: list[str] | None = None,
+    precio_maximo: float | None = None,
+    solo_disponibles: bool = True,
+) -> pd.DataFrame:
+    """Propiedades activas, con los filtros aplicados. `None` = sin filtrar.
+
+    `solo_disponibles`: una propiedad sin fila en `evaluaciones`, o con
+    `disponible=True`, cuenta como disponible. Solo se excluye la marcada
+    explícitamente como descartada — el scraping le sigue registrando
+    cambios de precio igual, solo se la oculta acá.
+    """
+    with sesion() as s:
+        consulta = (
+            select(Propiedad, Evaluacion.disponible)
+            .outerjoin(Evaluacion, Evaluacion.propiedad_id == Propiedad.id)
+            .where(Propiedad.estado == EstadoPropiedad.ACTIVA)
+        )
+        if tipologias:
+            consulta = consulta.where(Propiedad.tipologia.in_(tipologias))
+        if categorias_zona:
+            consulta = consulta.where(Propiedad.categoria_zona.in_(categorias_zona))
+        if precio_maximo:
+            consulta = consulta.where(Propiedad.precio_actual <= precio_maximo)
+        if solo_disponibles:
+            consulta = consulta.where(
+                or_(Evaluacion.disponible.is_(None), Evaluacion.disponible.is_(True))
+            )
+
+        bajadas_por_id = _contar_bajadas_por_propiedad(s)
+        consulta = consulta.order_by(Propiedad.fecha_primera_vista.desc())
+        filas_db = s.execute(consulta).all()
+        filas = [
+            _fila_propiedad(p, bajadas_por_id.get(p.id, 0), disponible)
+            for p, disponible in filas_db
+        ]
+
+    return pd.DataFrame(filas)
+
+
+def _evaluacion_a_dict(e: Evaluacion) -> dict[str, Any]:
+    return {
+        "fecha_visita": e.fecha_visita,
+        "disponible": e.disponible,
+        "luz_natural": e.luz_natural.value if e.luz_natural else None,
+        "humedad": e.humedad,
+        "orientacion": e.orientacion.value if e.orientacion else None,
+        "ruido_entorno": e.ruido_entorno.value if e.ruido_entorno else None,
+        "distancia_estacion_metros": e.distancia_estacion_metros,
+        "entorno": e.entorno,
+        "notas": e.notas,
+    }
+
+
+def evaluacion_actual(propiedad_id: int) -> dict[str, Any] | None:
+    """Los datos complementarios ya cargados para esta propiedad, si hay."""
+    with sesion() as s:
+        e = s.scalar(select(Evaluacion).where(Evaluacion.propiedad_id == propiedad_id))
+        return _evaluacion_a_dict(e) if e else None
+
+
+def guardar_o_actualizar_evaluacion(propiedad_id: int, datos: dict[str, Any]) -> None:
+    """Único punto de escritura en `evaluaciones` de toda la app — el
+    scraping nunca pasa por acá (regla 2 de CLAUDE.md).
+
+    Upsert: un solo registro por propiedad. Si ya existe, se actualiza en
+    el lugar (no se agrega un historial de visitas fechadas — ver el
+    docstring de `Evaluacion` en modelos.py sobre por qué).
+    """
+    with sesion() as s:
+        existente = s.scalar(
+            select(Evaluacion).where(Evaluacion.propiedad_id == propiedad_id)
+        )
+        if existente:
+            for campo, valor in datos.items():
+                setattr(existente, campo, valor)
+        else:
+            s.add(Evaluacion(propiedad_id=propiedad_id, **datos))
+
+
+def detalle_propiedad(propiedad_id: int) -> dict[str, Any] | None:
+    """Todo lo necesario para el panel de detalle: la propiedad, su
+    historial de cambios y los datos complementarios ya cargados."""
+    with sesion() as s:
+        p = s.get(Propiedad, propiedad_id)
+        if p is None:
+            return None
+
+        bajadas_por_id = _contar_bajadas_por_propiedad(s)
+
+        cambios = s.execute(
+            select(Cambio)
+            .where(Cambio.propiedad_id == propiedad_id)
+            .order_by(Cambio.fecha.desc())
+        ).scalars()
+        cambios_lista = [
+            {
+                "fecha": c.fecha,
+                "tipo": c.tipo.value,
+                "campo": c.campo,
+                "de": c.valor_anterior,
+                "a": c.valor_nuevo,
+                "variacion_pct": float(c.variacion_pct) if c.variacion_pct else None,
+            }
+            for c in cambios
+        ]
+
+        evaluacion = s.scalar(
+            select(Evaluacion).where(Evaluacion.propiedad_id == propiedad_id)
+        )
+
+        return {
+            "propiedad": _fila_propiedad(p, bajadas_por_id.get(p.id, 0))
+            | {"descripcion": p.descripcion},
+            "cambios": cambios_lista,
+            "evaluacion": _evaluacion_a_dict(evaluacion) if evaluacion else None,
+        }
+
+
+def resumen_general() -> dict[str, Any]:
+    with sesion() as s:
+        activas = s.scalar(
+            select(func.count())
+            .select_from(Propiedad)
+            .where(Propiedad.estado == EstadoPropiedad.ACTIVA)
+        )
+        finalizadas = s.scalar(
+            select(func.count())
+            .select_from(Propiedad)
+            .where(Propiedad.estado == EstadoPropiedad.FINALIZADA)
+        )
+        ultima_corrida = s.execute(
+            select(Corrida).order_by(Corrida.id.desc()).limit(1)
+        ).scalar_one_or_none()
+        total_corridas = s.scalar(select(func.count()).select_from(Corrida))
+
+        return {
+            "activas": activas or 0,
+            "finalizadas": finalizadas or 0,
+            "total_corridas": total_corridas or 0,
+            "ultima_corrida": (
+                {
+                    "inicio": ultima_corrida.inicio,
+                    "estado": ultima_corrida.estado.value,
+                    "nuevas": ultima_corrida.nuevas,
+                    "actualizadas": ultima_corrida.actualizadas,
+                    "finalizadas": ultima_corrida.finalizadas,
+                }
+                if ultima_corrida
+                else None
+            ),
+        }
+
+
+def metricas_por_zona_y_tipologia() -> pd.DataFrame:
+    """Precio/m² promedio, agrupado — la referencia que sirve para comparar."""
+    df = listado_propiedades()
+    if df.empty:
+        return df
+    return (
+        df.dropna(subset=["precio_m2"])
+        .groupby(["zona", "tipologia"], dropna=False)["precio_m2"]
+        .agg(["mean", "median", "count"])
+        .rename(
+            columns={
+                "mean": "precio_m2_promedio",
+                "median": "precio_m2_mediana",
+                "count": "cantidad",
+            }
+        )
+        .round(0)
+        .reset_index()
+    )
+
+
+def senales_negociacion_top(n: int = 5) -> pd.DataFrame:
+    """Las propiedades con señal más fuerte — para no tener que escanear
+    todo el listado buscando dónde hay margen para negociar."""
+    df = listado_propiedades()
+    if df.empty:
+        return df
+    orden_senial = {"fuerte": 0, "moderada": 1, "baja": 2}
+    df = df[df["senial"] != "baja"].copy()
+    if df.empty:
+        return df
+    df["_orden"] = df["senial"].map(orden_senial)
+    columnas = ["_orden", "bajadas", "dias_en_mercado"]
+    return (
+        df.sort_values(columnas, ascending=[True, False, False])
+        .drop(columns="_orden")
+        .head(n)
+    )
+
+
+def flujo_semanal() -> pd.DataFrame:
+    """Altas y bajas por semana — para ver si entra más de lo que sale.
+
+    Con pocas semanas de corridas esto va a mostrar poco: es esperable,
+    se completa solo con las próximas corridas automáticas.
+
+    Arranque en frío (PLAN.md sección 4): la primera corrida carga TODAS
+    las propiedades existentes de una sola vez — no son altas reales de esa
+    semana, es la foto inicial. Se excluye esa fecha para no mostrar un pico
+    artificial que además arrastra falsamente "Vendedor" en `tipo_mercado`.
+    """
+    with sesion() as s:
+        primera_corrida = s.scalar(select(func.min(Corrida.inicio)))
+        fecha_arranque_en_frio = primera_corrida.date() if primera_corrida else None
+
+        altas = s.execute(select(Propiedad.fecha_primera_vista)).scalars().all()
+        if fecha_arranque_en_frio:
+            altas = [f for f in altas if f != fecha_arranque_en_frio]
+
+        bajas = (
+            s.execute(
+                select(Propiedad.fecha_finalizacion).where(
+                    Propiedad.fecha_finalizacion.is_not(None)
+                )
+            )
+            .scalars()
+            .all()
+        )
+
+    if not altas and not bajas:
+        return pd.DataFrame(columns=["semana", "entradas", "salidas", "balance"])
+
+    def _a_semana(fechas: list[date]) -> pd.Series:
+        periodos = pd.to_datetime(pd.Series(fechas)).dt.to_period("W")
+        return periodos.apply(lambda p: p.start_time)
+
+    entradas = _a_semana(altas).value_counts().rename("entradas")
+    salidas = (
+        _a_semana(bajas).value_counts().rename("salidas")
+        if bajas
+        else pd.Series(dtype=int, name="salidas")
+    )
+
+    df = pd.concat([entradas, salidas], axis=1).fillna(0).astype(int).sort_index()
+    df["balance"] = df["entradas"] - df["salidas"]
+    df = df.reset_index(names="semana")
+    df["semana"] = df["semana"].dt.strftime("%d/%m")
+    return df
+
+
+def tipo_mercado(df_flujo: pd.DataFrame) -> str:
+    """'Comprador' / 'Vendedor' / 'Equilibrado', según el balance de la
+    última semana con datos."""
+    if df_flujo.empty:
+        return "Sin datos suficientes"
+    balance = int(df_flujo.iloc[-1]["balance"])
+    if balance > 3:
+        return "Vendedor"
+    if balance < -2:
+        return "Comprador"
+    return "Equilibrado"

@@ -61,4 +61,5 @@ def ejecutar_corrida_real(sesion: Session, archivo_config: str) -> ResultadoCorr
             items,
             obtener_detalle_de,
             config.mapeo_tipologia,
+            localidades_conocidas=config.localidades_conocidas,
         )

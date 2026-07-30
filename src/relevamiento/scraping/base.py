@@ -16,13 +16,29 @@ from dataclasses import dataclass, field
 
 @dataclass
 class ItemListado:
-    """Un ítem tal como aparece en la página de listado (una tarjeta)."""
+    """Un ítem tal como aparece en la página de listado (una tarjeta).
+
+    Dos formas de dar la tipología, según la fuente:
+      - `tipo_ubicacion_texto`: texto combinado "Casa en Venta en Barrio,
+        Localidad" (Tokko) — se separa con `parsear_tipo_ubicacion`.
+      - `tipologia_texto`: la tipología ya viene sola (ej. un atributo
+        `data-type="PH"`) — en ese caso `direccion_texto` se interpreta
+        como "calle - barrio" y se separa con `parsear_direccion_con_barrio`.
+
+    El pipeline decide cuál de las dos formas está en juego mirando si
+    `tipologia_texto` viene con algo.
+    """
 
     id_en_fuente: str
     url: str
     tipo_ubicacion_texto: str | None = None
+    tipologia_texto: str | None = None
     direccion_texto: str | None = None
     precio_texto: str | None = None
+    # Título del aviso. Sirve como respaldo para extraer datos que faltan
+    # en los campos estructurados (ej. "ambientes" cuando la fuente no lo
+    # publica como característica aparte, solo lo menciona en el título).
+    titulo_texto: str | None = None
 
 
 @dataclass
