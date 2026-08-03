@@ -113,13 +113,19 @@ def _modal_completar_datos(
         )
     st.divider()
 
-    disponible = st.checkbox(
-        "Disponible para el análisis",
-        value=actual["disponible"] if actual else True,
-        help="Destildar para descartarla del listado y las métricas. El "
-        "scraping le sigue registrando cambios de precio igual. Si la "
-        "descartás, contá el motivo en Notas, más abajo.",
+    # Mismo nombre y mismas opciones que el filtro "Estado" de la tabla —
+    # antes era un checkbox con otra etiqueta, confuso al lado de la
+    # columna Estado.
+    disponible_actual = actual["disponible"] if actual else True
+    estado_texto = st.selectbox(
+        "Estado",
+        options=["Disponible", "Descartada"],
+        index=0 if disponible_actual else 1,
+        help="Al pasarla a Descartada deja de listarse acá y en Mercado. "
+        "El scraping le sigue registrando cambios de precio igual. Contá "
+        "el motivo en Notas, más abajo.",
     )
+    disponible = estado_texto == "Disponible"
 
     opciones_luz = [None, *[n.value for n in NivelLuz]]
     indice_luz = (
