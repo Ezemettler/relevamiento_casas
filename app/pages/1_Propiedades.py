@@ -117,7 +117,8 @@ def _modal_completar_datos(
         "Disponible para el análisis",
         value=actual["disponible"] if actual else True,
         help="Destildar para descartarla del listado y las métricas. El "
-        "scraping le sigue registrando cambios de precio igual.",
+        "scraping le sigue registrando cambios de precio igual. Si la "
+        "descartás, contá el motivo en Notas, más abajo.",
     )
 
     opciones_luz = [None, *[n.value for n in NivelLuz]]
@@ -213,7 +214,9 @@ def _modal_completar_datos(
 # los criterios — pero se reserva el lugar acá arriba, debajo del título.
 texto_criterios = st.empty()
 
-col_tipo, col_inmobiliaria, col_barrio, col_orden = st.columns([2, 2, 2, 1])
+col_tipo, col_inmobiliaria, col_barrio, col_estado, col_orden = st.columns(
+    [2, 2, 2, 2, 1]
+)
 with col_tipo:
     tipologias = st.multiselect(
         "Tipología", options=tipologias_disponibles, default=tipologias_disponibles
@@ -232,25 +235,34 @@ with col_barrio:
         categorias_zona=zonas_defecto, precio_maximo=precio_defecto
     )
     barrios = st.multiselect("Barrio", options=opciones_barrio, placeholder="Todos")
+with col_estado:
+    # Por defecto solo "Disponible" — igual que Tipología, es un filtro
+    # más, no un tilde aparte. Para ver las descartadas (y poder revertir
+    # el descarte desde la tarjeta, algo que si no quedaba inaccesible),
+    # se agrega "Descartada" acá.
+    estados_texto = st.multiselect(
+        "Estado", options=["Disponible", "Descartada"], default=["Disponible"]
+    )
 with col_orden:
     orden = st.selectbox(
         "Ordenar por", ["precio_m2", "precio", "dias_en_mercado", "bajadas"]
     )
 
-# Zona, techo de precio y disponibilidad quedan fijos en los valores por
-# defecto de config/filtros.yaml — no son ajustables desde acá.
+# Zona y techo de precio quedan fijos en los valores por defecto de
+# config/filtros.yaml — no son ajustables desde acá.
 df = listado_propiedades(
     tipologias=tipologias or None,
     categorias_zona=zonas_defecto,
     precio_maximo=precio_defecto,
-    solo_disponibles=True,
+    estados=[e.lower() for e in estados_texto],
     inmobiliarias=inmobiliarias or None,
     barrios=barrios or None,
 )
 
 precio_texto = f"USD {precio_defecto:,.0f}".replace(",", ".")
+calificador = "disponibles " if estados_texto == ["Disponible"] else ""
 texto_criterios.caption(
-    f"{len(df)} propiedades disponibles en zona {'/'.join(zonas_defecto)} y "
+    f"{len(df)} propiedades {calificador}en zona {'/'.join(zonas_defecto)} y "
     f"hasta {precio_texto} — los criterios que definimos por defecto. Fuera "
     "de estos, las propiedades se siguen guardando igual: no se pierden, "
     "solo no se muestran acá."
@@ -294,6 +306,14 @@ def _color_positivo(valor: str) -> str:
 
 def _color_negativo(valor: str) -> str:
     return _ROJO if valor == "Sí" else _VERDE if valor == "No" else ""
+
+
+def _estado_texto(disponible: bool) -> str:
+    return "Disponible" if disponible else "Descartada"
+
+
+def _color_estado(valor: str) -> str:
+    return _VERDE if valor == "Disponible" else _ROJO
 
 
 # (campo, etiqueta, es_positivo) — mismo criterio de polaridad que en la
@@ -377,9 +397,12 @@ with col_lista:
         df_mostrado = df.sort_values(orden, ascending=(orden != "bajadas")).copy()
         for campo in _CAMPOS_POSITIVOS + _CAMPOS_NEGATIVOS:
             df_mostrado[campo] = df_mostrado[campo].map(_si_no)
+        df_mostrado["disponible"] = df_mostrado["disponible"].map(_estado_texto)
 
-        estilo = df_mostrado.style.map(_color_positivo, subset=_CAMPOS_POSITIVOS).map(
-            _color_negativo, subset=_CAMPOS_NEGATIVOS
+        estilo = (
+            df_mostrado.style.map(_color_positivo, subset=_CAMPOS_POSITIVOS)
+            .map(_color_negativo, subset=_CAMPOS_NEGATIVOS)
+            .map(_color_estado, subset=["disponible"])
         )
 
         evento = st.dataframe(
@@ -420,12 +443,16 @@ with col_lista:
                 "ventilacion_cruzada": st.column_config.TextColumn("Ventilación Cruzada"),
                 "grietas": st.column_config.TextColumn("Grietas"),
                 "desniveles": st.column_config.TextColumn("Desniveles"),
+                "disponible": st.column_config.TextColumn("Estado"),
+                "notas": st.column_config.TextColumn("Notas"),
             },
             column_order=[
                 "tipologia",
                 "direccion",
                 "barrio",
                 "inmobiliaria",
+                "disponible",
+                "notas",
                 "precio_inicial",
                 "precio",
                 "moneda",

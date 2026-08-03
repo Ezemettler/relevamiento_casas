@@ -122,6 +122,7 @@ def _fila_propiedad(
         # None en `Evaluacion.disponible` (sin fila todavía) cuenta como
         # disponible: ver docstring de `Evaluacion` en modelos.py.
         "disponible": evaluacion.disponible if evaluacion else True,
+        "notas": evaluacion.notas if evaluacion else None,
         "humedad": evaluacion.humedad if evaluacion else None,
         "cochera": evaluacion.cochera if evaluacion else None,
         "patio_jardin": evaluacion.patio_jardin if evaluacion else None,
@@ -139,16 +140,18 @@ def listado_propiedades(
     tipologias: list[str] | None = None,
     categorias_zona: list[str] | None = None,
     precio_maximo: float | None = None,
-    solo_disponibles: bool = True,
+    estados: list[str] | None = None,
     inmobiliarias: list[str] | None = None,
     barrios: list[str] | None = None,
 ) -> pd.DataFrame:
     """Propiedades activas, con los filtros aplicados. `None` = sin filtrar.
 
-    `solo_disponibles`: una propiedad sin fila en `evaluaciones`, o con
-    `disponible=True`, cuenta como disponible. Solo se excluye la marcada
-    explícitamente como descartada — el scraping le sigue registrando
-    cambios de precio igual, solo se la oculta acá.
+    `estados`: valores "disponible"/"descartada". `None` o solo
+    ["disponible"] es el default de siempre (una propiedad sin fila en
+    `evaluaciones` cuenta como disponible). Pasar ambos valores, o una
+    lista vacía, no filtra por estado — trae las dos cosas. El scraping le
+    sigue registrando cambios de precio a una descartada igual, esto solo
+    controla qué se lista acá.
     """
     with sesion() as s:
         consulta = (
@@ -163,10 +166,14 @@ def listado_propiedades(
             consulta = consulta.where(Propiedad.categoria_zona.in_(categorias_zona))
         if precio_maximo:
             consulta = consulta.where(Propiedad.precio_actual <= precio_maximo)
-        if solo_disponibles:
+        if estados is None or estados == ["disponible"]:
             consulta = consulta.where(
                 or_(Evaluacion.disponible.is_(None), Evaluacion.disponible.is_(True))
             )
+        elif estados == ["descartada"]:
+            consulta = consulta.where(Evaluacion.disponible.is_(False))
+        # cualquier otro caso (ambos estados, o ninguno seleccionado) no
+        # filtra por estado — se listan todas.
         if inmobiliarias:
             consulta = consulta.where(Fuente.nombre.in_(inmobiliarias))
         if barrios:
