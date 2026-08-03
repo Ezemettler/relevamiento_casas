@@ -491,6 +491,13 @@ with col_detalle:
                 st.warning(
                     "Descartada — no aparece en Mercado ni en el listado por defecto."
                 )
+            if p.get("otras_en_direccion"):
+                plural = "es" if p["otras_en_direccion"] != 1 else ""
+                st.caption(
+                    f"ℹ️ Hay {p['otras_en_direccion']} publicación{plural} más de "
+                    f"{p['inmobiliaria']} en esta misma dirección — no es un aviso "
+                    "repetido, suele ser otra unidad del mismo lote o edificio."
+                )
             st.divider()
 
             precio_actual_texto = (
@@ -587,7 +594,7 @@ with col_detalle:
                     .mark_line(point=True, color="#38BDF8")
                     .encode(
                         x=alt.X("fecha:T", title=None),
-                        y=alt.Y("precio:Q", title=None, scale=alt.Scale(zero=False)),
+                        y=alt.Y("precio:Q", title=None, scale=alt.Scale(zero=True)),
                         tooltip=["fecha:T", "precio:Q"],
                     )
                     .properties(height=180)

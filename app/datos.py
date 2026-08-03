@@ -294,11 +294,27 @@ def detalle_propiedad(propiedad_id: int) -> dict[str, Any] | None:
             select(Evaluacion).where(Evaluacion.propiedad_id == propiedad_id)
         )
 
+        # No es un duplicado a fusionar (ver PLAN.md, decisión D9): confirmado
+        # en la práctica que la misma dirección + inmobiliaria casi siempre
+        # son unidades distintas (edificios o lotes con varios avisos). Esto
+        # es solo para avisar por qué puede parecer repetido en la tabla.
+        otras_en_direccion = 0
+        if p.direccion_texto:
+            otras_en_direccion = s.scalar(
+                select(func.count())
+                .select_from(Propiedad)
+                .where(
+                    Propiedad.fuente_id == p.fuente_id,
+                    Propiedad.direccion_texto == p.direccion_texto,
+                    Propiedad.id != p.id,
+                )
+            )
+
         return {
             "propiedad": _fila_propiedad(
                 p, bajadas_por_id.get(p.id, 0), evaluacion, inmobiliaria
             )
-            | {"descripcion": p.descripcion},
+            | {"descripcion": p.descripcion, "otras_en_direccion": otras_en_direccion},
             "cambios": cambios_lista,
             "historial_precios": historial_precios,
             "evaluacion": _evaluacion_a_dict(evaluacion) if evaluacion else None,

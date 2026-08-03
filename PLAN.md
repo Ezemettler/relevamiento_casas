@@ -99,7 +99,7 @@ Cada decisión con su alternativa descartada y el motivo. Si una premisa cambia,
 | D6 | Descarga HTML | `httpx` + `selectolax` | Playwright por defecto | La mayoría de las inmobiliarias locales sirven HTML estático. Playwright queda como fallback declarado por fuente, solo donde haga falta. |
 | D7 | Configuración de fuentes | YAML declarativo | Un módulo Python por sitio | Cuando una fuente cambia el HTML se edita un archivo de texto con los selectores, no código. Reduce el costo de mantenimiento, que es el punto más frágil del sistema. |
 | D8 | Capa de criterio | Reglas determinísticas en YAML | LLM como evaluador | Auditable, testeable y reproducible. El criterio de dominio queda **escrito y versionado**, que es lo que da valor real y de portfolio. El LLM entra después, acotado al texto libre. |
-| D9 | Duplicados entre fuentes | No implementar por ahora | Unificación automática | Se desconoce la frecuencia real del problema. El modelo queda preparado, pero no se une nada hasta tener evidencia. |
+| D9 | Duplicados entre fuentes | No implementar por ahora | Unificación automática | Confirmado en la práctica (2026-08): misma `(fuente_id, direccion_texto)` con distinto `id_en_fuente` casi siempre son unidades reales distintas (un lote/edificio con varios avisos — se vio un caso de 9 unidades de un mismo desarrollo), no el mismo aviso repetido. Fusionar por dirección sería activamente peor: borraría propiedades reales. La UI solo avisa cuando pasa esto (ver `otras_en_direccion` en `datos.py`), no fusiona nada. |
 | D10 | Validación de datos | Pydantic | Chequeos ad-hoc | Un dato mal parseado que entra a la base contamina el historial para siempre. Se valida en la frontera, antes de persistir. |
 
 ---
