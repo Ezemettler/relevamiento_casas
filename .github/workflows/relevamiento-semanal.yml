@@ -1,11 +1,11 @@
 name: Relevamiento semanal
 
 on:
-  # Lunes 08:00 hora Argentina (UTC-3) = 11:00 UTC.
+  # Sábados 06:00 hora Argentina (UTC-3) = 09:00 UTC.
   schedule:
-    - cron: "0 11 * * 1"
+    - cron: "0 9 * * 6"
   # Permite dispararlo a mano desde la pestaña Actions de GitHub, sin
-  # esperar al lunes — útil para probar cambios en una fuente.
+  # esperar al sábado — útil para probar cambios en una fuente.
   workflow_dispatch:
 
 jobs:

@@ -566,7 +566,7 @@ resto no exista.
 
 ## 10. Operación
 
-- **Cuándo corre:** lunes 08:00 (cron de GitHub Actions), y se puede disparar a mano.
+- **Cuándo corre:** sábados 06:00 hora Argentina (cron de GitHub Actions), y se puede disparar a mano.
 - **Cómo se sabe si falló:** la corrida deja registro en `corridas`; si hay fuentes en error,
   el workflow falla visiblemente y notifica.
 - **Qué hacer si una fuente se rompió:** correr sus tests, comparar el HTML actual contra el
