@@ -489,7 +489,12 @@ def flujo_semanal() -> pd.DataFrame:
         return pd.DataFrame(columns=["semana", "entradas", "salidas", "balance"])
 
     def _a_semana(fechas: list[date]) -> pd.Series:
-        periodos = pd.to_datetime(pd.Series(fechas)).dt.to_period("W")
+        # W-FRI: la semana arranca sábado, no lunes — así coincide con el
+        # cron semanal (sábados). Con el default de pandas (W, lunes a
+        # domingo) una corrida de sábado caía en la misma semana que el
+        # lunes anterior, y la barra quedaba con la fecha del lunes viejo
+        # aunque tuviera datos de hoy adentro.
+        periodos = pd.to_datetime(pd.Series(fechas)).dt.to_period("W-FRI")
         return periodos.apply(lambda p: p.start_time)
 
     entradas = _a_semana(altas).value_counts().rename("entradas")
