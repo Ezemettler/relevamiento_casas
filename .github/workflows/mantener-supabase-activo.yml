@@ -1,0 +1,29 @@
+name: Mantener Supabase activo
+
+on:
+  # Lunes y jueves 09:00 hora Argentina (UTC-3) = 12:00 UTC — lejos del
+  # sábado del relevamiento real, para que quede claro en el historial de
+  # Actions cuál corrida es cuál.
+  schedule:
+    - cron: "0 12 * * 1,4"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Instalar uv
+        uses: astral-sh/setup-uv@v9.0.0
+        with:
+          enable-cache: true
+
+      - name: Instalar dependencias (según uv.lock, sin resolver de nuevo)
+        run: uv sync --frozen
+
+      - name: Conexión mínima a la base
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: uv run python scripts/mantener_supabase_activo.py
