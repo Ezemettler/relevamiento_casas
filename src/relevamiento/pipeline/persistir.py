@@ -145,8 +145,14 @@ def ejecutar_corrida(
             hoy,
             localidades_conocidas,
         )
-        if creada:
+        if creada is not None:
             corrida.nuevas += 1
+            # Si el mismo id_en_fuente aparece dos veces en este barrido
+            # (solape de paginación, por ejemplo), la segunda vez tiene que
+            # encontrarla acá y actualizar, no volver a insertar — sin esto
+            # la base rechaza el duplicado y tumba toda la corrida de esta
+            # fuente (pasó de verdad con Sarro Pucheta, ver CLAUDE.md).
+            previas_por_id[item.id_en_fuente] = creada
 
     for id_en_fuente, propiedad in previas_por_id.items():
         if id_en_fuente not in vistos:
@@ -213,11 +219,11 @@ def _crear_propiedad(
     corrida: Corrida,
     hoy: date,
     localidades_conocidas: list[str] | None = None,
-) -> bool:
+) -> Propiedad | None:
     ubicacion = _resolver_ubicacion(item, localidades_conocidas)
     tipologia = _tipologia_permitida(ubicacion["tipo_texto"], mapeo_tipologia, filtros)
     if tipologia is None:
-        return False
+        return None
 
     detalle = obtener_detalle(item)
     caract = detalle.caracteristicas
@@ -230,7 +236,7 @@ def _crear_propiedad(
     )
     minimo_depto = filtros.get("recoleccion", {}).get("ambientes_minimos_departamento", 0)
     if tipologia == Tipologia.DEPARTAMENTO and (ambientes or 0) < minimo_depto:
-        return False
+        return None
 
     precio = parsear_precio(item.precio_texto)
     monto, moneda = precio if precio else (None, None)
@@ -275,7 +281,7 @@ def _crear_propiedad(
             payload_crudo={"item": asdict(item), "detalle": asdict(detalle)},
         )
     )
-    return True
+    return propiedad
 
 
 def _actualizar_propiedad(

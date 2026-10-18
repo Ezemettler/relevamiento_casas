@@ -357,3 +357,26 @@ def test_observacion_guarda_el_payload_crudo(sesion, fuente):
     observacion = sesion.query(Observacion).one()
     assert observacion.payload_crudo["item"]["id_en_fuente"] == "1"
     assert observacion.payload_crudo["detalle"]["caracteristicas"]["ambientes"] == "4"
+
+
+def test_mismo_id_en_fuente_repetido_en_el_mismo_barrido_no_duplica(sesion, fuente):
+    """Pasó de verdad con Sarro Pucheta (corrida del 2026-10-17): un solape
+    de paginación hizo que el mismo aviso apareciera dos veces en el mismo
+    barrido. La segunda aparición tiene que actualizar la que se acaba de
+    crear, no intentar insertarla de nuevo — si no, la restricción de
+    identidad única rechaza el duplicado y tumba toda la fuente."""
+    resultado = ejecutar_corrida(
+        sesion,
+        fuente,
+        items=[_item(id_en_fuente="1"), _item(id_en_fuente="1")],
+        obtener_detalle=lambda _item: _detalle_casa(),
+        mapeo_tipologia=MAPEO_TIPOLOGIA,
+        filtros=FILTROS,
+        hoy=date(2026, 8, 4),
+    )
+    sesion.commit()
+
+    assert not resultado.abortada
+    assert resultado.corrida.nuevas == 1
+    assert resultado.corrida.actualizadas == 1
+    assert sesion.query(Propiedad).count() == 1
